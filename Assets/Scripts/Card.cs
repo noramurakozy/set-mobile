@@ -18,15 +18,13 @@ public class Card : MonoBehaviour
     private void Awake()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
-        sprite = spriteAtlas.GetSprite($"cards4_{cardSpriteIndex}");
-
-        spriteRenderer.sprite = sprite;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        sprite = spriteAtlas.GetSprite($"cards4_{cardSpriteIndex}");
+        spriteRenderer.sprite = sprite;
     }
 
     // Update is called once per frame
