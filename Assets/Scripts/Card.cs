@@ -23,7 +23,7 @@ public class Card : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        sprite = spriteAtlas.GetSprite($"cards4_{cardSpriteIndex}");
+        sprite = spriteAtlas.GetSprite($"cards_1_{cardSpriteIndex}");
         spriteRenderer.sprite = sprite;
     }
 
