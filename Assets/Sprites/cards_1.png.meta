@@ -47,7 +47,7 @@ TextureImporter:
   spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 200
+  spritePixelsToUnits: 120
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -1828,8 +1828,7 @@ TextureImporter:
     secondaryTextures: []
     nameFileIdTable:
       cards_1_20: 314143209
-      cards_1_64: -653179818
-      cards_1_69: -315891582
+      cards_1_44: -1499089773
       cards_1_37: 1051987800
       cards_1_73: -1796229824
       cards_1_4: 2088600366
@@ -1860,16 +1859,16 @@ TextureImporter:
       cards_1_21: 1589951418
       cards_1_74: -367306484
       cards_1_33: -904530998
-      cards_1_36: 1039411917
+      cards_1_76: 1462695479
       cards_1_25: 882339768
-      cards_1_28: 674547544
+      cards_1_36: 1039411917
       cards_1_71: 1107589472
       cards_1_16: -244949573
       cards_1_75: 2008796288
       cards_1_77: -1793014436
       cards_1_55: -1374942470
       cards_1_0: -50299631
-      cards_1_76: 1462695479
+      cards_1_28: 674547544
       cards_1_41: -708434341
       cards_1_60: -106402847
       cards_1_39: 233061652
@@ -1897,6 +1896,7 @@ TextureImporter:
       cards_1_51: -1884690943
       cards_1_56: -1677597143
       cards_1_79: 1041922391
+      cards_1_69: -315891582
       cards_1_5: -1881892543
       cards_1_49: -40420616
       cards_1_66: 1757360205
@@ -1907,7 +1907,7 @@ TextureImporter:
       cards_1_24: 531267656
       cards_1_10: 1494109441
       cards_1_23: -382226473
-      cards_1_44: -1499089773
+      cards_1_64: -653179818
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
