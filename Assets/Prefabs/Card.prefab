@@ -170,7 +170,7 @@ SpriteRenderer:
   m_Size: {x: 1.59, y: 2.3855824}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
 --- !u!210 &7952517162085137100
@@ -223,7 +223,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteAtlas: {fileID: 4343727234628468602, guid: bc57a1d792c8c1b408e36854333f1fed, type: 2}
-  cardSpriteIndex: 0
+  glow: {fileID: 4074254193084682377}
 --- !u!114 &5019234395245844922
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -236,4 +236,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 702ae48635479f842bcc032640c8128e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  glow: {fileID: 4074254193084682377}

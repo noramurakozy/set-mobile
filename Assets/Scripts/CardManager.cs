@@ -1,14 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using DefaultNamespace;
 using Unity.Mathematics;
 using Unity.Notifications.Android;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class CardManager : MonoBehaviour
 {
-    [SerializeField] private Card cardPrefab;
-
-    private static System.Random rng = new();
+    [SerializeField] private CardView cardPrefab;
 
     // Start is called before the first frame update
     void Start()
@@ -29,39 +29,28 @@ public class CardManager : MonoBehaviour
     {
     }
 
-    private void InitiateDeck(out List<Card> starterCards, out List<Card> deck)
+    private void InitiateDeck(out List<CardView> starterCards, out List<CardView> deck)
     {
         // Create whole deck
-        List<Card> cardList = new();
+        List<CardView> cardList = new();
         for (int i = 0; i < 81; i++)
         {
             var card = Instantiate(cardPrefab);
-            card.cardSpriteIndex = i;
+            // card.CardSpriteIndex = i;
             card.transform.position = new Vector2(-100, -100);
             cardList.Add(card);
         }
         
         // Get random 12 cards
-        List<Card> tableCards = new();
+        List<CardView> tableCards = new();
         for (int i = 0; i < 12; i++)
         {
-            var rndIdx = rng.Next(cardList.Count);
+            var rndIdx = Deck.Rng.Next(cardList.Count);
             tableCards.Add(cardList[rndIdx]);
             cardList.RemoveAt(rndIdx);
         }
         
         starterCards = tableCards;
         deck = cardList;
-    }
-
-    private void Shuffle<T>(IList<T> list)
-    {
-        int n = list.Count;
-        while (n > 1)
-        {
-            n--;
-            int k = rng.Next(n + 1);
-            (list[k], list[n]) = (list[n], list[k]);
-        }
     }
 }
