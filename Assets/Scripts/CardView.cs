@@ -28,6 +28,7 @@ public class CardView : MonoBehaviour
     private SpriteAtlas spriteAtlas;
     
     [SerializeField] private SpriteRenderer glow;
+    [SerializeField] private SpriteRenderer overlay;
     
     public CardView(SetCard card){
         Card = card;
@@ -59,14 +60,12 @@ public class CardView : MonoBehaviour
                 glow.enabled = true;
                 break;
             case SelectType.HINT:
-                // TODO: set hint color
-                // image.setForeground(context.getResources().getDrawable(R.drawable.card_hintselector, null));
+                overlay.enabled = true;
                 break;
             case SelectType.NONE:
                 IsSelected = false;
                 glow.enabled = false;
-                // TODO: remove hint color and selection color
-                // image.setForeground(null);
+                overlay.enabled = false;
                 break;
         }
     }

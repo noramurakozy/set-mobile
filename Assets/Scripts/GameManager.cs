@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace DefaultNamespace
 {
     public class GameManager : MonoBehaviour
     {
         public static GameManager Instance { get; private set; }
+        [SerializeField] private Button BtnHint;
         public Game Game { get; set; }
         
         [SerializeField] private CardView cardPrefab;
@@ -28,6 +30,8 @@ namespace DefaultNamespace
         {
             Game = new Game(cardPrefab);
             Game.StartNewGame();
+            
+            BtnHint.onClick.AddListener(Game.SelectHint);
         }
     }
 }
