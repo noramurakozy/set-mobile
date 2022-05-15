@@ -25,8 +25,9 @@ namespace DefaultNamespace
         // private int[] rootCenter = new int[2];
         
         private CardView CardPrefab { get; set; }
+        private GridManager GridLayout { get; set; }
 
-        public Game(CardView cardPrefab)
+        public Game(CardView cardPrefab, GridManager gridLayout)
         {
             AllCards = new List<SetCard>();
             ActualCards = new List<SetCard>();
@@ -34,6 +35,7 @@ namespace DefaultNamespace
             Set = new Set();
             Clicked = new List<CardView>();
             CardPrefab = cardPrefab;
+            GridLayout = gridLayout;
 
             // TODO: add card back
             // this.cardBackPlaceholder = cardBackPlaceholder;
@@ -47,7 +49,7 @@ namespace DefaultNamespace
             Deck deck = new Deck();
             AllCards = deck.CreateDeck();
             // TODO: later, instead of 12, gridLayoutColumns*gridLayoutRows
-            ActualCards = deck.CreateCardsToPlay(AllCards, 12);
+            ActualCards = deck.CreateCardsToPlay(AllCards, GridLayout.Cols * GridLayout.Rows);
             DrawCards(ActualCards);
 
             // prefs.edit().putBoolean("gameInProgress", true).apply();
@@ -142,19 +144,21 @@ namespace DefaultNamespace
         {
             // gridLayout.removeAllViews();
             ClearCardViews();
-            // gridLayout.setColumnCount(cardList.size() / 3);
-            // gridLayout.setOrientation(GridLayout.VERTICAL);
+            GridLayout.Cols = cardList.Count / 3;
 
             for (var i = 0; i < cardList.Count; i++)
             {
                 var setCard = cardList[i];
                 var cardView = Object.Instantiate(CardPrefab);
                 cardView.Card = setCard;
-                var x = (i % 4 - 1.5f) * (cardView.GetComponent<BoxCollider2D>().bounds.size.x + 0.5f);
-                var y = (i / 4 - 1) * (cardView.GetComponent<BoxCollider2D>().bounds.size.y + 0.5f);
-                cardView.transform.position = new Vector2(x, y);
                 cardViews.Add(cardView);
+                // var x = (i % 4 - 1.5f) * (cardView.GetComponent<BoxCollider2D>().bounds.size.x + 0.5f);
+                // var y = (i / 4 - 1) * (cardView.GetComponent<BoxCollider2D>().bounds.size.y + 0.5f);
+                // cardView.transform.position = new Vector2(x, y);
             }
+
+            GridLayout.GenerateGrid(cardViews);
+
         }
 
         private void ClearCardViews()

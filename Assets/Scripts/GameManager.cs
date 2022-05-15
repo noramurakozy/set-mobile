@@ -10,8 +10,10 @@ namespace DefaultNamespace
         public Game Game { get; set; }
 
         [SerializeField] private CardView cardPrefab;
+        [SerializeField] private GridManager gridManager;
         [SerializeField] private Button BtnHint;
         [SerializeField] private Button BtnRearrange;
+        [SerializeField] private Button BtnAddThree;
         [SerializeField] private TMP_Text txtCardsLeft;
 
         private void Awake()
@@ -29,11 +31,12 @@ namespace DefaultNamespace
 
         private void Start()
         {
-            Game = new Game(cardPrefab);
+            Game = new Game(cardPrefab, gridManager);
             Game.StartNewGame();
 
             BtnHint.onClick.AddListener(Game.SelectHint);
             BtnRearrange.onClick.AddListener(Game.RearrangeActualCards);
+            BtnAddThree.onClick.AddListener(Game.GetRandomThreeCards);
         }
         
         private void Update()
