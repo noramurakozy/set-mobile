@@ -5,7 +5,7 @@ namespace DefaultNamespace
 {
     public class Game
     {
-        private List<SetCard> AllCards { get; set; }
+        public List<SetCard> AllCards { get; set; }
         public List<SetCard> ActualCards { get; set; }
 
         private List<CardView> cardViews;

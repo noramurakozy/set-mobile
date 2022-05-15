@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using TMPro;
+using UnityEngine;
 using UnityEngine.UI;
 
 namespace DefaultNamespace
@@ -11,6 +12,7 @@ namespace DefaultNamespace
         [SerializeField] private CardView cardPrefab;
         [SerializeField] private Button BtnHint;
         [SerializeField] private Button BtnRearrange;
+        [SerializeField] private TMP_Text txtCardsLeft;
 
         private void Awake()
         {
@@ -32,6 +34,11 @@ namespace DefaultNamespace
 
             BtnHint.onClick.AddListener(Game.SelectHint);
             BtnRearrange.onClick.AddListener(Game.RearrangeActualCards);
+        }
+        
+        private void Update()
+        {
+            txtCardsLeft.text = "Cards left in deck: " + Game.AllCards.Count;
         }
     }
 }
