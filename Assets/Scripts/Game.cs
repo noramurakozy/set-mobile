@@ -201,5 +201,10 @@ namespace DefaultNamespace
 
             return null;
         }
+
+        public void RearrangeActualCards() {
+            Utils.Shuffle(ActualCards);
+            DrawCards(ActualCards);
+        }
     }
 }
