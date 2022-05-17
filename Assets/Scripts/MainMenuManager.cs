@@ -12,5 +12,7 @@ public class MainMenuManager : MonoBehaviour
     void Start()
     {
         btnPlay.onClick.AddListener(() => SceneManager.LoadScene("GameScene"));
+        btnTutorial.onClick.AddListener(() => SceneManager.LoadScene("TutorialScene"));
+        btnAchievements.onClick.AddListener(() => SceneManager.LoadScene("AchievementsScene"));
     }
 }
