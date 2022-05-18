@@ -67,7 +67,7 @@ public class CardView : MonoBehaviour
                 IsSelected = true;
                 overlay.enabled = true;
                 overlay.color = UnityEngine.Color.green;
-                StartCoroutine(DeselectCardAfter(1));
+                StartCoroutine(DeselectCardAfter(0.5f));
                 break;
             case SelectType.TUTORIAL_WRONG:
                 IsSelected = true;
@@ -77,7 +77,7 @@ public class CardView : MonoBehaviour
         }
     }
     
-    private IEnumerator DeselectCardAfter(int secs)
+    private IEnumerator DeselectCardAfter(float secs)
     {
         yield return new WaitForSeconds(secs);
         Select(SelectType.NONE);

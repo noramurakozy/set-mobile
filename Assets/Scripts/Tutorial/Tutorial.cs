@@ -183,12 +183,12 @@ namespace Tutorial
             }
         }
 
-        public void AddToSet(SetCard card)
+        private void AddToSet(SetCard card)
         {
             Set.AddToSet(card);
         }
-        
-        public void RemoveFromSet(SetCard card)
+
+        private void RemoveFromSet(SetCard card)
         {
             Set.RemoveFromSet(card);
         }
@@ -210,14 +210,14 @@ namespace Tutorial
                 AddToSet(newClickedCard.Card);
                 ClickedCardView = newClickedCard;
                 bool isSetSelected = CheckIfSelectionIsSet();
+                var transform = newClickedCard.transform;
 
                 if (isSetSelected)
                 {
                     newClickedCard.Select(SelectType.TUTORIAL_CORRECT);
                     // Move to the placeholder card's place
-                    var transform = newClickedCard.transform;
                     transform.parent = _centerGrid.transform;
-                    transform.DOMove(_placeholderCardInstance.transform.position, 1);
+                    transform.DOMove(_placeholderCardInstance.transform.position, 0.5f);
 
                     // Disable remaining option cards
                     DisableCards(_bottomGrid.GetComponentsInChildren<CardView>().ToList());
@@ -225,12 +225,14 @@ namespace Tutorial
                 else
                 {
                     newClickedCard.Select(SelectType.TUTORIAL_WRONG);
+                    // Complete animation in case clicking on the card before finishing the animation
+                    transform.DOComplete();
+                    transform.DOPunchRotation(new Vector3(0, 0, 2), 1);
                 }
             }
-            
         }
 
-        public void DeselectCard(CardView clickedCard)
+        private void DeselectCard(CardView clickedCard)
         {
             clickedCard.Select(SelectType.NONE);
             RemoveFromSet(clickedCard.Card);
