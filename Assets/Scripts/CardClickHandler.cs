@@ -23,7 +23,6 @@ public class CardClickHandler : MonoBehaviour, IPointerClickHandler
         }
 
         CurrentGame.RemoveSelectionsOnCards();
-        Debug.Log(clickedCard);
         
         if (clickedCard.IsSelected) {
             clickedCard.Select(SelectType.NONE);

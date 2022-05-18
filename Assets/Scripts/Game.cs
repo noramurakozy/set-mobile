@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace DefaultNamespace
@@ -23,11 +24,11 @@ namespace DefaultNamespace
         // private ImageView ivSets;
         // private ImageView cardBackPlaceholder;
         // private int[] rootCenter = new int[2];
-        
-        private CardView CardPrefab { get; set; }
-        private GridManager GridLayout { get; set; }
 
-        public Game(CardView cardPrefab, GridManager gridLayout)
+        private CardView CardPrefab { get; set; }
+        private GridManager CenterGrid { get; set; }
+
+        public Game(CardView cardPrefab, GridManager centerGrid)
         {
             AllCards = new List<SetCard>();
             ActualCards = new List<SetCard>();
@@ -35,7 +36,7 @@ namespace DefaultNamespace
             Set = new Set();
             Clicked = new List<CardView>();
             CardPrefab = cardPrefab;
-            GridLayout = gridLayout;
+            CenterGrid = centerGrid;
 
             // TODO: add card back
             // this.cardBackPlaceholder = cardBackPlaceholder;
@@ -43,13 +44,12 @@ namespace DefaultNamespace
             // prefs = PreferenceManager.getDefaultSharedPreferences(context);
         }
 
-        public void StartNewGame()
+        public virtual void StartNewGame()
         {
             // score = 0;
             Deck deck = new Deck();
             AllCards = deck.CreateDeck();
-            // TODO: later, instead of 12, gridLayoutColumns*gridLayoutRows
-            ActualCards = deck.CreateCardsToPlay(AllCards, GridLayout.Cols * GridLayout.Rows);
+            ActualCards = deck.CreateCardsToPlay(AllCards, CenterGrid.Cols * CenterGrid.Rows);
             DrawCards(ActualCards);
 
             // prefs.edit().putBoolean("gameInProgress", true).apply();
@@ -105,17 +105,7 @@ namespace DefaultNamespace
                     InsertCardToIndex(i);
                     ret = true;
                 }
-                Debug.Log("SET found!");
-                Debug.Log("Remaining cards: " + AllCards.Count);
                 // increaseScore(100);
-            }
-            else
-            {
-                Debug.Log("Not a SET!");
-                bool isThereASet = FindSet() != null;
-                Debug.Log("Is there a SET on the table: " + isThereASet);
-                // decreaseScore(50);
-                ret = false;
             }
 
             three.Clear();
@@ -124,7 +114,7 @@ namespace DefaultNamespace
 
         public void SelectHint()
         {
-            List<CardView> set = FindSet();
+            List<CardView> set = FindSetInViews();
             if (set == null)
             {
                 GetRandomThreeCards();
@@ -140,11 +130,10 @@ namespace DefaultNamespace
             }
         }
 
-        public void DrawCards(List<SetCard> cardList)
+        public virtual void DrawCards(List<SetCard> cardList)
         {
-            // gridLayout.removeAllViews();
             ClearCardViews();
-            GridLayout.Cols = cardList.Count / 3;
+            CenterGrid.Cols = cardList.Count / 3;
 
             for (var i = 0; i < cardList.Count; i++)
             {
@@ -152,13 +141,9 @@ namespace DefaultNamespace
                 var cardView = Object.Instantiate(CardPrefab);
                 cardView.Card = setCard;
                 cardViews.Add(cardView);
-                // var x = (i % 4 - 1.5f) * (cardView.GetComponent<BoxCollider2D>().bounds.size.x + 0.5f);
-                // var y = (i / 4 - 1) * (cardView.GetComponent<BoxCollider2D>().bounds.size.y + 0.5f);
-                // cardView.transform.position = new Vector2(x, y);
             }
 
-            GridLayout.GenerateGrid(cardViews);
-
+            CenterGrid.GenerateGrid(new List<GameObject>(cardViews.Select(c => c.gameObject)), "center");
         }
 
         private void ClearCardViews()
@@ -180,8 +165,8 @@ namespace DefaultNamespace
                 }
             }
         }
-        
-        public List<CardView> FindSet() {
+
+        private List<CardView> FindSetInViews() {
             Set hintSet = new Set();
             for (int i = 0; i < cardViews.Count; i++) {
                 for (int j = i + 1; j < cardViews.Count; j++) {

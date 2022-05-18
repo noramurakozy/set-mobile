@@ -47,7 +47,7 @@ TextureImporter:
   spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 120
+  spritePixelsToUnits: 90
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -1906,8 +1906,8 @@ TextureImporter:
       cards_1_19: -2004566647
       cards_1_24: 531267656
       cards_1_10: 1494109441
-      cards_1_23: -382226473
       cards_1_64: -653179818
+      cards_1_23: -382226473
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0

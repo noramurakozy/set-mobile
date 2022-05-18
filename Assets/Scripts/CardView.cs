@@ -22,28 +22,24 @@ public class CardView : MonoBehaviour
     public bool IsSelected { get; set; }
     
     private Sprite sprite;
-    private SpriteRenderer spriteRenderer;
-
-    [SerializeField]
-    private SpriteAtlas spriteAtlas;
+    public SpriteRenderer SpriteRenderer { get; set; }
     
+    [field: SerializeField] public SpriteAtlas SpriteAtlas { get; set; }
     [SerializeField] private SpriteRenderer glow;
     [SerializeField] private SpriteRenderer overlay;
     
-    public CardView(SetCard card){
-        Card = card;
-    }
+
 
     private void Awake()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
+        SpriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        sprite = spriteAtlas.GetSprite($"cards_1_{CardSpriteIndex}");
-        spriteRenderer.sprite = sprite;
+        sprite = SpriteAtlas.GetSprite($"cards_1_{CardSpriteIndex}");
+        SpriteRenderer.sprite = sprite;
     }
 
     // Update is called once per frame
@@ -67,7 +63,24 @@ public class CardView : MonoBehaviour
                 glow.enabled = false;
                 overlay.enabled = false;
                 break;
+            case SelectType.TUTORIAL_CORRECT:
+                IsSelected = true;
+                overlay.enabled = true;
+                overlay.color = UnityEngine.Color.green;
+                StartCoroutine(DeselectCardAfter(1));
+                break;
+            case SelectType.TUTORIAL_WRONG:
+                IsSelected = true;
+                overlay.enabled = true;
+                overlay.color = UnityEngine.Color.red;
+                break;
         }
+    }
+    
+    private IEnumerator DeselectCardAfter(int secs)
+    {
+        yield return new WaitForSeconds(secs);
+        Select(SelectType.NONE);
     }
     
     public override string ToString()

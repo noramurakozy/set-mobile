@@ -125,11 +125,15 @@ SpriteAtlas:
     - {fileID: -1552179392, guid: 9bfc90dc93af74f49bd769606519ecd4, type: 3}
     - {fileID: 1041922391, guid: 9bfc90dc93af74f49bd769606519ecd4, type: 3}
     - {fileID: -289525810, guid: 9bfc90dc93af74f49bd769606519ecd4, type: 3}
+    - {fileID: 1230620900, guid: 8270ff4af22d01d429d4f102be4f1ca0, type: 3}
+    - {fileID: -1458996322, guid: 8270ff4af22d01d429d4f102be4f1ca0, type: 3}
     bindAsDefault: 1
     isAtlasV2: 0
     cachedData: {fileID: 0}
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
+  - {fileID: 1230620900, guid: 8270ff4af22d01d429d4f102be4f1ca0, type: 3}
+  - {fileID: -1458996322, guid: 8270ff4af22d01d429d4f102be4f1ca0, type: 3}
   - {fileID: -1088584620, guid: 9bfc90dc93af74f49bd769606519ecd4, type: 3}
   - {fileID: 166101019, guid: 9bfc90dc93af74f49bd769606519ecd4, type: 3}
   - {fileID: -244949573, guid: 9bfc90dc93af74f49bd769606519ecd4, type: 3}
@@ -212,6 +216,8 @@ SpriteAtlas:
   - {fileID: 1107589472, guid: 9bfc90dc93af74f49bd769606519ecd4, type: 3}
   - {fileID: -289525810, guid: 9bfc90dc93af74f49bd769606519ecd4, type: 3}
   m_PackedSpriteNamesToIndex:
+  - cards_misc_0
+  - cards_misc_1
   - cards_1_14
   - cards_1_15
   - cards_1_16
