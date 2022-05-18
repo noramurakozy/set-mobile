@@ -1,4 +1,6 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 namespace DefaultNamespace.Tutorial
 {
@@ -11,6 +13,8 @@ namespace DefaultNamespace.Tutorial
         [SerializeField] private SpriteRenderer placeholderCard;
         [SerializeField] private GridManager centerGrid;
         [SerializeField] private GridManager bottomGrid;
+        [SerializeField] private Button btnPlay;
+        [SerializeField] private Button btnGetNewTutorial;
         
         private void Awake()
         {
@@ -30,9 +34,8 @@ namespace DefaultNamespace.Tutorial
             Tutorial = new global::Tutorial.Tutorial(cardPrefab, placeholderCard, centerGrid, bottomGrid);
             Tutorial.StartNewTutorial();
 
-            // btnHint.onClick.AddListener(Game.SelectHint);
-            // btnRearrange.onClick.AddListener(Game.RearrangeActualCards);
-            // btnAddThree.onClick.AddListener(Game.GetRandomThreeCards);
+            btnGetNewTutorial.onClick.AddListener(Tutorial.StartNewTutorial);
+            btnPlay.onClick.AddListener(() => SceneManager.LoadScene("GameScene"));
         }
     }
 }
