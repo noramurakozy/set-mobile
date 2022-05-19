@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using UnityEngine;
 
@@ -30,6 +31,8 @@ namespace DefaultNamespace
         
         public int SetsFoundCount { get; set; }
 
+        private Stopwatch _stopwatch;
+
         public Game(CardView cardPrefab, GridManager centerGrid)
         {
             AllCards = new List<SetCard>();
@@ -39,6 +42,7 @@ namespace DefaultNamespace
             Clicked = new List<CardView>();
             CardPrefab = cardPrefab;
             CenterGrid = centerGrid;
+            _stopwatch = new Stopwatch();
 
             // TODO: add card back
             // this.cardBackPlaceholder = cardBackPlaceholder;
@@ -53,8 +57,19 @@ namespace DefaultNamespace
             AllCards = deck.CreateDeck();
             ActualCards = deck.CreateCardsToPlay(AllCards, CenterGrid.Cols * CenterGrid.Rows);
             DrawCards(ActualCards);
+            _stopwatch.Start();
 
             // prefs.edit().putBoolean("gameInProgress", true).apply();
+        }
+
+        public string GetStopwatchString()
+        {
+            var elapsedTime = _stopwatch.Elapsed;
+            if (elapsedTime.Hours == 0)
+            {
+                return elapsedTime.ToString(@"mm\:ss");
+            }
+            return elapsedTime.ToString(@"hh\:mm\:ss");
         }
 
         public void AddToSet(SetCard card)
@@ -198,6 +213,11 @@ namespace DefaultNamespace
         public void RearrangeActualCards() {
             Utils.Shuffle(ActualCards);
             DrawCards(ActualCards);
+        }
+
+        public void StopStopwatch()
+        {
+            _stopwatch.Stop();
         }
     }
 }

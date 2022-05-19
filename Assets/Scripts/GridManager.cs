@@ -35,7 +35,8 @@ namespace DefaultNamespace
 
             if (position == "center")
             {
-                transform.position = new Vector2(-gridWidth / 2 + tileWidth/2, gridHeight / 2 - tileHeight/2);
+                // Move it a bit lower than the exact center
+                transform.position = new Vector2(-gridWidth / 2 + tileWidth/2, gridHeight / 2 - tileHeight/2 - 0.5f);
             }
             else if (position == "bottom")
             {

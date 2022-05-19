@@ -19,6 +19,7 @@ namespace DefaultNamespace
         [SerializeField] private Button btnSettings;
         [SerializeField] private TMP_Text txtCardsLeft;
         [SerializeField] private TMP_Text txtSetCount;
+        [SerializeField] private TMP_Text txtTimer;
 
         private void Awake()
         {
@@ -48,6 +49,12 @@ namespace DefaultNamespace
         {
             txtCardsLeft.text = Game.AllCards.Count.ToString();
             txtSetCount.text = Game.SetsFoundCount.ToString();
+            txtTimer.text = Game.GetStopwatchString();
+        }
+
+        private void OnDestroy()
+        {
+            Game.StopStopwatch();
         }
     }
 }
