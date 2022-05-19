@@ -578,7 +578,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Rows: 3
-  Cols: 4
+  Cols: 7
   Padding: 0.2
 --- !u!4 &829306439
 Transform:
