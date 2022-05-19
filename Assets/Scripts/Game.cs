@@ -27,6 +27,8 @@ namespace DefaultNamespace
 
         private CardView CardPrefab { get; set; }
         private GridManager CenterGrid { get; set; }
+        
+        public int SetsFoundCount { get; set; }
 
         public Game(CardView cardPrefab, GridManager centerGrid)
         {
@@ -105,6 +107,8 @@ namespace DefaultNamespace
                     InsertCardToIndex(i);
                     ret = true;
                 }
+
+                SetsFoundCount++;
                 // increaseScore(100);
             }
 

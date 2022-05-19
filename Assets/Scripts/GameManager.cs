@@ -1,5 +1,6 @@
 ﻿using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace DefaultNamespace
@@ -12,9 +13,12 @@ namespace DefaultNamespace
         [SerializeField] private CardView cardPrefab;
         [SerializeField] private GridManager gridManager;
         [SerializeField] private Button btnHint;
-        [SerializeField] private Button btnRearrange;
-        [SerializeField] private Button btnAddThree;
+        [SerializeField] private Button btnShuffle;
+        [SerializeField] private Button btnDeal;
+        [SerializeField] private Button btnHowTo;
+        [SerializeField] private Button btnSettings;
         [SerializeField] private TMP_Text txtCardsLeft;
+        [SerializeField] private TMP_Text txtSetCount;
 
         private void Awake()
         {
@@ -35,13 +39,15 @@ namespace DefaultNamespace
             Game.StartNewGame();
 
             btnHint.onClick.AddListener(Game.SelectHint);
-            btnRearrange.onClick.AddListener(Game.RearrangeActualCards);
-            btnAddThree.onClick.AddListener(Game.GetRandomThreeCards);
+            btnShuffle.onClick.AddListener(Game.RearrangeActualCards);
+            btnDeal.onClick.AddListener(Game.GetRandomThreeCards);
+            btnHowTo.onClick.AddListener(() => SceneManager.LoadScene("TutorialScene"));
         }
         
         private void Update()
         {
-            txtCardsLeft.text = "Cards left in deck: " + Game.AllCards.Count;
+            txtCardsLeft.text = Game.AllCards.Count.ToString();
+            txtSetCount.text = Game.SetsFoundCount.ToString();
         }
     }
 }
