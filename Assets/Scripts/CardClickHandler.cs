@@ -6,6 +6,7 @@ using UnityEngine.EventSystems;
 public class CardClickHandler : MonoBehaviour, IPointerClickHandler
 {
     private Game CurrentGame { get; set; }
+    [SerializeField] private Sprite cardBack;
 
     private void Start()
     {
@@ -36,10 +37,17 @@ public class CardClickHandler : MonoBehaviour, IPointerClickHandler
             CurrentGame.Clicked.Add(clickedCard);
         }
         if (CurrentGame.Set.GetSize() == 3) {
-            if (CurrentGame.IsSetClicked()) {
-                foreach(CardView c in CurrentGame.Clicked) {
+            if (CurrentGame.IsSetClicked())
+            {
+                var setCounterCards = FindObjectsOfType<AnimationTarget>();
+                for (var i = 0; i < CurrentGame.Clicked.Count; i++)
+                {
+                    CardView c = CurrentGame.Clicked[i];
                     c.Select(SelectType.NONE);
-                    c.transform.position = new Vector2(-100, -100);
+                    c.GetComponent<SpriteRenderer>().sprite = cardBack;
+                    // c.transform.DORotate(setCounterCards[i].transform.rotation.eulerAngles, 0.5f);
+                    // c.transform.DOMove(setCounterCards[i].transform.position, 1);
+                    // c.transform.position = new Vector2(-100, -100);
                     // TODO: move card to the corner and show back of the card
                     // c.getImage().setImageDrawable(context.getResources().getDrawable(R.drawable.card_back));
                     // translate(c.getImage(), ivSets, 1000);

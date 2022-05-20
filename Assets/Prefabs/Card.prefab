@@ -322,3 +322,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 702ae48635479f842bcc032640c8128e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  cardBack: {fileID: -1458996322, guid: 8270ff4af22d01d429d4f102be4f1ca0, type: 3}
