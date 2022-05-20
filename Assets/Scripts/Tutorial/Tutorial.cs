@@ -4,6 +4,7 @@ using System.Linq;
 using DefaultNamespace;
 using UnityEngine;
 using DG.Tweening;
+using Tutorial.Practice;
 using Color = UnityEngine.Color;
 
 namespace Tutorial

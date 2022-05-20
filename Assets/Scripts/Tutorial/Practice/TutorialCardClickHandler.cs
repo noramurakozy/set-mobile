@@ -1,9 +1,7 @@
-using DefaultNamespace;
-using DefaultNamespace.Tutorial;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-namespace Tutorial
+namespace Tutorial.Practice
 {
     public class TutorialCardClickHandler : MonoBehaviour, IPointerClickHandler
     {
@@ -12,13 +10,7 @@ namespace Tutorial
         // Start is called before the first frame update
         void Start()
         {
-            CurrentTutorial = TutorialManager.Instance.Tutorial;
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-        
+            CurrentTutorial = PracticeManager.Instance.Tutorial;
         }
 
         public void OnPointerClick(PointerEventData eventData)

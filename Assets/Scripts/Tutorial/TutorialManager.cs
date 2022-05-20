@@ -2,19 +2,13 @@
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
-namespace DefaultNamespace.Tutorial
+namespace Tutorial
 {
     public class TutorialManager : MonoBehaviour
     {
         public static TutorialManager Instance { get; private set; }
-        public global::Tutorial.Tutorial Tutorial { get; set; }
-        
-        [SerializeField] private CardView cardPrefab;
-        [SerializeField] private SpriteRenderer placeholderCard;
-        [SerializeField] private GridManager centerGrid;
-        [SerializeField] private GridManager bottomGrid;
-        [SerializeField] private Button btnPlay;
-        [SerializeField] private Button btnGetNewTutorial;
+
+        [SerializeField] private Button btnPractice;
         
         private void Awake()
         {
@@ -31,11 +25,10 @@ namespace DefaultNamespace.Tutorial
         
         private void Start()
         {
-            Tutorial = new global::Tutorial.Tutorial(cardPrefab, placeholderCard, centerGrid, bottomGrid);
-            Tutorial.StartNewTutorial();
-
-            btnGetNewTutorial.onClick.AddListener(Tutorial.StartNewTutorial);
-            btnPlay.onClick.AddListener(() => SceneManager.LoadScene("GameScene"));
+            btnPractice.onClick.AddListener(() =>
+            {
+                SceneManager.LoadScene("PracticeScene");
+            });
         }
     }
 }
