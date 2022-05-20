@@ -1,7 +1,5 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using DefaultNamespace;
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -22,7 +20,11 @@ public class CardClickHandler : MonoBehaviour, IPointerClickHandler
             return;
         }
 
-        CurrentGame.RemoveSelectionsOnCards();
+        if (CurrentGame.Set.GetSize() == 0)
+        {
+            CurrentGame.RemoveSelectionsOnCards();
+        }
+
         
         if (clickedCard.IsSelected) {
             clickedCard.Select(SelectType.NONE);
@@ -42,9 +44,18 @@ public class CardClickHandler : MonoBehaviour, IPointerClickHandler
                     // c.getImage().setImageDrawable(context.getResources().getDrawable(R.drawable.card_back));
                     // translate(c.getImage(), ivSets, 1000);
                 }
+                CurrentGame.DrawCards(CurrentGame.ActualCards);
             }
-            CurrentGame.Clicked.Clear();
-            CurrentGame.DrawCards(CurrentGame.ActualCards);
+            else
+            {
+                // Shake if the selected three cards do not form a SET
+                foreach (CardView c in CurrentGame.Clicked)
+                {
+                    // c.transform.DOComplete();
+                    c.transform.DOPunchRotation(new Vector3(0, 0, 2), 1);
+                }
+            }
+            CurrentGame.RemoveSelectionsOnCards();
         }
     }
 }

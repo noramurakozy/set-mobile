@@ -69,6 +69,7 @@ namespace DefaultNamespace
             {
                 return elapsedTime.ToString(@"mm\:ss");
             }
+
             return elapsedTime.ToString(@"hh\:mm\:ss");
         }
 
@@ -177,25 +178,30 @@ namespace DefaultNamespace
             }
         }
 
-        public void RemoveSelectionsOnCards() {
-            if (Set.GetSize() == 0) {
-                foreach(CardView cv in cardViews) {
-                    cv.Select(SelectType.NONE);
-                }
+        public void RemoveSelectionsOnCards()
+        {
+            foreach (CardView cv in cardViews)
+            {
+                cv.Select(SelectType.NONE);
             }
+            Clicked.Clear();
         }
 
-        private List<CardView> FindSetInViews() {
+        private List<CardView> FindSetInViews()
+        {
             Set hintSet = new Set();
-            for (int i = 0; i < cardViews.Count; i++) {
-                for (int j = i + 1; j < cardViews.Count; j++) {
-                    for (int k = j + 1; k < cardViews.Count; k++) {
-
+            for (int i = 0; i < cardViews.Count; i++)
+            {
+                for (int j = i + 1; j < cardViews.Count; j++)
+                {
+                    for (int k = j + 1; k < cardViews.Count; k++)
+                    {
                         hintSet.AddToSet(cardViews[i].Card);
                         hintSet.AddToSet(cardViews[j].Card);
                         hintSet.AddToSet(cardViews[k].Card);
 
-                        if (hintSet.IsSet()) {
+                        if (hintSet.IsSet())
+                        {
                             List<CardView> foundSet = new List<CardView>();
                             foundSet.Add(cardViews[i]);
                             foundSet.Add(cardViews[j]);
@@ -210,7 +216,8 @@ namespace DefaultNamespace
             return null;
         }
 
-        public void RearrangeActualCards() {
+        public void RearrangeActualCards()
+        {
             Utils.Shuffle(ActualCards);
             DrawCards(ActualCards);
         }
