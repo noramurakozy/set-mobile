@@ -20,6 +20,7 @@ namespace DefaultNamespace
         [SerializeField] private TMP_Text txtCardsLeft;
         [SerializeField] private TMP_Text txtSetCount;
         [SerializeField] private TMP_Text txtTimer;
+        [SerializeField] private GameObject pausedOverlayGroup;
 
         private void Awake()
         {
@@ -43,6 +44,7 @@ namespace DefaultNamespace
             btnShuffle.onClick.AddListener(Game.RearrangeActualCards);
             btnDeal.onClick.AddListener(Game.GetRandomThreeCards);
             btnHowTo.onClick.AddListener(() => SceneManager.LoadScene("TutorialScene"));
+            pausedOverlayGroup.GetComponentInChildren<Button>().onClick.AddListener(ResumeGame);
         }
         
         private void Update()
@@ -54,7 +56,29 @@ namespace DefaultNamespace
 
         private void OnDestroy()
         {
-            Game.StopStopwatch();
+            Game.EndGame();
+        }
+
+        public void PauseGame()
+        {
+            Game.PauseGame();
+            DisplayPauseOverlay();
+        }
+
+        private void ResumeGame()
+        {
+            RemoveDisplayOverlay();
+            Game.ResumeGame();
+        }
+
+        private void DisplayPauseOverlay()
+        {
+            pausedOverlayGroup.SetActive(true);
+        }
+
+        private void RemoveDisplayOverlay()
+        {
+            pausedOverlayGroup.SetActive(false);
         }
     }
 }

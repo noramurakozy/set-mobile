@@ -215,7 +215,18 @@ namespace DefaultNamespace
             DrawCards(ActualCards);
         }
 
-        public void StopStopwatch()
+        public void EndGame()
+        {
+            _stopwatch.Stop();
+            _stopwatch.Reset();
+        }
+
+        public void ResumeGame()
+        {
+            _stopwatch.Start();
+        }
+
+        public void PauseGame()
         {
             _stopwatch.Stop();
         }
