@@ -17,5 +17,10 @@
             Shape = s;
             Index = index;
         }
+        
+        public override string ToString()
+        {
+            return Fill + "," + Color + "," + Number + "," + Shape;
+        }
     }
 }

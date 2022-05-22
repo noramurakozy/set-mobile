@@ -257,7 +257,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cardPrefab: {fileID: 7952135454887785544, guid: 9c5ef0ebff22057499e0a5271dbde375, type: 3}
-  placeholderCard: {fileID: 9161305003479787105, guid: 460a21017f3421643b658029119513a7, type: 3}
+  placeholderCardPrefab: {fileID: 7365629738203018556, guid: 460a21017f3421643b658029119513a7, type: 3}
   centerGrid: {fileID: 986244108}
   bottomGrid: {fileID: 1966153267}
   btnNewTutorial: {fileID: 838297564}

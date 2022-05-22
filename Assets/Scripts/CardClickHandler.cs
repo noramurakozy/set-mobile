@@ -1,12 +1,15 @@
+using System.Collections.Generic;
+using System.Linq;
 using DefaultNamespace;
 using DG.Tweening;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using UnityEngine.Rendering;
 
 public class CardClickHandler : MonoBehaviour, IPointerClickHandler
 {
     private Game CurrentGame { get; set; }
-    [SerializeField] private Sprite cardBack;
+    // [SerializeField] private Sprite cardBack;
 
     private void Start()
     {
@@ -21,47 +24,55 @@ public class CardClickHandler : MonoBehaviour, IPointerClickHandler
             return;
         }
 
-        if (CurrentGame.Set.GetSize() == 0)
+        if (CurrentGame.ThreeClicked())
         {
             CurrentGame.RemoveSelectionsOnCards();
         }
 
-        
+        // if (CurrentGame.Set.GetSize() == 0)
+        // {
+        //     CurrentGame.RemoveSelectionsOnCards();
+        // }
+
         if (clickedCard.IsSelected) {
             clickedCard.Select(SelectType.NONE);
             CurrentGame.Set.RemoveFromSet(clickedCard.Card);
-            CurrentGame.Clicked.Remove(clickedCard);
+            CurrentGame.ClickedCards.Remove(clickedCard);
         } else {
             clickedCard.Select(SelectType.CLICK);
             CurrentGame.AddToSet(clickedCard.Card);
-            CurrentGame.Clicked.Add(clickedCard);
+            CurrentGame.ClickedCards.Add(clickedCard);
         }
-        if (CurrentGame.Set.GetSize() == 3) {
+
+        Debug.Log("---------------------");
+        foreach (var card in CurrentGame.ClickedCards)
+        {
+            Debug.Log(card);
+        }
+        Debug.Log("---------------------");
+        
+        if (CurrentGame.Set.GetSize() == 3) 
+        {
             if (CurrentGame.IsSetClicked())
             {
-                var setCounterCards = FindObjectsOfType<AnimationTarget>();
-                for (var i = 0; i < CurrentGame.Clicked.Count; i++)
+                CurrentGame.SetsFoundCount++;
+                var emptyCardSlots = CurrentGame.GetIndexOfCards(CurrentGame.ClickedCards);
+                CurrentGame.MoveSetToTargetAndDestroy();
+                CurrentGame.RemoveCardsFromTable(CurrentGame.ClickedCards);
+                
+                if (CurrentGame.AreNewCardsNeeded())
                 {
-                    CardView c = CurrentGame.Clicked[i];
-                    c.Select(SelectType.NONE);
-                    c.GetComponent<SpriteRenderer>().sprite = cardBack;
-                    // c.transform.DORotate(setCounterCards[i].transform.rotation.eulerAngles, 0.5f);
-                    // c.transform.DOMove(setCounterCards[i].transform.position, 1);
-                    // c.transform.position = new Vector2(-100, -100);
-                    // TODO: move card to the corner and show back of the card
-                    // c.getImage().setImageDrawable(context.getResources().getDrawable(R.drawable.card_back));
-                    // translate(c.getImage(), ivSets, 1000);
+                    CurrentGame.DealNewCardsAt(emptyCardSlots);
                 }
-                CurrentGame.DrawCards(CurrentGame.ActualCards);
+                else
+                {
+                    CurrentGame.RemoveCardsFromTable(CurrentGame.ClickedCards);
+                    CurrentGame.RearrangeRemainingCards();
+                }
             }
             else
             {
-                // Shake if the selected three cards do not form a SET
-                foreach (CardView c in CurrentGame.Clicked)
-                {
-                    // c.transform.DOComplete();
-                    c.transform.DOPunchRotation(new Vector3(0, 0, 2), 1);
-                }
+                CurrentGame.InvalidSetSelected();
             }
             CurrentGame.RemoveSelectionsOnCards();
         }

@@ -21,14 +21,12 @@ public class CardView : MonoBehaviour
     private int CardSpriteIndex { get; set; }
     public bool IsSelected { get; set; }
     
-    private Sprite sprite;
-    public SpriteRenderer SpriteRenderer { get; set; }
+    private Sprite _sprite;
+    private SpriteRenderer SpriteRenderer { get; set; }
     
-    [field: SerializeField] public SpriteAtlas SpriteAtlas { get; set; }
+    [field: SerializeField] private SpriteAtlas SpriteAtlas { get; set; }
     [SerializeField] private SpriteRenderer glow;
     [SerializeField] private SpriteRenderer overlay;
-    
-
 
     private void Awake()
     {
@@ -38,25 +36,21 @@ public class CardView : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        sprite = SpriteAtlas.GetSprite($"cards_1_{CardSpriteIndex}");
-        SpriteRenderer.sprite = sprite;
+        _sprite = SpriteAtlas.GetSprite($"cards_1_{CardSpriteIndex}");
+        SpriteRenderer.sprite = _sprite;
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-    
     public void Select(SelectType selectType) {
 
         switch (selectType){
             case SelectType.CLICK:
                 IsSelected = true;
                 glow.enabled = true;
+                overlay.enabled = false;
                 break;
             case SelectType.HINT:
                 overlay.enabled = true;
+                glow.enabled = false;
                 break;
             case SelectType.NONE:
                 IsSelected = false;
@@ -81,6 +75,16 @@ public class CardView : MonoBehaviour
     {
         yield return new WaitForSeconds(secs);
         Select(SelectType.NONE);
+    }
+
+    public float GetWidth()
+    {
+        return GetComponent<BoxCollider2D>().bounds.size.x;
+    }
+    
+    public float GetHeight()
+    {
+        return GetComponent<BoxCollider2D>().bounds.size.y;
     }
     
     public override string ToString()

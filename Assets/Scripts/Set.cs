@@ -84,5 +84,10 @@ namespace DefaultNamespace
         {
             return set.Count;
         }
+
+        public void ClearSet()
+        {
+            set.Clear();
+        }
     }
 }

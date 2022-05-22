@@ -10,7 +10,7 @@ namespace Tutorial.Practice
         public static PracticeManager Instance { get; private set; }
         
         [SerializeField] private CardView cardPrefab;
-        [SerializeField] private SpriteRenderer placeholderCard;
+        [SerializeField] private CardView placeholderCardPrefab;
         [SerializeField] private GridManager centerGrid;
         [SerializeField] private GridManager bottomGrid;
         [SerializeField] private Button btnNewTutorial;
@@ -33,7 +33,7 @@ namespace Tutorial.Practice
 
         private void Start()
         {
-            Tutorial = new Tutorial(cardPrefab, placeholderCard, centerGrid, bottomGrid);
+            Tutorial = new Tutorial(cardPrefab, placeholderCardPrefab, centerGrid, bottomGrid);
             Tutorial.StartNewTutorial();
             
             btnNewTutorial.onClick.AddListener(Tutorial.StartNewTutorial);
