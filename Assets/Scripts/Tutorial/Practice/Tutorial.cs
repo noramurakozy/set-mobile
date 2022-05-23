@@ -11,22 +11,24 @@ namespace Tutorial.Practice
     {
         private Deck _deck;
         private CardView ClickedCardView { get; set; }
-        private Set Set { get; }
+        private Set Set { get; set; }
         private CardView _cardPrefab;
         private List<CardView> _cardOptions;
         private List<CardView> _cardsToComplete;
-        private CardView _placeholderCardPrefab;
-        private CardView _placeholderCardInstance;
-        private GridManager _centerGrid;
-        private GridManager _bottomGrid;
+        
+        private SpriteRenderer _placeholderCardPrefab;
+        private SpriteRenderer _placeholderCardInstance;
+        
+        private TutorialGridManager _centerLeftGrid;
+        private TutorialGridManager _centerVerticalGrid;
 
-        public Tutorial(CardView cardPrefab, CardView placeholderCardPrefab, GridManager centerGrid,
-            GridManager bottomGrid)
+        public Tutorial(CardView cardPrefab, SpriteRenderer placeholderCardPrefab, TutorialGridManager centerLeftGrid,
+            TutorialGridManager centerVerticalGrid)
         {
             Set = new Set();
             _cardPrefab = cardPrefab;
-            _centerGrid = centerGrid;
-            _bottomGrid = bottomGrid;
+            _centerLeftGrid = centerLeftGrid;
+            _centerVerticalGrid = centerVerticalGrid;
             _placeholderCardPrefab = placeholderCardPrefab;
         }
 
@@ -34,28 +36,19 @@ namespace Tutorial.Practice
         {
             DestroyCardViews();
             _deck = new Deck();
+            Set = new Set();
             CreateCardsForTutorial(out _cardOptions, out _cardsToComplete);
-            DrawCardsInGrid(_cardsToComplete, "center");
-            DrawCardsInGrid(_cardOptions, "bottom");
+            DrawCardsInGrid(_cardsToComplete, "center-left");
+            DrawCardsInGrid(_cardOptions, "center");
         }
-
-        // private List<CardView> SetCardsToCardViews(List<SetCard> cardList, bool interactable)
-        // {
-        //     var newCardViews = GameUtils.InstantiateCardViews(cardList, _cardPrefab);
-        //     foreach (var cardView in newCardViews)
-        //     {
-        //         cardView.GetComponent<TutorialCardClickHandler>().enabled = interactable;
-        //     }
-        //     return newCardViews;
-        // }
 
         private void DrawCardsInGrid(List<CardView> cardList, string position)
         {
-            if (position == "bottom")
+            if (position == "center")
             {
-                _bottomGrid.GenerateGrid(cardList, position);
+                _centerVerticalGrid.GenerateGrid(cardList.Select(card => card.gameObject).ToList(), position);
             }
-            else
+            else if(position == "center-left")
             {
                 foreach (var cardView in cardList)
                 {
@@ -63,9 +56,9 @@ namespace Tutorial.Practice
                 }
 
                 _placeholderCardInstance = Object.Instantiate(_placeholderCardPrefab);
-                _centerGrid.GenerateGrid(
-                    new List<CardView>(cardList)
-                        { _placeholderCardInstance }, position);
+                _centerLeftGrid.GenerateGrid(
+                    new List<GameObject>(cardList.Select(card => card.gameObject))
+                        { _placeholderCardInstance.gameObject }, position);
             }
         }
 
@@ -111,35 +104,6 @@ namespace Tutorial.Practice
             }
         }
 
-        // private List<SetCard> FindSetInCards(List<SetCard> cards)
-        // {
-        //     Set hintSet = new Set();
-        //     for (int i = 0; i < cards.Count; i++)
-        //     {
-        //         for (int j = i + 1; j < cards.Count; j++)
-        //         {
-        //             for (int k = j + 1; k < cards.Count; k++)
-        //             {
-        //                 hintSet.AddToSet(cards[i]);
-        //                 hintSet.AddToSet(cards[j]);
-        //                 hintSet.AddToSet(cards[k]);
-        //
-        //                 if (hintSet.IsSet())
-        //                 {
-        //                     List<SetCard> foundSet = new List<SetCard>();
-        //                     foundSet.Add(cards[i]);
-        //                     foundSet.Add(cards[j]);
-        //                     foundSet.Add(cards[k]);
-        //
-        //                     return foundSet;
-        //                 }
-        //             }
-        //         }
-        //     }
-        //
-        //     return null;
-        // }
-
         // Return with 2 cards that do not form a SET with this card from a list of cards
         private List<SetCard> GetIncorrectCardsForSetFromDeck(CardView card)
         {
@@ -174,7 +138,18 @@ namespace Tutorial.Practice
             var objects = Object.FindObjectsOfType<CardView>();
             foreach (var cardView in objects)
             {
-                Object.Destroy(cardView.gameObject);
+                cardView.transform.DOMove(new Vector3(0, 50, 0), 1).onComplete += 
+                    () => Object.Destroy(cardView.gameObject);
+            }
+
+            if (_placeholderCardInstance != null)
+            {
+                var placeholderCard = _placeholderCardInstance;
+                _placeholderCardInstance.transform.DOMove(new Vector3(0, 50, 0), 1).onComplete += 
+                    () =>
+                    {
+                        Object.Destroy(placeholderCard.gameObject);
+                    };
             }
         }
 
@@ -211,11 +186,13 @@ namespace Tutorial.Practice
                 {
                     newClickedCard.Select(SelectType.TUTORIAL_CORRECT);
                     // Move to the placeholder card's place
-                    transform.parent = _centerGrid.transform;
+                    transform.parent = _centerLeftGrid.transform;
                     transform.DOMove(_placeholderCardInstance.transform.position, 0.5f);
+                    transform.DOScale(_placeholderCardInstance.transform.localScale, 0.5f);
 
                     // Disable remaining option cards
-                    DisableCards(_bottomGrid.GetComponentsInChildren<CardView>().ToList());
+                    DisableCards(_centerVerticalGrid.GetComponentsInChildren<CardView>().ToList());
+                    newClickedCard.GetComponent<TutorialCardClickHandler>().enabled = false;
                 }
                 else
                 {

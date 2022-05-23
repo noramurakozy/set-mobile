@@ -53,7 +53,7 @@ public class Game
     {
         // score = 0;
         Deck = new Deck();
-        var starterSetCards = Deck.CreateCardsToPlay(CenterGrid.Cols * CenterGrid.Rows);
+        var starterSetCards = Deck.CreateCardsToPlay(CenterGrid.cols * CenterGrid.rows);
         CardsOnTable = GameUtils.InstantiateCardViews(starterSetCards, CardPrefab);
         AnimateCardsIntoGridFromDeck(CardsOnTable);
         // DrawCards(CardsOnTable);
@@ -64,7 +64,7 @@ public class Game
 
     private void AnimateCardsIntoGridFromDeck(List<CardView> cardsToAnimate)
     {
-        CenterGrid.Cols = cardsToAnimate.Count / 3;
+        CenterGrid.cols = cardsToAnimate.Count / 3;
         CenterGrid.GenerateGrid(cardsToAnimate, "center");
     }
 
@@ -116,7 +116,7 @@ public class Game
                 Deck.RemoveAt(0);
                 newCards.Add(cardView);
             }
-            InsertCardViewsInGridColumn(newCards, CenterGrid.Cols);
+            InsertCardViewsInGridColumn(newCards, CenterGrid.cols);
         }
     }
 

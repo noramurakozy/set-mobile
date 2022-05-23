@@ -7,9 +7,9 @@ using UnityEngine;
 
 public class GridManager : MonoBehaviour
 {
-    public int Rows = 3;
-    public int Cols = 4;
-    public float Padding = 0;
+    public int rows = 3;
+    public int cols = 4;
+    public float padding = 0.2f;
 
     private DeckUI _deckUI;
 
@@ -26,30 +26,23 @@ public class GridManager : MonoBehaviour
     {
         _gridData = new List<List<CardView>>();
         
-        _tileWidth = cardViews[0].GetWidth() + Padding;
-        _tileHeight = cardViews[0].GetHeight() + Padding;
+        _tileWidth = cardViews[0].GetWidth() + padding;
+        _tileHeight = cardViews[0].GetHeight() + padding;
         transform.position = Vector2.zero;
 
 
-        for (int row = 0; row < Rows; row++)
+        for (int row = 0; row < rows; row++)
         {
             _gridData.Add(new List<CardView>());
-            for (int col = 0; col < Cols; col++)
+            for (int col = 0; col < cols; col++)
             {
-                CardView card = cardViews[row * Cols + col];
+                CardView card = cardViews[row * cols + col];
                 _gridData[row].Add(card);
                 var cardTransform = card.transform;
                 cardTransform.parent = transform;
                 float posX = col * _tileWidth;
                 float posY = row * -_tileHeight;
-                if (_deckUI == null)
-                {
-                    cardTransform.position = new Vector3(0, 50, 0);
-                }
-                else
-                {
-                    cardTransform.position = _deckUI.transform.position;
-                }
+                cardTransform.position = _deckUI.transform.position;
                 card.transform.DOLocalMove(new Vector2(posX, posY), 1f);
             }
         }
@@ -58,8 +51,8 @@ public class GridManager : MonoBehaviour
 
     public void Insert(CardView newCardView, int i)
     {
-        int row = i / Cols;
-        int col = i % Cols;
+        int row = i / cols;
+        int col = i % cols;
         
         Debug.Log("Where to insert: " + row + " " + col + " index: " + i);
         Debug.Log("What was here: " + _gridData[row][col]);
@@ -79,11 +72,11 @@ public class GridManager : MonoBehaviour
     public void InsertInColumn(List<CardView> cardViews, int colIndex)
     {
         // Add 1 more column
-        Cols++;
+        cols++;
         for (int i = 0; i < cardViews.Count; i++)
         {
             _gridData[i].Insert(colIndex, cardViews[i]);
-            Insert(cardViews[i], i*Cols+colIndex);
+            Insert(cardViews[i], i*cols+colIndex);
         }
         
         CenterGridHorizontally();
@@ -95,7 +88,7 @@ public class GridManager : MonoBehaviour
         {
             for (int j = 0; j < _gridData[i].Count; j++)
             {
-                _gridData[i][j] = cardsOnTable[i * Cols + j];
+                _gridData[i][j] = cardsOnTable[i * cols + j];
             }
         }
 
@@ -124,10 +117,10 @@ public class GridManager : MonoBehaviour
     private List<List<Vector2>> GetTargetPositions()
     {
         List<List<Vector2>> targetPositions = new();
-        for (int row = 0; row < Rows; row++)
+        for (int row = 0; row < rows; row++)
         {
             targetPositions.Add(new List<Vector2>());
-            for (int col = 0; col < Cols; col++)
+            for (int col = 0; col < cols; col++)
             {
                 float posX = col * _tileWidth;
                 float posY = row * -_tileHeight;
@@ -140,21 +133,21 @@ public class GridManager : MonoBehaviour
 
     private void CenterGrid()
     {
-        float gridWidth = Cols * _tileWidth;
-        float gridHeight = Rows * _tileHeight;
+        float gridWidth = cols * _tileWidth;
+        float gridHeight = rows * _tileHeight;
         transform.position = new Vector2(-gridWidth / 2 + _tileWidth/2, gridHeight / 2 - _tileHeight/2);
     }
 
     private void CenterGridHorizontally()
     {
-        float gridWidth = Cols * _tileWidth;
+        float gridWidth = cols * _tileWidth;
         var gridTransform = transform;
         gridTransform.position = new Vector2(-gridWidth / 2 + _tileWidth/2, gridTransform.position.y);
     }
     
     private void BottomCenterGrid()
     {
-        float gridWidth = Cols * _tileWidth;
+        float gridWidth = cols * _tileWidth;
         transform.position = new Vector2(-gridWidth / 2 + _tileWidth/2, - _tileHeight);
     }
     
@@ -193,7 +186,7 @@ public class GridManager : MonoBehaviour
             }
         }
 
-        Cols = cardsOnTable.Count / 3;
+        cols = cardsOnTable.Count / 3;
         var rearrangedData = ArrangeGridData();
         ArrangeCards();
         return rearrangedData;
@@ -205,12 +198,12 @@ public class GridManager : MonoBehaviour
 
         var flattenedData = _gridData.SelectMany(cardList => cardList).ToList();
 
-        for (int i = 0; i < Rows; i++)
+        for (int i = 0; i < rows; i++)
         {
             arrangedData.Add(new List<CardView>());
-            for (int j = 0; j < Cols; j++)
+            for (int j = 0; j < cols; j++)
             {
-                var data = flattenedData[i * Cols + j];
+                var data = flattenedData[i * cols + j];
                 arrangedData[i].Add(data);
             }
         }
