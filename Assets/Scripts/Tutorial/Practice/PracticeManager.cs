@@ -1,7 +1,9 @@
 ﻿using DefaultNamespace;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using Color = UnityEngine.Color;
 
 namespace Tutorial.Practice
 {
@@ -15,6 +17,8 @@ namespace Tutorial.Practice
         [SerializeField] private TutorialGridManager centerVerticalGrid;
         [SerializeField] private Button btnNewTutorial;
         [SerializeField] private Button btnPlay;
+        [SerializeField] private TMP_Text txtExplanationTitle;
+        [SerializeField] private TMP_Text txtExplanationBody;
         
         public Tutorial Tutorial { get; set; }
         
@@ -35,9 +39,40 @@ namespace Tutorial.Practice
         {
             Tutorial = new Tutorial(cardPrefab, placeholderCardPrefab, centerLeftGrid, centerVerticalGrid);
             Tutorial.StartNewTutorial();
+            ResetExplanationText();
             
-            btnNewTutorial.onClick.AddListener(Tutorial.StartNewTutorial);
+            btnNewTutorial.onClick.AddListener(() =>
+            {
+                ResetExplanationText();
+                Tutorial.StartNewTutorial();
+            });
             btnPlay.onClick.AddListener(() => SceneManager.LoadScene("GameScene"));
+        }
+
+        private void ResetExplanationText()
+        {
+            txtExplanationTitle.enabled = false;
+            txtExplanationBody.text = "Guess which card completes the SET!";
+        }
+
+        public void DisplaySuccessText(Set set)
+        {
+            txtExplanationTitle.enabled = true;
+            txtExplanationTitle.text = "Correct!";
+            txtExplanationTitle.text = txtExplanationTitle.text.ToUpper();
+            txtExplanationTitle.color = Color.green;
+            
+            txtExplanationBody.text = set.GetReason();
+        }
+
+        public void DisplayErrorText(Set set)
+        {
+            txtExplanationTitle.enabled = true;
+            txtExplanationTitle.text = "Oops! Try again...";
+            txtExplanationTitle.text = txtExplanationTitle.text.ToUpper();
+            txtExplanationTitle.color = Color.red;
+            
+            txtExplanationBody.text = set.GetReason();
         }
     }
 }

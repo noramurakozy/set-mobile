@@ -163,7 +163,7 @@ namespace Tutorial.Practice
             Set.RemoveFromSet(card);
         }
 
-        public void HandleOptionCardClick(CardView newClickedCard)
+        public Set HandleOptionCardClick(CardView newClickedCard)
         {
             // If another card is already selected, deselect it
             if (ClickedCardView != null)
@@ -193,6 +193,7 @@ namespace Tutorial.Practice
                     // Disable remaining option cards
                     DisableCards(_centerVerticalGrid.GetComponentsInChildren<CardView>().ToList());
                     newClickedCard.GetComponent<TutorialCardClickHandler>().enabled = false;
+                    return Set;
                 }
                 else
                 {
@@ -200,8 +201,11 @@ namespace Tutorial.Practice
                     // Complete animation in case clicking on the card before finishing the animation
                     transform.DOComplete();
                     transform.DOPunchRotation(new Vector3(0, 0, 2), 1);
+                    return Set;
                 }
             }
+
+            return null;
         }
 
         private void DeselectCard(CardView clickedCard)

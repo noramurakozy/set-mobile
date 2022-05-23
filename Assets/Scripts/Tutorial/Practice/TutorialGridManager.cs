@@ -39,8 +39,8 @@ namespace Tutorial.Practice
         {
             PlaceElementsInGrid(cardViews, tileWidth, tileHeight);
             PositionGrid("center", tileWidth, tileHeight);
-            // Move it a bit to the right
-            transform.Translate(new Vector3(1.8f, 0, 0));
+            // Move it a bit to the right and up
+            transform.Translate(new Vector3(1.8f, 0.5f, 0));
         }
 
         private void GenerateCenterLeftGrid(List<GameObject> cardViews, float tileWidth, float tileHeight)

@@ -21,7 +21,18 @@ namespace Tutorial.Practice
                 return;
             }
             
-            CurrentTutorial.HandleOptionCardClick(clickedCard);
+            var set = CurrentTutorial.HandleOptionCardClick(clickedCard);
+            if (set != null)
+            {
+                if (set.IsSet())
+                {
+                    PracticeManager.Instance.DisplaySuccessText(set);
+                }
+                else
+                {
+                    PracticeManager.Instance.DisplayErrorText(set);
+                }
+            }
         }
     }
 }
