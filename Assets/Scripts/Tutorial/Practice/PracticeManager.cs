@@ -58,7 +58,7 @@ namespace Tutorial.Practice
         public void DisplaySuccessText(Set set)
         {
             txtExplanationTitle.enabled = true;
-            txtExplanationTitle.text = "Correct!";
+            txtExplanationTitle.text = FeedbackUtils.GetRandomPositiveFeedback();
             txtExplanationTitle.text = txtExplanationTitle.text.ToUpper();
             txtExplanationTitle.color = Color.green;
             
@@ -68,7 +68,7 @@ namespace Tutorial.Practice
         public void DisplayErrorText(Set set)
         {
             txtExplanationTitle.enabled = true;
-            txtExplanationTitle.text = "Oops! Try again...";
+            txtExplanationTitle.text = FeedbackUtils.GetRandomNegativeFeedback();
             txtExplanationTitle.text = txtExplanationTitle.text.ToUpper();
             txtExplanationTitle.color = Color.red;
             
