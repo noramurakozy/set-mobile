@@ -1757,8 +1757,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "If you can sort a group of three cards into \"two of __ and one of __\",
-    \nthen it is NOT a SET."
+  m_text: "Remember: \"If you can sort a group of three cards into \n\"two of __
+    and one of __\", then it is NOT a SET.\""
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ff6b0cf05ff82da46b978875e02fe0f1, type: 2}
   m_sharedMaterial: {fileID: 6920132880090007632, guid: ff6b0cf05ff82da46b978875e02fe0f1, type: 2}
