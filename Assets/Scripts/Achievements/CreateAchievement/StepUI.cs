@@ -9,16 +9,12 @@ namespace Achievements.CreateAchievement
     {
         private Image _background;
         private TMP_Text _stepNum;
-        private Color _grey;
-        private Color _purple;
         public bool IsActiveStep { get; set; }
 
         private void Start()
         {
             _background = GetComponent<Image>();
             _stepNum = GetComponentInChildren<TMP_Text>();
-            _grey = new Color32(217, 217, 217, 255);
-            _purple = new Color32(86, 26, 110, 255);
         }
 
         public void SetAsActiveStep(bool active)
@@ -26,13 +22,13 @@ namespace Achievements.CreateAchievement
             IsActiveStep = active;
             if (active)
             {
-                _background.color = _grey;
-                _stepNum.color = _purple;
+                _background.color = CustomColors.grey;
+                _stepNum.color = CustomColors.darkPurple;
             }
             else
             {
-                _background.color = _purple;
-                _stepNum.color = _grey;
+                _background.color = CustomColors.purple;
+                _stepNum.color = CustomColors.grey;
             }
         }
     }
