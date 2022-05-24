@@ -13,17 +13,11 @@ namespace Achievements
 
         private Achievement _achievement;
 
-        public AchievementUI(Difficulty difficulty, string text)
-        {
-            Difficulty = difficulty;
-            Text = text;
-            _achievement = new Achievement(difficulty, text);
-        }
-
         private void Start()
         {
             difficultyUI.SetDifficulty(Difficulty);
             textUI.text = Text;
+            _achievement = new Achievement(Difficulty, Text);
         }
     }
 }

@@ -32,15 +32,15 @@ namespace Achievements
             _achievementUIs = new List<AchievementUI>();
             for (int i = 0; i < 10; i++)
             {
-                InstantiateAchievement();
+                InstantiateAchievement(i);
             }
         }
 
-        private void InstantiateAchievement()
+        private void InstantiateAchievement(int i)
         {
             var achi = Instantiate(achievementUIPrefab, inProgressScrollViewContent.transform, false);
             achi.Difficulty = Difficulty.Easy;
-            achi.Text = "xyzasdalsklaf laksdlakjrldmvlkadfml alksdjalw";
+            achi.Text = "xyzasdalsklaf laksdlakjrldmvlkadfml alksdjalw " + i;
             
             _achievementUIs.Add(achi);
         }
