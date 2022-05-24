@@ -1,4 +1,5 @@
-﻿using TMPro;
+﻿using Achievements.AchievementTypes;
+using TMPro;
 using UnityEngine;
 
 namespace Achievements
@@ -17,7 +18,7 @@ namespace Achievements
         {
             difficultyUI.SetDifficulty(Difficulty);
             textUI.text = Text;
-            _achievement = new Achievement(Difficulty, Text);
+            // _achievement = new XGamesYHints(Difficulty, Text, 2, 100);
         }
     }
 }
