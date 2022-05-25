@@ -44,7 +44,9 @@ namespace Achievements.CreateAchievement
 
         private void CreateAchievement()
         {
-            Debug.Log("Create achievement");
+            var newAchievement = stepperUI.InitiateAchievement();
+            // TODO: save to file
+            Debug.Log(newAchievement);
         }
 
         private void MoveToNextStep()
@@ -63,35 +65,35 @@ namespace Achievements.CreateAchievement
             return new List<AchievementTemplate>
             {
                 new(
-                    "Complete \'X\' games using maximum \'Y\' hints",
+                    "Complete {0} games using maximum {1} hints",
                     typeof(XGamesYHints)
                 ),
                 new(
-                    "Complete \'X\' games in \'Y\' seconds",
+                    "Complete {0} games in {1} seconds",
                     typeof(XGamesYSeconds)
                 ),
                 new(
-                    "Find \'X\' SETs within the first \'Y\' seconds in \'Z\' games",
+                    "Find {0} SETs within the first {1} seconds in {2} games",
                     typeof(XGamesYSetsZSeconds)
                 ),
                 new(
-                    "Complete \'X\' games without shuffling the cards",
+                    "Complete {0} games without shuffling the cards",
                     typeof(XGamesNoShuffle)
                 ),
                 new(
-                    "Find \'X\' SETs with \'Y\' different properties in total",
+                    "Find {0} SETs with {1} different properties in total",
                     typeof(XSetsYDiffProps)
                 ),
                 new(
-                    "Complete \'X\' games with maximum \'Y\' mistakes",
+                    "Complete {0} games with maximum {1} mistakes",
                     typeof(XGamesYMistakes)
                 ),
                 new(
-                    "Find \'X\' SETs in a row without making a mistake",
+                    "Find {0} SETs in a row without making a mistake",
                     typeof(XSetsInARowNoMistakes)
                 ),
                 new(
-                    "Complete \'X\' games in a row using maximum \'Y\' hints",
+                    "Complete {0} games in a row using maximum {1} hints",
                     typeof(XGamesInARowYHints)
                 ),
             };

@@ -4,12 +4,17 @@ namespace Achievements.AchievementTypes
 {
     public class XSetsYDiffProps : Achievement
     {
-        public XSetsYDiffProps(Difficulty difficulty, string text, AchievementTemplate template) : base(difficulty, text, template)
+        public XSetsYDiffProps(string text, int[] conditions) : base(text, conditions)
         {
             
         }
 
         protected override void UpdateProgress(GameStatistics statistics)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        protected override Difficulty CalculateDifficulty(int[] args)
         {
             throw new System.NotImplementedException();
         }

@@ -4,12 +4,17 @@ namespace Achievements.AchievementTypes
 {
     public class XSetsInARowNoMistakes : Achievement
     {
-        public XSetsInARowNoMistakes(Difficulty difficulty, string text, AchievementTemplate template) : base(difficulty, text, template)
+        public XSetsInARowNoMistakes(string text, int[] conditions) : base(text, conditions)
         {
             
         }
 
         protected override void UpdateProgress(GameStatistics statistics)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        protected override Difficulty CalculateDifficulty(int[] args)
         {
             throw new System.NotImplementedException();
         }

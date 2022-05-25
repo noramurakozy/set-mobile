@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using Achievements.AchievementTypes;
 using TMPro;
 using UnityEngine;
@@ -12,11 +13,19 @@ namespace Achievements.CreateAchievement
         [SerializeField] private List<StepUI> stepUIs;
         [SerializeField] private List<LineUI> connectingLineUIs;
         [SerializeField] private List<GameObject> stepContents;
+        [SerializeField] private TMP_Text textPrefab;
+        [SerializeField] private TMP_InputField inputFieldPrefab;
+        [SerializeField] private RectTransform textHolder;
+        private List<TMP_InputField> _inputFields;
         public List<AchievementTemplate> AchievementTemplates { get; set; }
         private AchievementTemplate _selectedTemplate;
+        private string[] _textParts;
+        private string _concatenatedText;
 
         private void Start()
         {
+            _inputFields = new List<TMP_InputField>();
+            
             for (var i = 0; i < stepUIs.Count; i++)
             {
                 var stepUI = stepUIs[i];
@@ -65,28 +74,56 @@ namespace Achievements.CreateAchievement
         private void SetupThirdStep(AchievementTemplate selectedTemplate)
         {
             var textField = stepContents[2].GetComponentInChildren<TMP_Text>();
-            textField.text = selectedTemplate.Text;
+            _concatenatedText = "";
+            for (var i = 0; i < _textParts.Length; i++)
+            {
+                _concatenatedText += _textParts[i];
+
+                if (i != _textParts.Length - 1)
+                {
+                    _concatenatedText += _inputFields[i].text;
+                }
+            }
+            textField.text = _concatenatedText;
         }
 
         private void SetupSecondStep(AchievementTemplate selectedTemplate)
         {
-            var textField = stepContents[1].GetComponentInChildren<TMP_Text>();
-            textField.text = selectedTemplate.Text;
+            _textParts = Regex.Split(selectedTemplate.Text, @"{\d+}");
+            for (var i = 0; i < _textParts.Length; i++)
+            {
+                var textPart = _textParts[i];
+                var text = Instantiate(textPrefab, textHolder, false);
+                text.text = textPart;
+
+                if (i != _textParts.Length - 1)
+                {
+                    var inputField = Instantiate(inputFieldPrefab, textHolder, false);
+                    _inputFields.Add(inputField);
+                }
+            }
         }
 
         private void SetupFirstStep()
         {
             var achievementsDropdown = stepContents[0].GetComponentInChildren<TMP_Dropdown>();
             achievementsDropdown.options = new List<TMP_Dropdown.OptionData>(
-                AchievementTemplates.Select(template => new TMP_Dropdown.OptionData(template.Text)));
+                AchievementTemplates.Select(template => new TMP_Dropdown.OptionData(string.Format(template.Text, "X", "Y", "Z"))));
+            
             _selectedTemplate = AchievementTemplates[0];
             achievementsDropdown.onValueChanged.AddListener(DropdownValueChanged);
         }
         
         private void DropdownValueChanged(int index)
         {
-            Debug.Log(index);
             _selectedTemplate = AchievementTemplates[index];
+        }
+
+        public object InitiateAchievement()
+        {
+            var instance = Activator.CreateInstance(_selectedTemplate.Type, 
+                Difficulty.Medium, _concatenatedText, _inputFields.Select(field => Int32.Parse(field.text)).ToArray());
+            return instance;
         }
     }
 }
