@@ -13,7 +13,6 @@ namespace Achievements.AchievementTypes
         {
             _gamesCountCondition = x;
             _hintsCountCondition = y;
-            
         }
 
         protected override void UpdateProgress(GameStatistics statistics)

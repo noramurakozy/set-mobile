@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using DefaultNamespace;
 using DG.Tweening;
+using Statistics;
 using UnityEngine;
 using UnityEngine.Rendering;
 using Debug = UnityEngine.Debug;
@@ -13,19 +14,7 @@ public class Game
     private List<CardView> CardsOnTable { get; set; }
     public Set Set { get; set; }
     public List<CardView> ClickedCards { get; set; }
-
-    // private List<CardView> cardViews;
-
-    // private Bitmap sourceImage;
-
-    // private int score;
-
-    // private SharedPreferences prefs;
-    // private ViewGroup layoutSets;
-    // private RelativeLayout rootLayout;
-    // private ImageView ivSets;
-    // private ImageView cardBackPlaceholder;
-    // private int[] rootCenter = new int[2];
+    public GameStatistics Statistics { get; set; }
 
     private CardView CardPrefab { get; set; }
     private GridManager CenterGrid { get; set; }
@@ -37,13 +26,13 @@ public class Game
     public Game(CardView cardPrefab, Sprite cardBack, GridManager centerGrid)
     {
         CardsOnTable = new List<CardView>();
-        // cardViews = new List<CardView>();
         Set = new Set();
         ClickedCards = new List<CardView>();
         CardPrefab = cardPrefab;
         CenterGrid = centerGrid;
         CardBack = cardBack;
         _stopwatch = new Stopwatch();
+        Statistics = new GameStatistics();
 
         // TODO: needed to save a game in progress
         // prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -51,12 +40,10 @@ public class Game
 
     public void StartNewGame()
     {
-        // score = 0;
         Deck = new Deck();
         var starterSetCards = Deck.CreateCardsToPlay(CenterGrid.cols * CenterGrid.rows);
         CardsOnTable = GameUtils.InstantiateCardViews(starterSetCards, CardPrefab);
         AnimateCardsIntoGridFromDeck(CardsOnTable);
-        // DrawCards(CardsOnTable);
         _stopwatch.Start();
 
         // prefs.edit().putBoolean("gameInProgress", true).apply();
