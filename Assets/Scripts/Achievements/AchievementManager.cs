@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Achievements.AchievementTypes;
 using Newtonsoft.Json;
+using Statistics;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -15,6 +17,7 @@ namespace Achievements
         
         private List<AchievementUI> _achievementUIs;
         [SerializeField] private AchievementUI achievementUIPrefab;
+        [SerializeField] private AchievementUI completedAchievementUIPrefab;
         [SerializeField] private VerticalLayoutGroup inProgressScrollViewContent;
         [SerializeField] private VerticalLayoutGroup completedScrollViewContent;
         [SerializeField] private Button btnAddNew;
@@ -30,31 +33,65 @@ namespace Achievements
             {
                 Instance = this;
             }
-            foreach (Transform child in inProgressScrollViewContent.transform) {
+
+            DestroyAllAchievementUIs();
+        }
+
+        private void DestroyAllAchievementUIs()
+        {
+            foreach (Transform child in inProgressScrollViewContent.transform)
+            {
+                Destroy(child.gameObject);
+            }
+
+            foreach (Transform child in completedScrollViewContent.transform)
+            {
                 Destroy(child.gameObject);
             }
         }
 
         private void Start()
         {
-            
-            var settings = new JsonSerializerSettings
-            {
-                TypeNameHandling = TypeNameHandling.All
-            };
-            var allAchievements = JsonConvert.DeserializeObject<List<Achievement>>(File.ReadAllText(Application.persistentDataPath + "/achievements.json"),settings);
+            InitAchievementUIs();
+            btnAddNew.onClick.AddListener(() => SceneManager.LoadScene("CreateAchievementScene"));
+        }
 
-            if (allAchievements != null)
+        private void InitAchievementUIs()
+        {
+            var allAchievements = ReadAllAchievements();
+
+            _achievementUIs = allAchievements?.Select(a =>
             {
-                _achievementUIs = allAchievements.Select(x =>
+                AchievementUI achievementUI;
+                switch (a.Status)
                 {
-                    var achievementUI = Instantiate(achievementUIPrefab, inProgressScrollViewContent.transform, false);
-                    achievementUI.Achievement = x;
-                    return achievementUI;
-                }).ToList();
+                    case Status.InProgress:
+                        achievementUI = Instantiate(achievementUIPrefab, inProgressScrollViewContent.transform, false);
+                        achievementUI.Achievement = a;
+                        break;
+                    case Status.Complete:
+                        achievementUI = Instantiate(completedAchievementUIPrefab, completedScrollViewContent.transform, false);
+                        achievementUI.Achievement = a;
+                        break;
+                    default:
+                        throw new ArgumentOutOfRangeException();
+                }
+
+                return achievementUI;
+            }).ToList();
+        }
+
+        private List<Achievement> ReadAllAchievements()
+        {
+            List<Achievement> allAchievements = new List<Achievement>();
+            if (File.Exists(Application.persistentDataPath + "/achievements.json"))
+            {
+                allAchievements =
+                    JsonConvert.DeserializeObject<List<Achievement>>(
+                        File.ReadAllText(Application.persistentDataPath + "/achievements.json"), JsonUtils.SerializerSettings);
             }
 
-            btnAddNew.onClick.AddListener(() => SceneManager.LoadScene("CreateAchievementScene"));
+            return allAchievements;
         }
     }
 }

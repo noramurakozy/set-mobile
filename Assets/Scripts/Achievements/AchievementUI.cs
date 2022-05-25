@@ -15,7 +15,6 @@ namespace Achievements
         {
             difficultyUI.SetDifficulty(Achievement.Difficulty);
             textUI.text = Achievement.Text;
-            // _achievement = new XGamesYHints(Difficulty, Text, 2, 100);
         }
     }
 }
