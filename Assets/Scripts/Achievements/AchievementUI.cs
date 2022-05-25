@@ -6,18 +6,15 @@ namespace Achievements
 {
     public class AchievementUI : MonoBehaviour
     {
-        public Difficulty Difficulty { get; set; }
-        public string Text { get; set; }
-
         [SerializeField] private DifficultyUI difficultyUI;
         [SerializeField] private TMP_Text textUI;
 
-        private Achievement _achievement;
+        public Achievement Achievement { get; set; }
 
         private void Start()
         {
-            difficultyUI.SetDifficulty(Difficulty);
-            textUI.text = Text;
+            difficultyUI.SetDifficulty(Achievement.Difficulty);
+            textUI.text = Achievement.Text;
             // _achievement = new XGamesYHints(Difficulty, Text, 2, 100);
         }
     }

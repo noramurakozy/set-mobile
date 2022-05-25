@@ -4,18 +4,17 @@ namespace Achievements.AchievementTypes
 {
     public abstract class Achievement
     {
-        private Difficulty Difficulty { get; set; }
-        private string Text { get; set; }
-        protected Status Status { get; set; }
+        public Difficulty Difficulty { get; set; }
+        public string Text { get; set; }
+        public Status Status { get; set; }
 
-        protected Achievement(string text, int[] conditions)
+        protected Achievement(string text)
         {
             Text = text;
             Status = Status.InProgress;
-            Difficulty = CalculateDifficulty(conditions);
         }
 
         protected abstract void UpdateProgress(GameStatistics statistics);
-        protected abstract Difficulty CalculateDifficulty(int[] conditions);
+        public abstract void CalculateDifficulty();
     }
 }

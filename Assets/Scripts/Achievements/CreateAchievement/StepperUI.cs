@@ -16,11 +16,13 @@ namespace Achievements.CreateAchievement
         [SerializeField] private TMP_Text textPrefab;
         [SerializeField] private TMP_InputField inputFieldPrefab;
         [SerializeField] private RectTransform textHolder;
+        [SerializeField] private DifficultyUI difficultyUI;
         private List<TMP_InputField> _inputFields;
         public List<AchievementTemplate> AchievementTemplates { get; set; }
         private AchievementTemplate _selectedTemplate;
         private string[] _textParts;
         private string _concatenatedText;
+        public Achievement CreatedAchievement { get; private set; }
 
         private void Start()
         {
@@ -85,6 +87,8 @@ namespace Achievements.CreateAchievement
                 }
             }
             textField.text = _concatenatedText;
+            CreatedAchievement = InitiateAchievement();
+            difficultyUI.SetDifficulty(CreatedAchievement.Difficulty);
         }
 
         private void SetupSecondStep(AchievementTemplate selectedTemplate)
@@ -119,10 +123,13 @@ namespace Achievements.CreateAchievement
             _selectedTemplate = AchievementTemplates[index];
         }
 
-        public object InitiateAchievement()
+        private Achievement InitiateAchievement()
         {
-            var instance = Activator.CreateInstance(_selectedTemplate.Type, 
-                _concatenatedText, _inputFields.Select(field => Int32.Parse(field.text)).ToArray());
+            var args = new List<object>() {_concatenatedText};
+
+            args.AddRange(_inputFields.Select(field => (object)int.Parse(field.text)));
+            var instance = (Achievement)Activator.CreateInstance(_selectedTemplate.Type, args.ToArray());
+            instance.CalculateDifficulty();
             return instance;
         }
     }

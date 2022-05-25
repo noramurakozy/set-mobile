@@ -8,11 +8,10 @@ namespace Achievements
         [SerializeField] private Image difficultyEasy;
         [SerializeField] private Image difficultyMedium;
         [SerializeField] private Image difficultyHard;
-        // private Difficulty _difficulty = Difficulty.Medium;
+        [SerializeField] private VerticalLayoutGroup verticalLayoutGroup;
 
         public void SetDifficulty(Difficulty difficulty)
         {
-            // _difficulty = difficulty;
             switch (difficulty)
             {
                 case Difficulty.Easy:
@@ -34,12 +33,12 @@ namespace Achievements
         private void InstantiateDifficulty(Image difficulty)
         {
             DestroyPreviousDifficulty();
-            Instantiate(difficulty, transform, false);
+            Instantiate(difficulty, verticalLayoutGroup.transform, false);
         }
 
         private void DestroyPreviousDifficulty()
         {
-            var previousDifficulty = GetComponentInChildren<Image>();
+            var previousDifficulty = verticalLayoutGroup.GetComponentInChildren<Image>();
             Destroy(previousDifficulty.gameObject);
         }
     }

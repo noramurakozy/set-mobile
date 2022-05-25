@@ -1,9 +1,11 @@
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using Achievements.AchievementTypes;
+using Newtonsoft.Json;
+using Statistics;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Achievements.CreateAchievement
@@ -39,14 +41,40 @@ namespace Achievements.CreateAchievement
             stepperUI.MoveToStep(CurrentStep);
             
             btnNextStep.onClick.AddListener(MoveToNextStep);
-            btnAcceptAndCreate.onClick.AddListener(CreateAchievement);
+            btnAcceptAndCreate.onClick.AddListener(() =>
+            {
+                CreateAchievement();
+                SceneManager.LoadScene("AchievementsScene");
+            });
         }
 
         private void CreateAchievement()
         {
-            var newAchievement = stepperUI.InitiateAchievement();
-            // TODO: save to file
+            var newAchievement = stepperUI.CreatedAchievement;
+            var allAchievements = AddToExistingAchievements(newAchievement);
+            SaveAchievements(allAchievements);
+            
             Debug.Log(newAchievement);
+        }
+
+        private static void SaveAchievements(List<Achievement> allAchievements)
+        {
+            File.WriteAllText(Application.persistentDataPath + "/achievements.json",
+                JsonConvert.SerializeObject(allAchievements, JsonUtils.SerializerSettings));
+        }
+
+        private List<Achievement> AddToExistingAchievements(Achievement newAchievement)
+        {
+            List<Achievement> allAchievements = new List<Achievement>();
+            if (File.Exists(Application.persistentDataPath + "/achievements.json"))
+            {
+                allAchievements =
+                    JsonConvert.DeserializeObject<List<Achievement>>(
+                        File.ReadAllText(Application.persistentDataPath + "/achievements.json"), JsonUtils.SerializerSettings);
+            }
+
+            allAchievements?.Insert(0, newAchievement);
+            return allAchievements;
         }
 
         private void MoveToNextStep()

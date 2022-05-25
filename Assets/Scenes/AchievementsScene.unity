@@ -577,6 +577,7 @@ MonoBehaviour:
   achievementUIPrefab: {fileID: 5953622365418478095, guid: 8301a85a784d92e4b9df0cbeabaf4ef3, type: 3}
   inProgressScrollViewContent: {fileID: 392811653}
   completedScrollViewContent: {fileID: 1234310964}
+  btnAddNew: {fileID: 1872160980}
 --- !u!4 &779953075
 Transform:
   m_ObjectHideFlags: 0
@@ -915,6 +916,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 392811651}
     m_Modifications:
+    - target: {fileID: 2332610917149309677, guid: 8301a85a784d92e4b9df0cbeabaf4ef3, type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2332610917149309677, guid: 8301a85a784d92e4b9df0cbeabaf4ef3, type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3461265397093371276, guid: 8301a85a784d92e4b9df0cbeabaf4ef3, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3461265397093371276, guid: 8301a85a784d92e4b9df0cbeabaf4ef3, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3461265397093371276, guid: 8301a85a784d92e4b9df0cbeabaf4ef3, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7507969294235293490, guid: 8301a85a784d92e4b9df0cbeabaf4ef3, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -1005,6 +1026,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8301a85a784d92e4b9df0cbeabaf4ef3, type: 3}
+--- !u!114 &1872160980 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6370304479541077984, guid: 8c26a3f5a36c70041ace0aabd083566e, type: 3}
+  m_PrefabInstance: {fileID: 766120985}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1923144208
 GameObject:
   m_ObjectHideFlags: 0

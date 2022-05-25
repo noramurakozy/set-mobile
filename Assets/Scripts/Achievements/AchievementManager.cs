@@ -1,7 +1,10 @@
 ﻿using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using Achievements.AchievementTypes;
-using Unity.VisualScripting;
+using Newtonsoft.Json;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Achievements
@@ -14,6 +17,7 @@ namespace Achievements
         [SerializeField] private AchievementUI achievementUIPrefab;
         [SerializeField] private VerticalLayoutGroup inProgressScrollViewContent;
         [SerializeField] private VerticalLayoutGroup completedScrollViewContent;
+        [SerializeField] private Button btnAddNew;
 
         private void Awake()
         {
@@ -26,24 +30,31 @@ namespace Achievements
             {
                 Instance = this;
             }
+            foreach (Transform child in inProgressScrollViewContent.transform) {
+                Destroy(child.gameObject);
+            }
         }
 
         private void Start()
         {
-            _achievementUIs = new List<AchievementUI>();
-            for (int i = 0; i < 10; i++)
-            {
-                InstantiateAchievement(i);
-            }
-        }
-
-        private void InstantiateAchievement(int i)
-        {
-            var achi = Instantiate(achievementUIPrefab, inProgressScrollViewContent.transform, false);
-            achi.Difficulty = Difficulty.Easy;
-            achi.Text = "xyzasdalsklaf laksdlakjrldmvlkadfml alksdjalw " + i;
             
-            _achievementUIs.Add(achi);
+            var settings = new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.All
+            };
+            var allAchievements = JsonConvert.DeserializeObject<List<Achievement>>(File.ReadAllText(Application.persistentDataPath + "/achievements.json"),settings);
+
+            if (allAchievements != null)
+            {
+                _achievementUIs = allAchievements.Select(x =>
+                {
+                    var achievementUI = Instantiate(achievementUIPrefab, inProgressScrollViewContent.transform, false);
+                    achievementUI.Achievement = x;
+                    return achievementUI;
+                }).ToList();
+            }
+
+            btnAddNew.onClick.AddListener(() => SceneManager.LoadScene("CreateAchievementScene"));
         }
     }
 }

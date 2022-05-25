@@ -4,7 +4,7 @@ namespace Achievements.AchievementTypes
 {
     public class XGamesYMistakes : Achievement
     {
-        public XGamesYMistakes(string text, int[] conditions) : base(text, conditions)
+        public XGamesYMistakes(string text, int[] conditions) : base(text)
         {
             
         }
@@ -14,7 +14,7 @@ namespace Achievements.AchievementTypes
             throw new System.NotImplementedException();
         }
 
-        protected override Difficulty CalculateDifficulty(int[] args)
+        public override void CalculateDifficulty()
         {
             throw new System.NotImplementedException();
         }

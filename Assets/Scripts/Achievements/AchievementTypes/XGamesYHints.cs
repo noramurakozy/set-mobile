@@ -5,14 +5,15 @@ namespace Achievements.AchievementTypes
 {
     public class XGamesYHints : Achievement
     {
-        private int _gamesCount;
+        public int _gamesCount;
 
-        private readonly int _gamesCountCondition;
-        private readonly int _hintsCountCondition;
-        public XGamesYHints(string text, int[] conditions) : base(text, conditions)
+        public readonly int _gamesCountCondition;
+        public readonly int _hintsCountCondition;
+        public XGamesYHints(string text, int x, int y) : base(text)
         {
-            _gamesCountCondition = conditions[0];
-            _hintsCountCondition = conditions[1];
+            _gamesCountCondition = x;
+            _hintsCountCondition = y;
+            
         }
 
         protected override void UpdateProgress(GameStatistics statistics)
@@ -28,10 +29,10 @@ namespace Achievements.AchievementTypes
             }
         }
 
-        protected override Difficulty CalculateDifficulty(int[] args)
+        public override void CalculateDifficulty()
         {
-            var gamesCount = args[0];
-            var hintsCount = args[1];
+            var gamesCount = _gamesCountCondition;
+            var hintsCount = _hintsCountCondition;
 
             var gamesCountCategory = DifficultyUtils.CalculateGameCountCategory(gamesCount);
             var hintCountCategory = DifficultyUtils.CalculateHintCountCategory(hintsCount);
@@ -41,20 +42,27 @@ namespace Achievements.AchievementTypes
                 case ParameterCountCategory.Low when hintCountCategory == ParameterCountCategory.Low:
                 case ParameterCountCategory.Low when hintCountCategory == ParameterCountCategory.Medium:
                 case ParameterCountCategory.Low when hintCountCategory == ParameterCountCategory.High:
-                    return Difficulty.Easy;
+                    Difficulty = Difficulty.Easy;
+                    break;
                 case ParameterCountCategory.Medium when hintCountCategory == ParameterCountCategory.Low:
                 case ParameterCountCategory.Medium when hintCountCategory == ParameterCountCategory.Medium:
-                    return Difficulty.Medium;
+                    Difficulty = Difficulty.Medium;
+                    break;
                 case ParameterCountCategory.Medium when hintCountCategory == ParameterCountCategory.High:
-                    return Difficulty.Easy;
+                    Difficulty = Difficulty.Easy;
+                    break;
                 case ParameterCountCategory.High when hintCountCategory == ParameterCountCategory.Low:
-                    return Difficulty.Hard;
+                    Difficulty = Difficulty.Hard;
+                    break;
                 case ParameterCountCategory.High when hintCountCategory == ParameterCountCategory.Medium:
-                    return Difficulty.Medium;
+                    Difficulty = Difficulty.Medium;
+                    break;
                 case ParameterCountCategory.High when hintCountCategory == ParameterCountCategory.Low:
-                    return Difficulty.Easy;
+                    Difficulty = Difficulty.Easy;
+                    break;
                 default:
-                    return Difficulty.Medium;
+                    Difficulty = Difficulty.Medium;
+                    break;
             }
         }
     }
