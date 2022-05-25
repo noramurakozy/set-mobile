@@ -122,7 +122,7 @@ namespace Achievements.CreateAchievement
         public object InitiateAchievement()
         {
             var instance = Activator.CreateInstance(_selectedTemplate.Type, 
-                Difficulty.Medium, _concatenatedText, _inputFields.Select(field => Int32.Parse(field.text)).ToArray());
+                _concatenatedText, _inputFields.Select(field => Int32.Parse(field.text)).ToArray());
             return instance;
         }
     }
