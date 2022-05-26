@@ -4,9 +4,15 @@ namespace Achievements.AchievementTypes
 {
     public class XGamesInARowYHints : Achievement
     {
-        public XGamesInARowYHints(string text, int[] conditions) : base(text)
+        private int _gamesCount;
+        
+        private int _gamesInARowCondition;
+        private int _maximumHintsCondition;
+        
+        public XGamesInARowYHints(string text, int x, int y) : base(text)
         {
-            
+            _gamesInARowCondition = x;
+            _maximumHintsCondition = y;
         }
 
         protected override void UpdateProgress(GameStatistics statistics)

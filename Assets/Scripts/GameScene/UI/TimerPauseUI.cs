@@ -1,4 +1,5 @@
 using DefaultNamespace;
+using GameScene;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
