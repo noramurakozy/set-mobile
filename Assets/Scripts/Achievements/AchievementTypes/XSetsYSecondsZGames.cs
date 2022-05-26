@@ -8,29 +8,30 @@ namespace Achievements.AchievementTypes
     // Find X SETs within the first Y seconds in Z games 
     public class XSetsYSecondsZGames : Achievement
     {
-        private int _gamesCount;
-        
-        private int _setsCountCondition;
-        private int _secondsCountCondition;
-        private int _gamesCountCondition;
+        public int gamesCount;
+
+        public int setsCountCondition;
+        public int secondsCountCondition;
+        public int gamesCountCondition;
         public XSetsYSecondsZGames(string text, int x, int y, int z) : base(text)
         {
-            _setsCountCondition = x;
-            _secondsCountCondition = y;
-            _gamesCountCondition = z;
+            setsCountCondition = x;
+            secondsCountCondition = y;
+            gamesCountCondition = z;
+            UpdateType = UpdateType.DuringGame;
         }
 
-        protected override void UpdateProgress(GameStatistics statistics)
+        public override void UpdateProgress(GameStatistics statistics)
         {
-            if (statistics.SetsFound >= _setsCountCondition)
+            if (statistics.SetsFound >= setsCountCondition)
             {
-                if (statistics.CurrentElapsedSeconds >= _secondsCountCondition)
+                if (statistics.CurrentElapsedSeconds <= secondsCountCondition)
                 {
-                    _gamesCount++;
+                    gamesCount++;
                 }
             }
 
-            if (_gamesCount >= _gamesCountCondition)
+            if (gamesCount >= gamesCountCondition)
             {
                 Status = Status.Complete;
             }
@@ -38,7 +39,7 @@ namespace Achievements.AchievementTypes
 
         public override void CalculateDifficulty()
         {
-            var secondsCountCategory = DifficultyUtils.CalculateSecondsFor1SetCountCategory(_secondsCountCondition, _setsCountCondition);
+            var secondsCountCategory = DifficultyUtils.CalculateSecondsFor1SetCountCategory(secondsCountCondition, setsCountCondition);
 
             switch (secondsCountCategory)
             {

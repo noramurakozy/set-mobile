@@ -54,10 +54,6 @@ public class GridManager : MonoBehaviour
         int row = i / cols;
         int col = i % cols;
         
-        Debug.Log("Where to insert: " + row + " " + col + " index: " + i);
-        Debug.Log("What was here: " + _gridData[row][col]);
-        Debug.Log("What to put here: " + newCardView);
-
         _gridData[row][col] = newCardView;
 
         var cardTransform = newCardView.transform;
@@ -180,7 +176,6 @@ public class GridManager : MonoBehaviour
                 if (!cardsOnTable.Contains(gridDataCopy[i][j]))
                 {
                     // cardsToRemoveFromGrid.Add(_gridData[i][j]);
-                    Debug.Log("Remove this: " + gridDataCopy[i][j]);
                     _gridData[i].Remove(gridDataCopy[i][j]);
                 }
             }

@@ -7,25 +7,26 @@ namespace Achievements.AchievementTypes
     // Find X SETs with Y different properties in total
     public class XSetsYDiffProps : Achievement
     {
-        private int _setsCount;
-        
-        private int _setsCountCondition;
-        private int _propsCountCondition;
+        public int setsCount;
+
+        public int setsCountCondition;
+        public int propsCountCondition;
         
         public XSetsYDiffProps(string text, int x, int y) : base(text)
         {
-            _setsCountCondition = x;
-            _propsCountCondition = y;
+            setsCountCondition = x;
+            propsCountCondition = y;
+            UpdateType = UpdateType.DuringGame;
         }
 
-        protected override void UpdateProgress(GameStatistics statistics)
+        public override void UpdateProgress(GameStatistics statistics)
         {
-            if (statistics.LastSetFound.DiffPropsCount == _propsCountCondition)
+            if (statistics.LastSetFound.DiffPropsCount == propsCountCondition)
             {
-                _setsCount++;
+                setsCount++;
             }
 
-            if (_setsCount >= _setsCountCondition)
+            if (setsCount >= setsCountCondition)
             {
                 Status = Status.Complete;
             }
@@ -33,8 +34,8 @@ namespace Achievements.AchievementTypes
 
         public override void CalculateDifficulty()
         {
-            var setsCountCategory = DifficultyUtils.CalculateSetsInTotalCountCategory(_setsCountCondition);
-            var paramCountCategory = DifficultyUtils.CalculateSetsPropsCountCategory(_propsCountCondition);
+            var setsCountCategory = DifficultyUtils.CalculateSetsInTotalCountCategory(setsCountCondition);
+            var paramCountCategory = DifficultyUtils.CalculateSetsPropsCountCategory(propsCountCondition);
 
             switch (setsCountCategory)
             {

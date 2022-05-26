@@ -7,24 +7,25 @@ namespace Achievements.AchievementTypes
     // Complete X games in Y seconds 
     public class XGamesYSeconds : Achievement
     {
-        private int _gamesCount;
-        
-        private int _gamesCountCondition;
-        private int _secondsCountCondition;
+        public int gamesCount;
+
+        public int gamesCountCondition;
+        public int secondsCountCondition;
         public XGamesYSeconds(string text, int x, int y) : base(text)
         {
-            _gamesCountCondition = x;
-            _secondsCountCondition = y;
+            gamesCountCondition = x;
+            secondsCountCondition = y;
+            UpdateType = UpdateType.EndOfGame;
         }
 
-        protected override void UpdateProgress(GameStatistics statistics)
+        public override void UpdateProgress(GameStatistics statistics)
         {
-            if (statistics.DurationInSeconds <= _secondsCountCondition)
+            if (statistics.DurationInSeconds <= secondsCountCondition)
             {
-                _gamesCount++;
+                gamesCount++;
             }
 
-            if (_gamesCount >= _gamesCountCondition)
+            if (gamesCount >= gamesCountCondition)
             {
                 Status = Status.Complete;
             }
@@ -32,7 +33,7 @@ namespace Achievements.AchievementTypes
 
         public override void CalculateDifficulty()
         {
-            var secondsCountCategory = DifficultyUtils.CalculateSecondsCountCategory(_secondsCountCondition);
+            var secondsCountCategory = DifficultyUtils.CalculateSecondsCountCategory(secondsCountCondition);
 
             switch (secondsCountCategory)
             {

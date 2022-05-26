@@ -87,7 +87,8 @@ namespace Achievements.CreateAchievement
                 }
             }
             textField.text = _concatenatedText;
-            CreatedAchievement = InitiateAchievement();
+            CreatedAchievement = AchievementManager.Instance.InitiateAchievement(_selectedTemplate, _concatenatedText, 
+                _inputFields.Select(field => (object)int.Parse(field.text)).ToList());
             difficultyUI.SetDifficulty(CreatedAchievement.Difficulty);
         }
 
@@ -121,16 +122,6 @@ namespace Achievements.CreateAchievement
         private void DropdownValueChanged(int index)
         {
             _selectedTemplate = AchievementTemplates[index];
-        }
-
-        private Achievement InitiateAchievement()
-        {
-            var args = new List<object>() {_concatenatedText};
-
-            args.AddRange(_inputFields.Select(field => (object)int.Parse(field.text)));
-            var instance = (Achievement)Activator.CreateInstance(_selectedTemplate.Type, args.ToArray());
-            instance.CalculateDifficulty();
-            return instance;
         }
     }
 }

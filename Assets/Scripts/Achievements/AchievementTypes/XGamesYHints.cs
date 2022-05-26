@@ -7,24 +7,25 @@ namespace Achievements.AchievementTypes
     // Complete X games using maximum Y hints 
     public class XGamesYHints : Achievement
     {
-        public int _gamesCount;
+        public int gamesCount;
 
-        public readonly int _gamesCountCondition;
-        public readonly int _hintsCountCondition;
+        public int gamesCountCondition;
+        public int hintsCountCondition;
         public XGamesYHints(string text, int x, int y) : base(text)
         {
-            _gamesCountCondition = x;
-            _hintsCountCondition = y;
+            gamesCountCondition = x;
+            hintsCountCondition = y;
+            UpdateType = UpdateType.EndOfGame;
         }
 
-        protected override void UpdateProgress(GameStatistics statistics)
+        public override void UpdateProgress(GameStatistics statistics)
         {
-            if (statistics.HintsUsed <= _hintsCountCondition)
+            if (statistics.HintsUsed <= hintsCountCondition)
             {
-                _gamesCount++;
+                gamesCount++;
             }
 
-            if (_gamesCount >= _gamesCountCondition)
+            if (gamesCount >= gamesCountCondition)
             {
                 Status = Status.Complete;
             }
@@ -32,8 +33,8 @@ namespace Achievements.AchievementTypes
 
         public override void CalculateDifficulty()
         {
-            var gamesCountCategory = DifficultyUtils.CalculateGameCountCategory(_gamesCountCondition);
-            var hintCountCategory = DifficultyUtils.CalculateHintCountCategory(_hintsCountCondition);
+            var gamesCountCategory = DifficultyUtils.CalculateGameCountCategory(gamesCountCondition);
+            var hintCountCategory = DifficultyUtils.CalculateHintCountCategory(hintsCountCondition);
 
             switch (gamesCountCategory)
             {

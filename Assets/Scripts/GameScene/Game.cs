@@ -8,6 +8,7 @@ using Statistics;
 using UnityEngine;
 using UnityEngine.Rendering;
 using Debug = UnityEngine.Debug;
+using UpdateType = Achievements.AchievementTypes.UpdateType;
 
 namespace GameScene
 {
@@ -117,7 +118,7 @@ namespace GameScene
                 Statistics.MaxSetsFoundInARow++;
                 Statistics.LastSetFound = Set;
                 Statistics.CurrentElapsedSeconds = _stopwatch.Elapsed.Seconds;
-                
+                GameManager.Instance.UpdateAchievementProgresses(Statistics, UpdateType.DuringGame);
                 GameManager.Instance.EnableHintBtn(true);
                 return true;
             }
@@ -231,9 +232,7 @@ namespace GameScene
         {
             foreach (int index in emptyCardSlots)
             {
-                Debug.Log(index);
                 var (newCard, newIndex) = ReplaceCardOnIndex(index);
-                Debug.Log("Insert this card " + newCard + " on this index " + newIndex);
                 DrawCardOnIndex(newCard, newIndex);
             }
         }

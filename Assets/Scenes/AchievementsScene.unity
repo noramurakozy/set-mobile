@@ -556,7 +556,7 @@ GameObject:
   - component: {fileID: 779953075}
   - component: {fileID: 779953074}
   m_Layer: 0
-  m_Name: AchievementManager
+  m_Name: AchievementUIManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

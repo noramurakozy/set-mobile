@@ -4,18 +4,21 @@ using Statistics;
 
 namespace Achievements.AchievementTypes
 {
-    // Find X SETs in a row without making a mistake
-    public class XSetsInARowNoMistakes : Achievement
+    // Find X SETs in a row without making a mistake or using hints
+    public class XSetsInARowNoMistakesNoHints : Achievement
     {
-        private int _setsCountCondition;
-        public XSetsInARowNoMistakes(string text, int x) : base(text)
+        public int setsCountCondition;
+        public XSetsInARowNoMistakesNoHints(string text, int x) : base(text)
         {
-            _setsCountCondition = x;
+            setsCountCondition = x;
+            UpdateType = UpdateType.DuringGame;
         }
 
-        protected override void UpdateProgress(GameStatistics statistics)
+        public override void UpdateProgress(GameStatistics statistics)
         {
-            if (statistics.MaxSetsFoundInARow >= _setsCountCondition)
+            if (statistics.MaxSetsFoundInARow >= setsCountCondition 
+                && statistics.MistakesCount == 0 
+                && statistics.HintsUsed == 0)
             {
                 Status = Status.Complete;
             }
@@ -23,7 +26,7 @@ namespace Achievements.AchievementTypes
 
         public override void CalculateDifficulty()
         {
-            var setsInARowCountCategory = DifficultyUtils.CalculateSetsInARowCountCategory(_setsCountCondition);
+            var setsInARowCountCategory = DifficultyUtils.CalculateSetsInARowCountCategory(setsCountCondition);
             switch (setsInARowCountCategory)
             {
                 case ParameterCountCategory.Low:

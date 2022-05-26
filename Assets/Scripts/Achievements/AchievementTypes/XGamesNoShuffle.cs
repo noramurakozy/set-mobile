@@ -7,22 +7,23 @@ namespace Achievements.AchievementTypes
     // Complete X games without shuffling the cards 
     public class XGamesNoShuffle : Achievement
     {
-        private int _gamesCountCondition;
-        private int _gamesCount;
+        public int gamesCountCondition;
+        public int gamesCount;
 
         public XGamesNoShuffle(string text, int x) : base(text)
         {
-            _gamesCountCondition = x;
+            gamesCountCondition = x;
+            UpdateType = UpdateType.EndOfGame;
         }
 
-        protected override void UpdateProgress(GameStatistics statistics)
+        public override void UpdateProgress(GameStatistics statistics)
         {
             if (statistics.ShufflesUsed == 0)
             {
-                _gamesCount++;
+                gamesCount++;
             }
 
-            if (_gamesCount >= _gamesCountCondition)
+            if (gamesCount >= gamesCountCondition)
             {
                 Status = Status.Complete;
             }
@@ -30,7 +31,7 @@ namespace Achievements.AchievementTypes
 
         public override void CalculateDifficulty()
         {
-            var gamesCountCategory = DifficultyUtils.CalculateGameCountCategory(_gamesCountCondition);
+            var gamesCountCategory = DifficultyUtils.CalculateGameCountCategory(gamesCountCondition);
 
             switch (gamesCountCategory)
             {

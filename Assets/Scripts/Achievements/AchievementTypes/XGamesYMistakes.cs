@@ -7,25 +7,26 @@ namespace Achievements.AchievementTypes
     // Complete X games with maximum Y mistakes 
     public class XGamesYMistakes : Achievement
     {
-        private int _gamesCount;
-        
-        private int _gamesCountCondition;
-        private int _mistakesCountCondition;
+        public int gamesCount;
+
+        public int gamesCountCondition;
+        public int mistakesCountCondition;
         
         public XGamesYMistakes(string text, int x, int y) : base(text)
         {
-            _gamesCountCondition = x;
-            _mistakesCountCondition = y;
+            gamesCountCondition = x;
+            mistakesCountCondition = y;
+            UpdateType = UpdateType.EndOfGame;
         }
 
-        protected override void UpdateProgress(GameStatistics statistics)
+        public override void UpdateProgress(GameStatistics statistics)
         {
-            if (statistics.MistakesCount <= _mistakesCountCondition)
+            if (statistics.MistakesCount <= mistakesCountCondition)
             {
-                _gamesCount++;
+                gamesCount++;
             }
 
-            if (_gamesCount >= _gamesCountCondition)
+            if (gamesCount >= gamesCountCondition)
             {
                 Status = Status.Complete;
             }
@@ -33,8 +34,8 @@ namespace Achievements.AchievementTypes
 
         public override void CalculateDifficulty()
         {
-            var gamesCountCategory = DifficultyUtils.CalculateGameCountCategory(_gamesCountCondition);
-            var mistakesCountCategory = DifficultyUtils.CalculateMistakesCountCategory(_mistakesCountCondition);
+            var gamesCountCategory = DifficultyUtils.CalculateGameCountCategory(gamesCountCondition);
+            var mistakesCountCategory = DifficultyUtils.CalculateMistakesCountCategory(mistakesCountCondition);
             
             switch (gamesCountCategory)
             {

@@ -1,4 +1,6 @@
-﻿using GameScene.Statistics;
+﻿using Achievements;
+using Achievements.AchievementTypes;
+using GameScene.Statistics;
 using Statistics;
 using TMPro;
 using UnityEngine;
@@ -59,11 +61,15 @@ namespace GameScene
             txtTimer.text = Game.GetStopwatchString();
             if (Game.IsGameEnded())
             {
-                // TODO: save in file so AchievementManager can read it and
-                // evaluate whether one of the achievements became completed
                 _finalGameStatistics = Game.EndGame();
+                UpdateAchievementProgresses(_finalGameStatistics, UpdateType.EndOfGame);
                 SceneManager.LoadScene("MainMenu");
             }
+        }
+
+        public void UpdateAchievementProgresses(GameStatistics gameStatistics, UpdateType updateType)
+        {
+            AchievementManager.Instance.UpdateProgressOfAchievements(gameStatistics, updateType);
         }
 
         private void OnDestroy()

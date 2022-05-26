@@ -16,7 +16,6 @@ namespace Achievements.CreateAchievement
         [SerializeField] private StepperUI stepperUI;
         [SerializeField] private Button btnNextStep;
         [SerializeField] private Button btnAcceptAndCreate;
-        [SerializeField] private TMP_Dropdown achievementsDropdown;
         
         private int CurrentStep { get; set; }
         
@@ -51,30 +50,7 @@ namespace Achievements.CreateAchievement
         private void CreateAchievement()
         {
             var newAchievement = stepperUI.CreatedAchievement;
-            var allAchievements = AddToExistingAchievements(newAchievement);
-            SaveAchievements(allAchievements);
-            
-            Debug.Log(newAchievement);
-        }
-
-        private static void SaveAchievements(List<Achievement> allAchievements)
-        {
-            File.WriteAllText(Application.persistentDataPath + "/achievements.json",
-                JsonConvert.SerializeObject(allAchievements, JsonUtils.SerializerSettings));
-        }
-
-        private List<Achievement> AddToExistingAchievements(Achievement newAchievement)
-        {
-            List<Achievement> allAchievements = new List<Achievement>();
-            if (File.Exists(Application.persistentDataPath + "/achievements.json"))
-            {
-                allAchievements =
-                    JsonConvert.DeserializeObject<List<Achievement>>(
-                        File.ReadAllText(Application.persistentDataPath + "/achievements.json"), JsonUtils.SerializerSettings);
-            }
-
-            allAchievements?.Insert(0, newAchievement);
-            return allAchievements;
+            AchievementManager.Instance.AddToExistingAchievements(newAchievement);
         }
 
         private void MoveToNextStep()
@@ -117,8 +93,8 @@ namespace Achievements.CreateAchievement
                     typeof(XGamesYMistakes)
                 ),
                 new(
-                    "Find {0} SETs in a row without making a mistake",
-                    typeof(XSetsInARowNoMistakes)
+                    "Find {0} SETs in a row without making a mistake or using hints",
+                    typeof(XSetsInARowNoMistakesNoHints)
                 ),
                 new(
                     "Complete {0} games in a row using maximum {1} hints",

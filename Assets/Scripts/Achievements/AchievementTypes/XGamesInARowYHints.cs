@@ -7,30 +7,31 @@ namespace Achievements.AchievementTypes
     // Complete X games in a row using maximum Y hints
     public class XGamesInARowYHints : Achievement
     {
-        private int _gamesCount;
-        
-        private int _gamesInARowCondition;
-        private int _maximumHintsCondition;
+        public int gamesCount;
+
+        public int gamesInARowCondition;
+        public int maximumHintsCondition;
         
         public XGamesInARowYHints(string text, int x, int y) : base(text)
         {
-            _gamesInARowCondition = x;
-            _maximumHintsCondition = y;
+            gamesInARowCondition = x;
+            maximumHintsCondition = y;
+            UpdateType = UpdateType.EndOfGame;
         }
 
-        protected override void UpdateProgress(GameStatistics statistics)
+        public override void UpdateProgress(GameStatistics statistics)
         {
-            if (statistics.HintsUsed <= _maximumHintsCondition)
+            if (statistics.HintsUsed <= maximumHintsCondition)
             {
-                _gamesCount++;
+                gamesCount++;
             }
 
-            if (statistics.HintsUsed > _maximumHintsCondition)
+            if (statistics.HintsUsed > maximumHintsCondition)
             {
-                _gamesCount = 0;
+                gamesCount = 0;
             }
             
-            if (_gamesCount >= _gamesInARowCondition)
+            if (gamesCount >= gamesInARowCondition)
             {
                 Status = Status.Complete;
             }
@@ -38,8 +39,8 @@ namespace Achievements.AchievementTypes
 
         public override void CalculateDifficulty()
         {
-            var gamesCountCategory = DifficultyUtils.CalculateGameCountCategory(_gamesInARowCondition);
-            var hintCountCategory = DifficultyUtils.CalculateHintCountCategory(_maximumHintsCondition);
+            var gamesCountCategory = DifficultyUtils.CalculateGameCountCategory(gamesInARowCondition);
+            var hintCountCategory = DifficultyUtils.CalculateHintCountCategory(maximumHintsCondition);
             
             switch (gamesCountCategory)
             {
