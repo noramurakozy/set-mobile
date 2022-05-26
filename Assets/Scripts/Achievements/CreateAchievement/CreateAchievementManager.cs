@@ -70,35 +70,51 @@ namespace Achievements.CreateAchievement
             {
                 new(
                     "Complete {0} games using maximum {1} hints",
-                    typeof(XGamesYHints)
+                    typeof(XGamesYHints),
+                    new[] {1, 0},
+                    new [] {10000, 10000}
                 ),
                 new(
                     "Complete {0} games in {1} seconds",
-                    typeof(XGamesYSeconds)
+                    typeof(XGamesYSeconds),
+                    new[] {1, 1},
+                    new [] {10000, 10000}
                 ),
                 new(
                     "Find {0} SETs within the first {1} seconds in {2} games",
-                    typeof(XSetsYSecondsZGames)
+                    typeof(XSetsYSecondsZGames),
+                    new[] {1, 1, 1},
+                    new [] {10000, 10000, 10000}
                 ),
                 new(
                     "Complete {0} games without shuffling the cards",
-                    typeof(XGamesNoShuffle)
+                    typeof(XGamesNoShuffle),
+                    new[] {1},
+                    new [] {10000}
                 ),
                 new(
                     "Find {0} SETs with {1} different properties in total",
-                    typeof(XSetsYDiffProps)
+                    typeof(XSetsYDiffProps),
+                    new[] {1, 1},
+                    new [] {10000, 4}
                 ),
                 new(
                     "Complete {0} games with maximum {1} mistakes",
-                    typeof(XGamesYMistakes)
+                    typeof(XGamesYMistakes),
+                    new[] {1, 0},
+                    new [] {10000, 10000}
                 ),
                 new(
                     "Find {0} SETs in a row without making a mistake or using hints",
-                    typeof(XSetsInARowNoMistakesNoHints)
+                    typeof(XSetsInARowNoMistakesNoHints),
+                    new[] {1},
+                    new [] {10000}
                 ),
                 new(
                     "Complete {0} games in a row using maximum {1} hints",
-                    typeof(XGamesInARowYHints)
+                    typeof(XGamesInARowYHints),
+                    new[] {1, 0},
+                    new [] {10000, 10000}
                 ),
             };
         }

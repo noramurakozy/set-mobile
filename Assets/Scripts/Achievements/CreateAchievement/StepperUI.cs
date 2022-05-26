@@ -105,6 +105,18 @@ namespace Achievements.CreateAchievement
                 {
                     var inputField = Instantiate(inputFieldPrefab, textHolder, false);
                     _inputFields.Add(inputField);
+                    var i1 = i;
+                    inputField.onEndEdit.AddListener(value =>
+                    {
+                        if (int.Parse(value) < selectedTemplate.MinInputValues[i1])
+                        {
+                            inputField.text = selectedTemplate.MinInputValues[i1].ToString();
+                        }
+                        if (int.Parse(value) > selectedTemplate.MaxInputValues[i1])
+                        {
+                            inputField.text = selectedTemplate.MaxInputValues[i1].ToString();
+                        }
+                    });
                 }
             }
         }
