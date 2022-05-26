@@ -63,7 +63,7 @@ namespace GameScene
             {
                 _finalGameStatistics = Game.EndGame();
                 UpdateAchievementProgresses(_finalGameStatistics, UpdateType.EndOfGame);
-                SceneManager.LoadScene("MainMenu");
+                // SceneManager.LoadScene("MainMenu");
             }
         }
 

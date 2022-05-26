@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Achievements.AchievementTypes;
+using Dialogs;
 using GameScene.Statistics;
 using Newtonsoft.Json;
 using Statistics;
@@ -65,7 +66,13 @@ namespace Achievements
         {
             foreach (var achievement in AllAchievements.Where(a => a.UpdateType == updateType))
             {
+                var preStatus = achievement.Status;
                 achievement.UpdateProgress(statistics);
+                var afterStatus = achievement.Status;
+                if (preStatus == Status.InProgress && afterStatus == Status.Complete)
+                {
+                    ToastManager.Instance.ShowToast(achievement.Text, 2f);
+                }
             }
             SaveAchievements(AllAchievements);
         }
