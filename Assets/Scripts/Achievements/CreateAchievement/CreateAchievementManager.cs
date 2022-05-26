@@ -69,49 +69,49 @@ namespace Achievements.CreateAchievement
             return new List<AchievementTemplate>
             {
                 new(
-                    "Complete {0} games using maximum {1} hints",
+                    "Complete {0} game(s) using maximum {1} hint(s)",
                     typeof(XGamesYHints),
                     new[] {1, 0},
                     new [] {10000, 10000}
                 ),
                 new(
-                    "Complete {0} games in {1} seconds",
+                    "Complete {0} game(s) in {1} second(s)",
                     typeof(XGamesYSeconds),
                     new[] {1, 1},
                     new [] {10000, 10000}
                 ),
                 new(
-                    "Find {0} SETs within the first {1} seconds in {2} games",
+                    "Find {0} SET(s) within the first {1} second(s) in {2} game(s)",
                     typeof(XSetsYSecondsZGames),
                     new[] {1, 1, 1},
                     new [] {10000, 10000, 10000}
                 ),
                 new(
-                    "Complete {0} games without shuffling the cards",
+                    "Complete {0} game(s) without shuffling the cards",
                     typeof(XGamesNoShuffle),
                     new[] {1},
                     new [] {10000}
                 ),
                 new(
-                    "Find {0} SETs with {1} different properties in total",
+                    "Find {0} SET(s) with {1} different properties in total",
                     typeof(XSetsYDiffProps),
                     new[] {1, 1},
                     new [] {10000, 4}
                 ),
                 new(
-                    "Complete {0} games with maximum {1} mistakes",
+                    "Complete {0} game(s) with maximum {1} mistake(s)",
                     typeof(XGamesYMistakes),
                     new[] {1, 0},
                     new [] {10000, 10000}
                 ),
                 new(
-                    "Find {0} SETs in a row without making a mistake or using hints",
+                    "Find {0} SET(s) in a row without making a mistake or using hints",
                     typeof(XSetsInARowNoMistakesNoHints),
                     new[] {1},
                     new [] {10000}
                 ),
                 new(
-                    "Complete {0} games in a row using maximum {1} hints",
+                    "Complete {0} game(s) in a row using maximum {1} hint(s)",
                     typeof(XGamesInARowYHints),
                     new[] {1, 0},
                     new [] {10000, 10000}

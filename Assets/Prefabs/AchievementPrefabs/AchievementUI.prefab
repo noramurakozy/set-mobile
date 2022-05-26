@@ -131,6 +131,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   difficultyUI: {fileID: 8708290568754173144}
   textUI: {fileID: 7507969295034001062}
+  btnDelete: {fileID: 7507969294781053162}
 --- !u!1 &7507969294781053160
 GameObject:
   m_ObjectHideFlags: 0

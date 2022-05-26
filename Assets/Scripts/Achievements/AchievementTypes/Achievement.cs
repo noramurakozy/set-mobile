@@ -1,10 +1,11 @@
-﻿using GameScene.Statistics;
-using Statistics;
+﻿using System;
+using GameScene.Statistics;
 
 namespace Achievements.AchievementTypes
 {
     public abstract class Achievement
     {
+        public Guid ID { get; set; }
         public Difficulty Difficulty { get; set; }
         public string Text { get; set; }
         public Status Status { get; set; }
@@ -14,6 +15,7 @@ namespace Achievements.AchievementTypes
         {
             Text = text;
             Status = Status.InProgress;
+            ID = Guid.NewGuid();
         }
 
         public abstract void UpdateProgress(GameStatistics statistics);

@@ -75,5 +75,12 @@ namespace Achievements
             File.WriteAllText(Application.persistentDataPath + "/achievements.json",
                 JsonConvert.SerializeObject(allAchievements, JsonUtils.SerializerSettings));
         }
+
+        public void DeleteAchievement(Guid achievementID)
+        {
+            var achievementToDelete = AllAchievements.Find(a => a.ID == achievementID);
+            AllAchievements.Remove(achievementToDelete);
+            SaveAchievements(AllAchievements);
+        }
     }
 }

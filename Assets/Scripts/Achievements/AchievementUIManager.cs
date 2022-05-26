@@ -80,5 +80,11 @@ namespace Achievements
                 return achievementUI;
             }).ToList();
         }
+
+        public void DeleteAchievement(AchievementUI achievementUI)
+        {
+            AchievementManager.Instance.DeleteAchievement(achievementUI.Achievement.ID);
+            Destroy(achievementUI.gameObject);
+        }
     }
 }
