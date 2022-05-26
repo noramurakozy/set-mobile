@@ -1,22 +1,44 @@
-﻿using Statistics;
+﻿using Achievements.Difficulties;
+using GameScene.Statistics;
+using Statistics;
 
 namespace Achievements.AchievementTypes
 {
+    // Find X SETs in a row without making a mistake
     public class XSetsInARowNoMistakes : Achievement
     {
-        public XSetsInARowNoMistakes(string text, int[] conditions) : base(text)
+        private int _setsCountCondition;
+        public XSetsInARowNoMistakes(string text, int x) : base(text)
         {
-            
+            _setsCountCondition = x;
         }
 
         protected override void UpdateProgress(GameStatistics statistics)
         {
-            throw new System.NotImplementedException();
+            if (statistics.MaxSetsFoundInARow >= _setsCountCondition)
+            {
+                Status = Status.Complete;
+            }
         }
 
         public override void CalculateDifficulty()
         {
-            throw new System.NotImplementedException();
+            var setsInARowCountCategory = DifficultyUtils.CalculateSetsInARowCountCategory(_setsCountCondition);
+            switch (setsInARowCountCategory)
+            {
+                case ParameterCountCategory.Low:
+                    Difficulty = Difficulty.Easy;
+                    break;
+                case ParameterCountCategory.Medium:
+                    Difficulty = Difficulty.Medium;
+                    break;
+                case ParameterCountCategory.High:
+                    Difficulty = Difficulty.Hard;
+                    break;
+                default:
+                    Difficulty = Difficulty.Medium;
+                    break;
+            }
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using Statistics;
+﻿using GameScene.Statistics;
+using Statistics;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -54,7 +55,7 @@ namespace GameScene
         private void Update()
         {
             txtCardsLeft.text = Game.Deck.Count.ToString();
-            txtSetCount.text = Game.SetsFoundCount.ToString();
+            txtSetCount.text = Game.Statistics.SetsFound.ToString();
             txtTimer.text = Game.GetStopwatchString();
             if (Game.IsGameEnded())
             {
@@ -67,7 +68,7 @@ namespace GameScene
 
         private void OnDestroy()
         {
-            Game.EndGameWithoutSave();
+            Game.EndGame();
         }
 
         public void PauseGame()

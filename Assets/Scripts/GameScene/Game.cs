@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Linq;
 using DefaultNamespace;
 using DG.Tweening;
+using GameScene.Statistics;
 using Statistics;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -21,7 +22,6 @@ namespace GameScene
         private Sprite CardBack { get; set; }
 
         private Stopwatch _stopwatch;
-        public int SetsFoundCount { get; set; }
         public GameStatistics Statistics { get; set; }
         
         public Game(CardView cardPrefab, Sprite cardBack, GridManager centerGrid)
@@ -113,7 +113,11 @@ namespace GameScene
         {
             if (Set.IsSet())
             {
-                SetsFoundCount++;
+                Statistics.SetsFound++;
+                Statistics.MaxSetsFoundInARow++;
+                Statistics.LastSetFound = Set;
+                Statistics.CurrentElapsedSeconds = _stopwatch.Elapsed.Seconds;
+                
                 GameManager.Instance.EnableHintBtn(true);
                 return true;
             }
@@ -188,12 +192,7 @@ namespace GameScene
         {
             Utils.Shuffle(CardsOnTable);
             CenterGrid.ShuffleCards(CardsOnTable);
-        }
-
-        public void EndGameWithoutSave()
-        {
-            _stopwatch.Stop();
-            _stopwatch.Reset();
+            Statistics.ShufflesUsed++;
         }
 
         public void ResumeGame()
@@ -208,6 +207,9 @@ namespace GameScene
 
         public GameStatistics EndGame()
         {
+            _stopwatch.Stop();
+            Statistics.DurationInSeconds = _stopwatch.Elapsed.Seconds;
+            _stopwatch.Reset();
             return Statistics;
         }
 
@@ -267,6 +269,8 @@ namespace GameScene
 
         public void InvalidSetSelected()
         {
+            Statistics.MistakesCount++;
+            Statistics.MaxSetsFoundInARow = 0;
             // Shake if the selected three cards do not form a SET
             foreach (CardView c in ClickedCards)
             {

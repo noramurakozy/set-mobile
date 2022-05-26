@@ -1,27 +1,33 @@
 ﻿using Achievements.Difficulties;
 using GameScene.Statistics;
 using Statistics;
+using UnityEngine;
 
 namespace Achievements.AchievementTypes
 {
-    // Complete X games in Y seconds 
-    public class XGamesYSeconds : Achievement
+    // Find X SETs within the first Y seconds in Z games 
+    public class XSetsYSecondsZGames : Achievement
     {
         private int _gamesCount;
         
-        private int _gamesCountCondition;
+        private int _setsCountCondition;
         private int _secondsCountCondition;
-        public XGamesYSeconds(string text, int x, int y) : base(text)
+        private int _gamesCountCondition;
+        public XSetsYSecondsZGames(string text, int x, int y, int z) : base(text)
         {
-            _gamesCountCondition = x;
+            _setsCountCondition = x;
             _secondsCountCondition = y;
+            _gamesCountCondition = z;
         }
 
         protected override void UpdateProgress(GameStatistics statistics)
         {
-            if (statistics.DurationInSeconds <= _secondsCountCondition)
+            if (statistics.SetsFound >= _setsCountCondition)
             {
-                _gamesCount++;
+                if (statistics.CurrentElapsedSeconds >= _secondsCountCondition)
+                {
+                    _gamesCount++;
+                }
             }
 
             if (_gamesCount >= _gamesCountCondition)
@@ -32,7 +38,7 @@ namespace Achievements.AchievementTypes
 
         public override void CalculateDifficulty()
         {
-            var secondsCountCategory = DifficultyUtils.CalculateSecondsCountCategory(_secondsCountCondition);
+            var secondsCountCategory = DifficultyUtils.CalculateSecondsFor1SetCountCategory(_secondsCountCondition, _setsCountCondition);
 
             switch (secondsCountCategory)
             {

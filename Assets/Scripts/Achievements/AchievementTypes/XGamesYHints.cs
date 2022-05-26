@@ -1,8 +1,10 @@
 ﻿using Achievements.Difficulties;
+using GameScene.Statistics;
 using Statistics;
 
 namespace Achievements.AchievementTypes
 {
+    // Complete X games using maximum Y hints 
     public class XGamesYHints : Achievement
     {
         public int _gamesCount;
@@ -30,11 +32,8 @@ namespace Achievements.AchievementTypes
 
         public override void CalculateDifficulty()
         {
-            var gamesCount = _gamesCountCondition;
-            var hintsCount = _hintsCountCondition;
-
-            var gamesCountCategory = DifficultyUtils.CalculateGameCountCategory(gamesCount);
-            var hintCountCategory = DifficultyUtils.CalculateHintCountCategory(hintsCount);
+            var gamesCountCategory = DifficultyUtils.CalculateGameCountCategory(_gamesCountCondition);
+            var hintCountCategory = DifficultyUtils.CalculateHintCountCategory(_hintsCountCondition);
 
             switch (gamesCountCategory)
             {
@@ -56,7 +55,7 @@ namespace Achievements.AchievementTypes
                 case ParameterCountCategory.High when hintCountCategory == ParameterCountCategory.Medium:
                     Difficulty = Difficulty.Medium;
                     break;
-                case ParameterCountCategory.High when hintCountCategory == ParameterCountCategory.Low:
+                case ParameterCountCategory.High when hintCountCategory == ParameterCountCategory.High:
                     Difficulty = Difficulty.Easy;
                     break;
                 default:

@@ -102,7 +102,7 @@ namespace Achievements.CreateAchievement
                 ),
                 new(
                     "Find {0} SETs within the first {1} seconds in {2} games",
-                    typeof(XGamesYSetsZSeconds)
+                    typeof(XSetsYSecondsZGames)
                 ),
                 new(
                     "Complete {0} games without shuffling the cards",

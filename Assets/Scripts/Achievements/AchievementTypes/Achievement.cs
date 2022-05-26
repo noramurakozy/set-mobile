@@ -1,4 +1,5 @@
-﻿using Statistics;
+﻿using GameScene.Statistics;
+using Statistics;
 
 namespace Achievements.AchievementTypes
 {

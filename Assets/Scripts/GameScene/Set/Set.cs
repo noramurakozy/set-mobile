@@ -10,6 +10,7 @@ namespace DefaultNamespace
         private SetCardEvaluation _colorEvaluation;
         private SetCardEvaluation _numberEvaluation;
         private SetCardEvaluation _shapeEvaluation;
+        public int DiffPropsCount { get; set; }
 
         public HashSet<SetCard> GetSet()
         {
@@ -28,8 +29,10 @@ namespace DefaultNamespace
 
         public bool IsSet()
         {
+            DiffPropsCount = 0;
             bool returnValue = true;
             List<SetCard> setList = new List<SetCard>(set);
+            
             var numbersAllTheSame = 
                 setList[0].Number == setList[1].Number
                     && setList[1].Number == setList[2].Number;
@@ -44,6 +47,7 @@ namespace DefaultNamespace
             else if(numbersAllDifferent)
             {
                 _numberEvaluation = SetCardEvaluation.ALL_DIFFERENT;
+                DiffPropsCount++;
             }
             else
             {
@@ -65,6 +69,7 @@ namespace DefaultNamespace
             else if (shapesAllDifferent)
             {
                 _shapeEvaluation = SetCardEvaluation.ALL_DIFFERENT;
+                DiffPropsCount++;
             }
             else
             {
@@ -86,6 +91,7 @@ namespace DefaultNamespace
             else if (fillsAllDifferent)
             {
                 _fillEvaluation = SetCardEvaluation.ALL_DIFFERENT;
+                DiffPropsCount++;
             }
             else
             {
@@ -107,6 +113,7 @@ namespace DefaultNamespace
             else if (colorsAllDifferent)
             {
                 _colorEvaluation = SetCardEvaluation.ALL_DIFFERENT;
+                DiffPropsCount++;
             }
             else
             {
@@ -158,14 +165,6 @@ namespace DefaultNamespace
                     ".";
             }
 
-            // bool moreThanOneMixed = new List<SetCardEvaluation>()
-            // {
-            //     _fillEvaluation,
-            //     _colorEvaluation,
-            //     _numberEvaluation,
-            //     _shapeEvaluation
-            // }.Count(ev => ev == SetCardEvaluation.MIXED) >= 2;
-            
             var txtList = new List<string>();
             if (_fillEvaluation == SetCardEvaluation.MIXED)
             {
@@ -184,21 +183,7 @@ namespace DefaultNamespace
                 txtList.Add(" 1 of the cards has a different shape");
             }
 
-            // string final = "";
-            string final = txtList.Count >  1 ? string.Join(", ", txtList.Take(txtList.Count - 1)) + " and " + txtList.Last() : txtList.FirstOrDefault();
-            // for (var i = 0; i < txtList.Count; i++)
-            // {
-            //     var txt = txtList[i];
-            //     if (i == txtList.Count - 1 && moreThanOneMixed && txt != "")
-            //     {
-            //         txt = " and" + txt;
-            //     }
-            //     else if (i != 0 && txt != "" && moreThanOneMixed)
-            //     {
-            //         txt = ", " + txt;
-            //     }
-            //     final += txt;
-            // }
+            var final = txtList.Count >  1 ? string.Join(", ", txtList.Take(txtList.Count - 1)) + " and " + txtList.Last() : txtList.FirstOrDefault();
 
             return
                 final + " than the others.";
