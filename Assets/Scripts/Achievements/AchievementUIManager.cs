@@ -53,7 +53,7 @@ namespace Achievements
         private void Start()
         {
             InitAchievementUIs();
-            btnAddNew.onClick.AddListener(() => SceneManager.LoadScene("CreateAchievementScene"));
+            btnAddNew.onClick.AddListener(() => SceneChanger.Instance.LoadScene("CreateAchievementScene"));
         }
 
         private void InitAchievementUIs()

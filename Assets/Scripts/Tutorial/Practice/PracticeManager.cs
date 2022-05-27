@@ -46,7 +46,7 @@ namespace Tutorial.Practice
                 ResetExplanationText();
                 Tutorial.StartNewTutorial();
             });
-            btnPlay.onClick.AddListener(() => SceneManager.LoadScene("GameScene"));
+            btnPlay.onClick.AddListener(() => SceneChanger.Instance.LoadScene("GameScene"));
         }
 
         private void ResetExplanationText()

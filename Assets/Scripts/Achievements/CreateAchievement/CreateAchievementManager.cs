@@ -13,12 +13,8 @@ namespace Achievements.CreateAchievement
     public class CreateAchievementManager : MonoBehaviour
     {
         public static CreateAchievementManager Instance { get; private set; }
-        [SerializeField] private StepperUI stepperUI;
-        [SerializeField] private Button btnNextStep;
-        [SerializeField] private Button btnAcceptAndCreate;
-        
-        private int CurrentStep { get; set; }
-        
+        [SerializeField] private StepperController stepperController;
+
         private void Awake()
         {
             // If there is an instance, and it's not me, delete myself.
@@ -35,35 +31,15 @@ namespace Achievements.CreateAchievement
         // Start is called before the first frame update
         void Start()
         {
-            CurrentStep = 1;
-            stepperUI.AchievementTemplates = CreateAchievementTemplates();
-            stepperUI.MoveToStep(CurrentStep);
-            
-            btnNextStep.onClick.AddListener(MoveToNextStep);
-            btnAcceptAndCreate.onClick.AddListener(() =>
-            {
-                CreateAchievement();
-                SceneManager.LoadScene("AchievementsScene");
-            });
+            stepperController.AchievementTemplates = CreateAchievementTemplates();
+            stepperController.MoveToStep(1);
         }
 
-        private void CreateAchievement()
+        public void CreateAchievement(Achievement createdAchievement)
         {
-            var newAchievement = stepperUI.CreatedAchievement;
-            AchievementManager.Instance.AddToExistingAchievements(newAchievement);
+            AchievementManager.Instance.AddToExistingAchievements(createdAchievement);
         }
 
-        private void MoveToNextStep()
-        {
-            CurrentStep++;
-            stepperUI.MoveToStep(CurrentStep);
-            if (CurrentStep == 3)
-            {
-                btnAcceptAndCreate.gameObject.SetActive(true);
-                btnNextStep.gameObject.SetActive(false);
-            }
-        }
-        
         private List<AchievementTemplate> CreateAchievementTemplates()
         {
             return new List<AchievementTemplate>

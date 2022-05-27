@@ -11,8 +11,8 @@ public class MainMenuManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        btnPlay.onClick.AddListener(() => SceneManager.LoadScene("GameScene"));
-        btnTutorial.onClick.AddListener(() => SceneManager.LoadScene("TutorialScene"));
-        btnAchievements.onClick.AddListener(() => SceneManager.LoadScene("AchievementsScene"));
+        btnPlay.onClick.AddListener(() => SceneChanger.Instance.LoadScene("GameScene"));
+        btnTutorial.onClick.AddListener(() => SceneChanger.Instance.LoadScene("TutorialScene"));
+        btnAchievements.onClick.AddListener(() => SceneChanger.Instance.LoadScene("AchievementsScene"));
     }
 }

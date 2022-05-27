@@ -50,7 +50,7 @@ namespace GameScene
             btnHint.onClick.AddListener(Game.SelectHint);
             btnShuffle.onClick.AddListener(Game.RearrangeActualCards);
             btnDeal.onClick.AddListener(() => Game.DealAdditionalCards(3));
-            btnHowTo.onClick.AddListener(() => SceneManager.LoadScene("TutorialScene"));
+            btnHowTo.onClick.AddListener(() => SceneChanger.Instance.LoadScene("TutorialScene"));
             pausedOverlayGroup.GetComponentInChildren<Button>().onClick.AddListener(ResumeGame);
         }
         

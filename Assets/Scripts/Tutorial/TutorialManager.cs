@@ -27,7 +27,7 @@ namespace Tutorial
         {
             btnPractice.onClick.AddListener(() =>
             {
-                SceneManager.LoadScene("PracticeScene");
+                SceneChanger.Instance.LoadScene("PracticeScene");
             });
         }
     }

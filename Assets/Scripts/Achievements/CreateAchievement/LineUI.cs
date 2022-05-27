@@ -13,9 +13,16 @@ namespace Achievements.CreateAchievement
             _background.color = CustomColors.purple;
         }
 
-        public void SetAsActiveLine()
+        public void SetAsActiveLine(bool active)
         {
-            _background.color = CustomColors.grey;
+            if (active)
+            {
+                _background.color = CustomColors.grey;
+            }
+            else
+            {
+                _background.color = CustomColors.purple;
+            }
         }
     }
 }
