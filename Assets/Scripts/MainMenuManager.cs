@@ -17,5 +17,6 @@ public class MainMenuManager : MonoBehaviour
         btnTutorial.onClick.AddListener(() => SceneChanger.Instance.LoadScene("TutorialScene"));
         btnAchievements.onClick.AddListener(() => SceneChanger.Instance.LoadScene("AchievementsScene"));
         btnSettings.onClick.AddListener(() => SceneChanger.Instance.LoadScene("SettingsScene"));
+        btnStatistics.onClick.AddListener(() => SceneChanger.Instance.LoadScene("StatisticsScene"));
     }
 }

@@ -156,7 +156,7 @@ MonoBehaviour:
   btnTutorial: {fileID: 1542488381}
   btnAchievements: {fileID: 1184797827}
   btnSettings: {fileID: 1990374766}
-  btnStatistics: {fileID: 0}
+  btnStatistics: {fileID: 1497073599}
 --- !u!4 &229912735
 Transform:
   m_ObjectHideFlags: 0
@@ -992,6 +992,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6370304479541077999, guid: 8c26a3f5a36c70041ace0aabd083566e, type: 3}
   m_PrefabInstance: {fileID: 1184797826}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1497073599 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6370304479541077984, guid: 8c26a3f5a36c70041ace0aabd083566e, type: 3}
+  m_PrefabInstance: {fileID: 522990506}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1542488379
 PrefabInstance:
   m_ObjectHideFlags: 0
