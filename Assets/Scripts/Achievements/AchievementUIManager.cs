@@ -5,6 +5,7 @@ using System.Linq;
 using Achievements.AchievementTypes;
 using Newtonsoft.Json;
 using Statistics;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -21,6 +22,8 @@ namespace Achievements
         [SerializeField] private VerticalLayoutGroup inProgressScrollViewContent;
         [SerializeField] private VerticalLayoutGroup completedScrollViewContent;
         [SerializeField] private Button btnAddNew;
+        [SerializeField] private TMP_Text inProgressPlaceholderText;
+        [SerializeField] private TMP_Text completedPlaceholderText;
 
         private void Awake()
         {
@@ -37,6 +40,20 @@ namespace Achievements
             DestroyAllAchievementUIs();
         }
 
+        private void Start()
+        {
+            inProgressPlaceholderText.gameObject.SetActive(true);
+            completedPlaceholderText.gameObject.SetActive(true);
+            InitAchievementUIs();
+            btnAddNew.onClick.AddListener(() => SceneChanger.Instance.LoadScene("CreateAchievementScene"));
+        }
+
+        private void Update()
+        {
+            inProgressPlaceholderText.gameObject.SetActive(inProgressScrollViewContent.transform.childCount == 0);
+            completedPlaceholderText.gameObject.SetActive(completedScrollViewContent.transform.childCount == 0);
+        }
+
         private void DestroyAllAchievementUIs()
         {
             foreach (Transform child in inProgressScrollViewContent.transform)
@@ -48,12 +65,6 @@ namespace Achievements
             {
                 Destroy(child.gameObject);
             }
-        }
-
-        private void Start()
-        {
-            InitAchievementUIs();
-            btnAddNew.onClick.AddListener(() => SceneChanger.Instance.LoadScene("CreateAchievementScene"));
         }
 
         private void InitAchievementUIs()
