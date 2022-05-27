@@ -61,7 +61,7 @@ namespace Tutorial.Practice
                     float posX = col * tileWidth;
                     float posY = row * -tileHeight;
                     cardTransform.position = new Vector3(0, -50, 0);
-                    card.transform.DOLocalMove(new Vector2(posX, posY), 1f);
+                    card.transform.DOLocalMove(new Vector2(posX, posY), 1f).SetEase(Ease.OutBack, 0.4f);
                 }
             }
         }

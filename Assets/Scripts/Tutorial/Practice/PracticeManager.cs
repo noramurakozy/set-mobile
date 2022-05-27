@@ -17,6 +17,7 @@ namespace Tutorial.Practice
         [SerializeField] private TutorialGridManager centerVerticalGrid;
         [SerializeField] private Button btnNewTutorial;
         [SerializeField] private Button btnPlay;
+        [SerializeField] private Button btnBackToRules;
         [SerializeField] private TMP_Text txtExplanationTitle;
         [SerializeField] private TMP_Text txtExplanationBody;
         
@@ -47,6 +48,10 @@ namespace Tutorial.Practice
                 Tutorial.StartNewTutorial();
             });
             btnPlay.onClick.AddListener(() => SceneChanger.Instance.LoadScene("GameScene"));
+            btnBackToRules.onClick.AddListener(() =>
+            {
+                SceneChanger.Instance.LoadScene("TutorialScene");
+            });
         }
 
         private void ResetExplanationText()
