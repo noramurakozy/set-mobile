@@ -32,8 +32,8 @@ namespace Dialogs
             var toastInstance = Instantiate(toastPrefab, toastParent.transform, false);
             toastInstance.body.text = bodyText;
             toastInstance.transform.position = toastStartPositon.position;
-            toastInstance.transform.DOMoveY(toastEndPosition.position.y, 1);
-            toastInstance.GetComponent<CanvasGroup>().DOFade(0, duration).SetDelay(5f).onComplete += () =>
+            toastInstance.transform.DOMoveY(toastEndPosition.position.y, 1).SetEase(Ease.OutElastic, 0.4f);
+            toastInstance.GetComponent<CanvasGroup>().DOFade(0, duration).SetDelay(3f).onComplete += () =>
             {
                 Destroy(toastInstance.gameObject);
             };

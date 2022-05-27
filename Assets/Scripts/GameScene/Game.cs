@@ -4,10 +4,8 @@ using System.Linq;
 using DefaultNamespace;
 using DG.Tweening;
 using GameScene.Statistics;
-using Statistics;
 using UnityEngine;
 using UnityEngine.Rendering;
-using Debug = UnityEngine.Debug;
 using UpdateType = Achievements.AchievementTypes.UpdateType;
 
 namespace GameScene
@@ -152,7 +150,7 @@ namespace GameScene
 
         public void RemoveSelectionsOnCards()
         {
-            foreach (CardView cv in ClickedCards)
+            foreach (CardView cv in CardsOnTable)
             {
                 cv.Select(SelectType.NONE);
             }
@@ -187,6 +185,31 @@ namespace GameScene
             }
 
             return null;
+        }
+        
+        public int GetNumOfSetsOnTable()
+        {
+            List<Set> hintSetList = new List<Set>();
+            for (int i = 0; i < CardsOnTable.Count; i++)
+            {
+                Set hintSet = new Set();
+                for (int j = i + 1; j < CardsOnTable.Count; j++)
+                {
+                    for (int k = j + 1; k < CardsOnTable.Count; k++)
+                    {
+                        hintSet.AddToSet(CardsOnTable[i].Card);
+                        hintSet.AddToSet(CardsOnTable[j].Card);
+                        hintSet.AddToSet(CardsOnTable[k].Card);
+
+                        if (hintSet.IsSet())
+                        {
+                            hintSetList.Add(hintSet);
+                        }
+                    }
+                }
+            }
+
+            return hintSetList.Count;
         }
 
         public void RearrangeActualCards()

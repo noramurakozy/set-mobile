@@ -39,10 +39,10 @@ namespace SettingsScene
 
         private void SetupToggles()
         {
-            showTimer.isOn = PlayerPrefs.GetInt("showTimer") == 1;
-            showNumOfSets.isOn = PlayerPrefs.GetInt("showNumOfSets") == 1;
-            showHintsUsed.isOn = PlayerPrefs.GetInt("showHintsUsed") == 1;
-            showShufflesUsed.isOn = PlayerPrefs.GetInt("showShufflesUsed") == 1;
+            showTimer.isOn = PlayerPrefs.GetInt("showTimer", 1) == 1;
+            showNumOfSets.isOn = PlayerPrefs.GetInt("showNumOfSets",0) == 1;
+            showHintsUsed.isOn = PlayerPrefs.GetInt("showHintsUsed", 0) == 1;
+            showShufflesUsed.isOn = PlayerPrefs.GetInt("showShufflesUsed", 0) == 1;
         }
 
         private void ResetGame()

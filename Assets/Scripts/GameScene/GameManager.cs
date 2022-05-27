@@ -25,7 +25,13 @@ namespace GameScene
         [SerializeField] private TMP_Text txtCardsLeft;
         [SerializeField] private TMP_Text txtSetCount;
         [SerializeField] private TMP_Text txtTimer;
+        [SerializeField] private TMP_Text txtSetCountOnTable;
+        [SerializeField] private Image hintCountBg;
+        [SerializeField] private Image shuffleCountBg;
+        [SerializeField] private Image timerBg;
         [SerializeField] private GameObject pausedOverlayGroup;
+        private TMP_Text _txtHintCount;
+        private TMP_Text _txtShuffleCount;
 
         private GameStatistics _finalGameStatistics;
 
@@ -51,14 +57,46 @@ namespace GameScene
             btnShuffle.onClick.AddListener(Game.RearrangeActualCards);
             btnDeal.onClick.AddListener(() => Game.DealAdditionalCards(3));
             btnHowTo.onClick.AddListener(() => SceneChanger.Instance.LoadScene("TutorialScene"));
+            btnSettings.onClick.AddListener(() => SceneChanger.Instance.LoadScene("SettingsScene"));
             pausedOverlayGroup.GetComponentInChildren<Button>().onClick.AddListener(ResumeGame);
+
+            _txtHintCount = hintCountBg.GetComponentInChildren<TMP_Text>();
+            _txtShuffleCount = shuffleCountBg.GetComponentInChildren<TMP_Text>();
+
+            SetupUIPlayerPrefs();
         }
-        
+
+        private void SetupUIPlayerPrefs()
+        {
+            if (PlayerPrefs.GetInt("showHintsUsed") == 1)
+            {
+                hintCountBg.gameObject.SetActive(true);
+            }
+
+            if (PlayerPrefs.GetInt("showShufflesUsed") == 1)
+            {
+                shuffleCountBg.gameObject.SetActive(true);
+            }
+
+            if (PlayerPrefs.GetInt("showTimer") == 0)
+            {
+                timerBg.gameObject.SetActive(false);
+            }
+            if (PlayerPrefs.GetInt("showNumOfSets") == 1)
+            {
+                txtSetCountOnTable.gameObject.SetActive(true);
+            }
+        }
+
         private void Update()
         {
             txtCardsLeft.text = Game.Deck.Count.ToString();
             txtSetCount.text = Game.Statistics.SetsFound.ToString();
             txtTimer.text = Game.GetStopwatchString();
+            _txtHintCount.text = Game.Statistics.HintsUsed.ToString();
+            _txtShuffleCount.text = Game.Statistics.ShufflesUsed.ToString();
+            txtSetCountOnTable.text = Game.GetNumOfSetsOnTable() + " SETs available";
+
             if (Game.IsGameEnded())
             {
                 _finalGameStatistics = Game.EndGame();
