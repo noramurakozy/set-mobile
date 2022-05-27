@@ -11,6 +11,7 @@ public class SceneChanger
     
     private SceneChanger()
     {
+        sceneHistory.Add(SceneManager.GetActiveScene().name);
     }
 
     public void LoadScene(string newScene)

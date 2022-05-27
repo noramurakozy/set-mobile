@@ -8,7 +8,7 @@ public class BackButtonClickHandler : MonoBehaviour
     {
         if (backToMainMenu)
         {
-            SceneManager.LoadScene("MainMenu");
+            SceneChanger.Instance.LoadScene("MainMenu");
         }
         else
         {

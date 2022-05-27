@@ -506,6 +506,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &774066450 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1341143491858610907, guid: 43d9dfc5430a6b840af26741836b4658, type: 3}
+  m_PrefabInstance: {fileID: 1669993345}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &852688537
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -612,6 +623,28 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 2945512657891003314, guid: 8128df44c49147445a0745ea1cfce6d7, type: 3}
   m_PrefabInstance: {fileID: 852688537}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &932593805 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6370304479541077984, guid: 8c26a3f5a36c70041ace0aabd083566e, type: 3}
+  m_PrefabInstance: {fileID: 1267293322}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &955801277 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1341143491858610907, guid: 43d9dfc5430a6b840af26741836b4658, type: 3}
+  m_PrefabInstance: {fileID: 2146345318}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1267293322
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -910,7 +943,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1341143491858610910, guid: 43d9dfc5430a6b840af26741836b4658, type: 3}
       propertyPath: m_Name
-      value: SwitchToggle (3)
+      value: ShufflesToggle
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43d9dfc5430a6b840af26741836b4658, type: 3}
@@ -919,6 +952,17 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1341143491858610909, guid: 43d9dfc5430a6b840af26741836b4658, type: 3}
   m_PrefabInstance: {fileID: 1341143490608960279}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1469852108 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1341143491858610907, guid: 43d9dfc5430a6b840af26741836b4658, type: 3}
+  m_PrefabInstance: {fileID: 1341143490608960279}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1669993345
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1040,10 +1084,21 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1341143491858610910, guid: 43d9dfc5430a6b840af26741836b4658, type: 3}
       propertyPath: m_Name
-      value: SwitchToggle (2)
+      value: HintsToggle
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43d9dfc5430a6b840af26741836b4658, type: 3}
+--- !u!114 &1760152252 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1341143491858610907, guid: 43d9dfc5430a6b840af26741836b4658, type: 3}
+  m_PrefabInstance: {fileID: 1348978584}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9085046f02f69544eb97fd06b6048fe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1776474447
 GameObject:
   m_ObjectHideFlags: 0
@@ -1244,6 +1299,55 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f54f407a5ac055849b06bdf2fcee8335, type: 3}
+--- !u!1 &1941586322
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1941586324}
+  - component: {fileID: 1941586323}
+  m_Layer: 0
+  m_Name: SettingsManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1941586323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1941586322}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3fb27634913b4c30a721eeace8d5cf69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  showTimer: {fileID: 1469852108}
+  showNumOfSets: {fileID: 955801277}
+  showHintsUsed: {fileID: 774066450}
+  showShufflesUsed: {fileID: 1760152252}
+  btnResetGame: {fileID: 932593805}
+--- !u!4 &1941586324
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1941586322}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0.31472668, y: 0.17541797, z: 299.82526}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &2146345318
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1365,7 +1469,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1341143491858610910, guid: 43d9dfc5430a6b840af26741836b4658, type: 3}
       propertyPath: m_Name
-      value: SwitchToggle (1)
+      value: NrOfSetsToggle
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43d9dfc5430a6b840af26741836b4658, type: 3}
@@ -1490,7 +1594,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1341143491858610910, guid: 43d9dfc5430a6b840af26741836b4658, type: 3}
       propertyPath: m_Name
-      value: SwitchToggle
+      value: TimerToggle
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 43d9dfc5430a6b840af26741836b4658, type: 3}
