@@ -21,7 +21,10 @@ namespace GameScene
         private Sprite CardBack { get; set; }
 
         private Stopwatch _stopwatch;
-        public GameStatistics Statistics { get; set; }
+
+        public bool IsGameRunning { get; set; }
+
+        // public GameStatistics Statistics { get; set; }
         
         public Game(CardView cardPrefab, Sprite cardBack, GridManager centerGrid)
         {
@@ -32,7 +35,6 @@ namespace GameScene
             CenterGrid = centerGrid;
             CardBack = cardBack;
             _stopwatch = new Stopwatch();
-            Statistics = new GameStatistics();
 
             // TODO: needed to save a game in progress
             // prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -40,11 +42,13 @@ namespace GameScene
 
         public void StartNewGame()
         {
+            IsGameRunning = true;
             Deck = new Deck();
             var starterSetCards = Deck.CreateCardsToPlay(CenterGrid.cols * CenterGrid.rows);
             CardsOnTable = GameUtils.InstantiateCardViews(starterSetCards, CardPrefab);
             AnimateCardsIntoGridFromDeck(CardsOnTable);
             _stopwatch.Start();
+            GameStatisticsManager.Instance.ResetStatistics();
 
             // prefs.edit().putBoolean("gameInProgress", true).apply();
         }
@@ -101,26 +105,27 @@ namespace GameScene
         {
             if (Set.IsSet())
             {
-                Statistics.SetsFound++;
-                Statistics.MaxSetsFoundInARow++;
-                Statistics.LastSetFound = Set;
-                Statistics.CurrentElapsedSeconds = (int)_stopwatch.Elapsed.TotalSeconds;
+                var statistics = GameStatisticsManager.Instance.GameStatistics;
+                statistics.SetsFound++;
+                statistics.MaxSetsFoundInARow++;
+                statistics.LastSetFound = Set;
+                statistics.CurrentElapsedSeconds = (int)_stopwatch.Elapsed.TotalSeconds;
                 switch (Set.DiffPropsCount)
                 {
                     case 1:
-                        Statistics.NumSets1DiffProp++;
+                        statistics.NumSets1DiffProp++;
                         break;
                     case 2:
-                        Statistics.NumSets2DiffProp++;
+                        statistics.NumSets2DiffProp++;
                         break;
                     case 3:
-                        Statistics.NumSets3DiffProp++;
+                        statistics.NumSets3DiffProp++;
                         break;
                     case 4:
-                        Statistics.NumSets4DiffProp++;
+                        statistics.NumSets4DiffProp++;
                         break;
                 }
-                GameManager.Instance.UpdateAchievementProgresses(Statistics, UpdateType.DuringGame);
+                GameManager.Instance.UpdateAchievementProgresses(statistics, UpdateType.DuringGame);
                 GameManager.Instance.EnableHintBtn(true);
                 return true;
             }
@@ -135,7 +140,7 @@ namespace GameScene
 
         public void SelectHint()
         {
-            Statistics.HintsUsed++;
+            GameStatisticsManager.Instance.GameStatistics.HintsUsed++;
             List<CardView> set = FindSetOnTable();
             if (set == null)
             {
@@ -220,7 +225,7 @@ namespace GameScene
         {
             Utils.Shuffle(CardsOnTable);
             CenterGrid.ShuffleCards(CardsOnTable);
-            Statistics.ShufflesUsed++;
+            GameStatisticsManager.Instance.GameStatistics.ShufflesUsed++;
         }
 
         public void ResumeGame()
@@ -233,12 +238,18 @@ namespace GameScene
             _stopwatch.Stop();
         }
 
-        public GameStatistics EndGame()
+        public void EndGame()
         {
+            if (!IsGameRunning)
+            {
+                return;
+            }
+
+            IsGameRunning = false;
             _stopwatch.Stop();
-            Statistics.DurationInSeconds = (int)_stopwatch.Elapsed.TotalSeconds;
+            GameStatisticsManager.Instance.GameStatistics.DurationInSeconds = (int)_stopwatch.Elapsed.TotalSeconds;
             _stopwatch.Reset();
-            return Statistics;
+            // return Statistics;
         }
 
         private void DestroyCards(List<CardView> toDestroy)
@@ -295,8 +306,9 @@ namespace GameScene
 
         public void InvalidSetSelected()
         {
-            Statistics.MistakesCount++;
-            Statistics.MaxSetsFoundInARow = 0;
+            var statistics = GameStatisticsManager.Instance.GameStatistics;
+            statistics.MistakesCount++;
+            statistics.MaxSetsFoundInARow = 0;
             // Shake if the selected three cards do not form a SET
             foreach (CardView c in ClickedCards)
             {

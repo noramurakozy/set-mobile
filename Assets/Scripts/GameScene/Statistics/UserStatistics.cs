@@ -38,6 +38,8 @@ namespace GameScene.Statistics
         public int NumEasyAchievements { get; set; }
         public int AchievementsUnlockedInTotal { get; set; }
         public int CustomAchievementsCount { get; set; }
+        
+        public bool IsNewBestTime { get; set; }
 
         public void UpdateStatistics(GameStatistics gameStatistics)
         {
@@ -69,9 +71,14 @@ namespace GameScene.Statistics
             }
             else
             {
-                if (gameStatistics.DurationInSeconds < BestTime.Seconds)
+                if (gameStatistics.DurationInSeconds < BestTime.TotalSeconds)
                 {
                     BestTime = TimeSpan.FromSeconds(gameStatistics.DurationInSeconds);
+                    IsNewBestTime = true;
+                }
+                else
+                {
+                    IsNewBestTime = false;
                 }
             }
         }

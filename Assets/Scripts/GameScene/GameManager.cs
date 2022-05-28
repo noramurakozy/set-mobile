@@ -1,11 +1,12 @@
 ﻿using Achievements;
-using Achievements.AchievementTypes;
+using DG.Tweening;
 using GameScene.Statistics;
 using Statistics;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using UpdateType = Achievements.AchievementTypes.UpdateType;
 
 namespace GameScene
 {
@@ -33,7 +34,6 @@ namespace GameScene
         private TMP_Text _txtHintCount;
         private TMP_Text _txtShuffleCount;
 
-        private GameStatistics _finalGameStatistics;
         private bool _gameStatsSaved;
 
         private void Awake()
@@ -92,20 +92,22 @@ namespace GameScene
 
         private void Update()
         {
+            var gameStatistics = GameStatisticsManager.Instance.GameStatistics;
             txtCardsLeft.text = Game.Deck.Count.ToString();
-            txtSetCount.text = Game.Statistics.SetsFound.ToString();
+            txtSetCount.text = gameStatistics.SetsFound.ToString();
             txtTimer.text = Game.GetTimerString();
-            _txtHintCount.text = Game.Statistics.HintsUsed.ToString();
-            _txtShuffleCount.text = Game.Statistics.ShufflesUsed.ToString();
+            _txtHintCount.text = gameStatistics.HintsUsed.ToString();
+            _txtShuffleCount.text = gameStatistics.ShufflesUsed.ToString();
             txtSetCountOnTable.text = Game.GetNumOfSetsOnTable() + " SETs available";
 
             if (Game.IsGameEnded() && !_gameStatsSaved)
             {
-                _finalGameStatistics = Game.EndGame();
-                UpdateAchievementProgresses(_finalGameStatistics, UpdateType.EndOfGame);
-                UserStatisticsManager.Instance.UpdateUserStatistics(_finalGameStatistics);
+                Game.EndGame();
+                UpdateAchievementProgresses(gameStatistics, UpdateType.EndOfGame);
+                UserStatisticsManager.Instance.UpdateUserStatistics(gameStatistics);
                 _gameStatsSaved = true;
-                // SceneManager.LoadScene("MainMenu");
+                DOTween.CompleteAll();
+                SceneChanger.Instance.LoadScene("GameSummaryScene");
             }
         }
 
