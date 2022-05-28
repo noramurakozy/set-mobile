@@ -34,6 +34,7 @@ namespace GameScene
         private TMP_Text _txtShuffleCount;
 
         private GameStatistics _finalGameStatistics;
+        private bool _gameStatsSaved;
 
         private void Awake()
         {
@@ -50,6 +51,7 @@ namespace GameScene
 
         private void Start()
         {
+            _gameStatsSaved = false;
             Game = new Game(cardPrefab, cardBack, gridManager);
             Game.StartNewGame();
 
@@ -92,15 +94,17 @@ namespace GameScene
         {
             txtCardsLeft.text = Game.Deck.Count.ToString();
             txtSetCount.text = Game.Statistics.SetsFound.ToString();
-            txtTimer.text = Game.GetStopwatchString();
+            txtTimer.text = Game.GetTimerString();
             _txtHintCount.text = Game.Statistics.HintsUsed.ToString();
             _txtShuffleCount.text = Game.Statistics.ShufflesUsed.ToString();
             txtSetCountOnTable.text = Game.GetNumOfSetsOnTable() + " SETs available";
 
-            if (Game.IsGameEnded())
+            if (Game.IsGameEnded() && !_gameStatsSaved)
             {
                 _finalGameStatistics = Game.EndGame();
                 UpdateAchievementProgresses(_finalGameStatistics, UpdateType.EndOfGame);
+                UserStatisticsManager.Instance.UpdateUserStatistics(_finalGameStatistics);
+                _gameStatsSaved = true;
                 // SceneManager.LoadScene("MainMenu");
             }
         }

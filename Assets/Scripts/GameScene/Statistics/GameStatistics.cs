@@ -12,5 +12,9 @@ namespace GameScene.Statistics
         public Set LastSetFound { get; set; }
         public int CurrentElapsedSeconds { get; set; }
         public int SetsFound { get; set; }
+        public int NumSets1DiffProp { get; set; }
+        public int NumSets2DiffProp { get; set; }
+        public int NumSets3DiffProp { get; set; }
+        public int NumSets4DiffProp { get; set; }
     }
 }

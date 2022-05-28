@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 public static class Utils
 {
@@ -13,5 +14,15 @@ public static class Utils
             int k = Rng.Next(n + 1);
             (list[k], list[n]) = (list[n], list[k]);
         }
+    }
+
+    public static string GetTimeSpanString(TimeSpan timeSpan)
+    {
+        if (timeSpan.Hours == 0)
+        {
+            return timeSpan.ToString(@"mm\:ss");
+        }
+
+        return timeSpan.ToString(@"hh\:mm\:ss");
     }
 }

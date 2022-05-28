@@ -40,7 +40,6 @@ namespace Achievements
         {
             var args = new List<object> {achievementText};
 
-            // args.AddRange(_inputFields.Select(field => (object)int.Parse(field.text)));
             args.AddRange(conditions);
             var instance = (Achievement)Activator.CreateInstance(template.Type, args.ToArray());
             instance.CalculateDifficulty();
@@ -72,6 +71,7 @@ namespace Achievements
                 if (preStatus == Status.InProgress && afterStatus == Status.Complete)
                 {
                     ToastManager.Instance.ShowToast(achievement.Text, 2f);
+                    UserStatisticsManager.Instance.UpdateAchievementStatistics(achievement);
                 }
             }
             SaveAchievements(AllAchievements);
@@ -79,6 +79,7 @@ namespace Achievements
         
         private void SaveAchievements(List<Achievement> allAchievements)
         {
+            UserStatisticsManager.Instance.UpdateCustomAchievementCount(allAchievements.Count);
             File.WriteAllText(Application.persistentDataPath + "/achievements.json",
                 JsonConvert.SerializeObject(allAchievements, JsonUtils.SerializerSettings));
         }

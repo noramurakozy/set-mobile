@@ -55,17 +55,6 @@ namespace GameScene
             CenterGrid.GenerateGrid(cardsToAnimate, "center");
         }
 
-        public string GetStopwatchString()
-        {
-            var elapsedTime = _stopwatch.Elapsed;
-            if (elapsedTime.Hours == 0)
-            {
-                return elapsedTime.ToString(@"mm\:ss");
-            }
-
-            return elapsedTime.ToString(@"hh\:mm\:ss");
-        }
-
         public void AddToSet(SetCard card)
         {
             Set.AddToSet(card);
@@ -115,7 +104,22 @@ namespace GameScene
                 Statistics.SetsFound++;
                 Statistics.MaxSetsFoundInARow++;
                 Statistics.LastSetFound = Set;
-                Statistics.CurrentElapsedSeconds = _stopwatch.Elapsed.Seconds;
+                Statistics.CurrentElapsedSeconds = (int)_stopwatch.Elapsed.TotalSeconds;
+                switch (Set.DiffPropsCount)
+                {
+                    case 1:
+                        Statistics.NumSets1DiffProp++;
+                        break;
+                    case 2:
+                        Statistics.NumSets2DiffProp++;
+                        break;
+                    case 3:
+                        Statistics.NumSets3DiffProp++;
+                        break;
+                    case 4:
+                        Statistics.NumSets4DiffProp++;
+                        break;
+                }
                 GameManager.Instance.UpdateAchievementProgresses(Statistics, UpdateType.DuringGame);
                 GameManager.Instance.EnableHintBtn(true);
                 return true;
@@ -232,7 +236,7 @@ namespace GameScene
         public GameStatistics EndGame()
         {
             _stopwatch.Stop();
-            Statistics.DurationInSeconds = _stopwatch.Elapsed.Seconds;
+            Statistics.DurationInSeconds = (int)_stopwatch.Elapsed.TotalSeconds;
             _stopwatch.Reset();
             return Statistics;
         }
@@ -320,6 +324,11 @@ namespace GameScene
         public bool IsGameEnded()
         {
             return Deck.IsEmpty() && FindSetOnTable() == null;
+        }
+
+        public string GetTimerString()
+        {
+            return Utils.GetTimeSpanString(_stopwatch.Elapsed);
         }
     }
 }
