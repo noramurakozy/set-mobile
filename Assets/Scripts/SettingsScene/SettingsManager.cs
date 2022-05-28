@@ -12,6 +12,7 @@ namespace SettingsScene
         [SerializeField] private Toggle showNumOfSets;
         [SerializeField] private Toggle showHintsUsed;
         [SerializeField] private Toggle showShufflesUsed;
+        [SerializeField] private Toggle autoDeal;
         [SerializeField] private Button btnResetGame;
 
         private void Start()
@@ -33,6 +34,10 @@ namespace SettingsScene
             {
                 PlayerPrefs.SetInt("showShufflesUsed", on ? 1 : 0);
             });
+            autoDeal.onValueChanged.AddListener(on =>
+            {
+                PlayerPrefs.SetInt("autoDeal", on ? 1 : 0);
+            });
             
             btnResetGame.onClick.AddListener(ResetGame);
         }
@@ -43,6 +48,7 @@ namespace SettingsScene
             showNumOfSets.isOn = PlayerPrefs.GetInt("showNumOfSets",0) == 1;
             showHintsUsed.isOn = PlayerPrefs.GetInt("showHintsUsed", 0) == 1;
             showShufflesUsed.isOn = PlayerPrefs.GetInt("showShufflesUsed", 0) == 1;
+            autoDeal.isOn = PlayerPrefs.GetInt("autoDeal", 1) == 1;
         }
 
         private void ResetGame()
@@ -52,7 +58,7 @@ namespace SettingsScene
             // Reload toggles
             SetupToggles();
             File.Delete(Application.persistentDataPath + "/achievements.json");
-            // TODO: delete player statistics
+            File.Delete(Application.persistentDataPath + "/userStatistics.json");
         }
     }
 }
