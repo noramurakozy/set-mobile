@@ -50,7 +50,6 @@ namespace Achievements.CreateAchievement
             btnAcceptAndCreate.onClick.AddListener(() =>
             {
                 CreateAchievementManager.Instance.CreateAchievement(CreatedAchievement);
-                SceneChanger.Instance.LoadScene("AchievementsScene");
             });
         }
 

@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -10,14 +11,33 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private Button btnSettings;
     [SerializeField] private Button btnStatistics;
     
+    [SerializeField] private Fader fader;
+    
     // Start is called before the first frame update
     void Start()
     {
         Application.targetFrameRate = 60;
-        btnPlay.onClick.AddListener(() => SceneChanger.Instance.LoadScene("GameScene"));
-        btnTutorial.onClick.AddListener(() => SceneChanger.Instance.LoadScene("TutorialScene"));
-        btnAchievements.onClick.AddListener(() => SceneChanger.Instance.LoadScene("AchievementsScene"));
-        btnSettings.onClick.AddListener(() => SceneChanger.Instance.LoadScene("SettingsScene"));
-        btnStatistics.onClick.AddListener(() => SceneChanger.Instance.LoadScene("StatisticsScene"));
+        
+        fader.EnterSceneAnimation();
+        btnPlay.onClick.AddListener(() =>
+        {
+            fader.ExitSceneAnimation("GameScene");
+        });
+        btnTutorial.onClick.AddListener(() =>
+        {
+            fader.ExitSceneAnimation("TutorialScene");
+        });
+        btnAchievements.onClick.AddListener(() =>
+        {
+            fader.ExitSceneAnimation("AchievementsScene");
+        });
+        btnSettings.onClick.AddListener(() =>
+        {
+            fader.ExitSceneAnimation("SettingsScene");
+        });
+        btnStatistics.onClick.AddListener(() =>
+        {
+            fader.ExitSceneAnimation("StatisticsScene");
+        });
     }
 }

@@ -33,12 +33,16 @@ namespace GameScene.Statistics
         [SerializeField] private TMP_Text txtCustomAchievementsCount;
         
         [SerializeField] private Button btnClearStats;
+        [SerializeField] private Button btnHome;
         [SerializeField] private ConfirmDialogUI confirmDialogUI;
+        [SerializeField] private Fader fader;
 
         private void Start()
         {
+            fader.EnterSceneAnimation();
             UserStatisticsManager.Instance.UpdateAchievementStatistics();
             btnClearStats.onClick.AddListener(ShowConfirmationDialog);
+            btnHome.onClick.AddListener(() => fader.ExitSceneAnimation("MainMenu"));
             SetupTxtFields();
         }
 

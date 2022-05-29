@@ -15,10 +15,13 @@ namespace SettingsScene
         [SerializeField] private Toggle showShufflesUsed;
         [SerializeField] private Toggle autoDeal;
         [SerializeField] private Button btnResetGame;
+        [SerializeField] private Button btnHome;
         [SerializeField] private ConfirmDialogUI confirmDialogUI;
+        [SerializeField] private Fader fader;
 
         private void Start()
         {
+            fader.EnterSceneAnimation();
             SetupToggles();
             showTimer.onValueChanged.AddListener(on =>
             {
@@ -42,6 +45,7 @@ namespace SettingsScene
             });
             
             btnResetGame.onClick.AddListener(ShowConfirmationPopup);
+            btnHome.onClick.AddListener(() => fader.ExitSceneAnimation("MainMenu"));
         }
 
         private void SetupToggles()

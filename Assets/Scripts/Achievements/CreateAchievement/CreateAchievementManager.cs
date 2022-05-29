@@ -14,6 +14,7 @@ namespace Achievements.CreateAchievement
     {
         public static CreateAchievementManager Instance { get; private set; }
         [SerializeField] private StepperController stepperController;
+        [SerializeField] private Fader fader;
 
         private void Awake()
         {
@@ -31,6 +32,7 @@ namespace Achievements.CreateAchievement
         // Start is called before the first frame update
         void Start()
         {
+            fader.EnterSceneAnimation();
             stepperController.AchievementTemplates = CreateAchievementTemplates();
             stepperController.MoveToStep(1);
         }
@@ -38,6 +40,7 @@ namespace Achievements.CreateAchievement
         public void CreateAchievement(Achievement createdAchievement)
         {
             AchievementManager.Instance.AddToExistingAchievements(createdAchievement);
+            fader.ExitSceneAnimation("AchievementsScene");
         }
 
         private List<AchievementTemplate> CreateAchievementTemplates()

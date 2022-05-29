@@ -19,9 +19,12 @@ namespace GameSummaryScene
         [SerializeField] private TMP_Text txtShufflesUsed;
         [SerializeField] private TMP_Text txtMistakes;
         [SerializeField] private Button btnPlayAgain;
+        [SerializeField] private Button btnHome;
+        [SerializeField] private Fader fader;
 
         private void Start()
         {
+            fader.EnterSceneAnimation();
             var latestGameStatistics = GameStatisticsManager.Instance.GameStatistics;
             
             txtTitle.text = FeedbackUtils.GetRandomPositiveEndGameFeedback();
@@ -41,8 +44,11 @@ namespace GameSummaryScene
             txtHintsUsed.text = latestGameStatistics.HintsUsed.ToString();
             txtShufflesUsed.text = latestGameStatistics.ShufflesUsed.ToString();
             txtMistakes.text = latestGameStatistics.MistakesCount.ToString();
-            btnPlayAgain.onClick.AddListener(() => SceneChanger.Instance.LoadScene("GameScene"));
-            
+            btnPlayAgain.onClick.AddListener(() =>
+            {
+                fader.ExitSceneAnimation("GameScene");
+            });
+            btnHome.onClick.AddListener(() => fader.ExitSceneAnimation("MainMenu"));
             AchievementManager.Instance.UpdateProgressOfAchievements(latestGameStatistics, UpdateType.EndOfGame);
         }
     }

@@ -21,6 +21,7 @@ namespace Tutorial.Practice
         [SerializeField] private Button btnBackToRules;
         [SerializeField] private TMP_Text txtExplanationTitle;
         [SerializeField] private TMP_Text txtExplanationBody;
+        [SerializeField] private Fader fader;
         
         public Tutorial Tutorial { get; set; }
         
@@ -48,10 +49,13 @@ namespace Tutorial.Practice
                 ResetExplanationText();
                 Tutorial.StartNewTutorial();
             });
-            btnPlay.onClick.AddListener(() => SceneChanger.Instance.LoadScene("GameScene"));
+            btnPlay.onClick.AddListener(() =>
+            {
+                fader.ExitSceneAnimation("GameScene");
+            });
             btnBackToRules.onClick.AddListener(() =>
             {
-                SceneChanger.Instance.LoadScene("TutorialScene");
+                fader.ExitSceneAnimation("TutorialScene");
             });
         }
 

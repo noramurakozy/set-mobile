@@ -9,6 +9,7 @@ namespace Tutorial
         public static TutorialManager Instance { get; private set; }
 
         [SerializeField] private Button btnPractice;
+        [SerializeField] private Fader fader;
         
         private void Awake()
         {
@@ -27,7 +28,7 @@ namespace Tutorial
         {
             btnPractice.onClick.AddListener(() =>
             {
-                SceneChanger.Instance.LoadScene("PracticeScene");
+                fader.ExitSceneAnimation("PracticeScene");
             });
         }
     }

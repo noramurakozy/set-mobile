@@ -23,9 +23,11 @@ namespace Achievements
         [SerializeField] private VerticalLayoutGroup inProgressScrollViewContent;
         [SerializeField] private VerticalLayoutGroup completedScrollViewContent;
         [SerializeField] private Button btnAddNew;
+        [SerializeField] private Button btnHome;
         [SerializeField] private TMP_Text inProgressPlaceholderText;
         [SerializeField] private TMP_Text completedPlaceholderText;
         [SerializeField] private ConfirmDialogUI confirmDialogUI;
+        [SerializeField] private Fader fader;
 
         private void Awake()
         {
@@ -44,10 +46,15 @@ namespace Achievements
 
         private void Start()
         {
+            fader.EnterSceneAnimation();
             inProgressPlaceholderText.gameObject.SetActive(true);
             completedPlaceholderText.gameObject.SetActive(true);
             InitAchievementUIs();
-            btnAddNew.onClick.AddListener(() => SceneChanger.Instance.LoadScene("CreateAchievementScene"));
+            btnAddNew.onClick.AddListener(() =>
+            {
+                fader.ExitSceneAnimation("CreateAchievementScene");
+            });
+            btnHome.onClick.AddListener(() => fader.ExitSceneAnimation("MainMenu"));
         }
 
         private void Update()

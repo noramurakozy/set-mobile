@@ -35,6 +35,7 @@ namespace GameScene
         [SerializeField] private Image timerBg;
         [SerializeField] private GameObject pausedOverlayGroup;
         [SerializeField] private ConfirmDialogUI confirmDialogUI;
+        [SerializeField] private Fader fader;
         private TMP_Text _txtHintCount;
         private TMP_Text _txtShuffleCount;
 
@@ -55,6 +56,7 @@ namespace GameScene
 
         private void Start()
         {
+            fader.EnterSceneAnimation();
             _gameStatsSaved = false;
             Game = new Game(cardPrefab, cardBack, gridManager);
             // if (PlayerPrefs.GetInt("gameInProgress", 0) == 1)
@@ -159,7 +161,7 @@ namespace GameScene
                 UserStatisticsManager.Instance.UpdateUserStatistics(gameStatistics);
                 _gameStatsSaved = true;
                 DOTween.CompleteAll();
-                SceneChanger.Instance.LoadScene("GameSummaryScene");
+                fader.ExitSceneAnimation("GameSummaryScene");
             }
         }
 
@@ -221,7 +223,10 @@ namespace GameScene
                 .SetButtonsColor(DialogButtonColor.Blue)
                 .SetFadeDuration(0.1f)
                 .OnNegativeButtonClicked(Game.ResumeGame)
-                .OnPositiveButtonClicked(() => SceneChanger.Instance.LoadScene(scene))
+                .OnPositiveButtonClicked(() =>
+                {
+                    fader.ExitSceneAnimation(scene);
+                })
                 .Show();
         }
     }
