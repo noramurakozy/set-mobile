@@ -311,6 +311,7 @@ namespace GameScene
             // Shake if the selected three cards do not form a SET
             foreach (CardView c in ClickedCards)
             {
+                c.transform.DOComplete();
                 c.transform.DOPunchRotation(new Vector3(0, 0, 2), 1);
             }
         }

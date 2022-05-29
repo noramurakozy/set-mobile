@@ -1,6 +1,7 @@
 ﻿using Achievements;
 using DG.Tweening;
 using GameScene.Statistics;
+using SettingsScene;
 using Statistics;
 using TMPro;
 using UnityEngine;
@@ -70,24 +71,10 @@ namespace GameScene
 
         private void SetupUIPlayerPrefs()
         {
-            if (PlayerPrefs.GetInt("showHintsUsed") == 1)
-            {
-                hintCountBg.gameObject.SetActive(true);
-            }
-
-            if (PlayerPrefs.GetInt("showShufflesUsed") == 1)
-            {
-                shuffleCountBg.gameObject.SetActive(true);
-            }
-
-            if (PlayerPrefs.GetInt("showTimer") == 0)
-            {
-                timerBg.gameObject.SetActive(false);
-            }
-            if (PlayerPrefs.GetInt("showNumOfSets") == 1)
-            {
-                txtSetCountOnTable.gameObject.SetActive(true);
-            }
+            timerBg.gameObject.SetActive(Settings.Instance.GetShowTimer());
+            hintCountBg.gameObject.SetActive(Settings.Instance.GetShowHintsUsed());
+            shuffleCountBg.gameObject.SetActive(Settings.Instance.GetShowShufflesUsed());
+            txtSetCountOnTable.gameObject.SetActive(Settings.Instance.GetShowNumOfSets());
         }
 
         private void Update()
@@ -98,7 +85,14 @@ namespace GameScene
             txtTimer.text = Game.GetTimerString();
             _txtHintCount.text = gameStatistics.HintsUsed.ToString();
             _txtShuffleCount.text = gameStatistics.ShufflesUsed.ToString();
-            txtSetCountOnTable.text = Game.GetNumOfSetsOnTable() + " SETs available";
+            txtSetCountOnTable.text = Game.GetNumOfSetsOnTable() + " SET(s) available";
+            if (Settings.Instance.GetAutoDeal())
+            {
+                if (Game.GetNumOfSetsOnTable() == 0)
+                {
+                    Game.DealAdditionalCards(3);
+                }
+            }
 
             if (Game.IsGameEnded() && !_gameStatsSaved)
             {

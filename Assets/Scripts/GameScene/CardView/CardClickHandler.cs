@@ -57,14 +57,6 @@ public class CardClickHandler : MonoBehaviour, IPointerClickHandler
                     CurrentGame.RemoveCardsFromTable(CurrentGame.ClickedCards);
                     CurrentGame.RearrangeRemainingCards();
                 }
-
-                if (PlayerPrefs.GetInt("autoDeal") == 1)
-                {
-                    if (CurrentGame.GetNumOfSetsOnTable() == 0)
-                    {
-                        CurrentGame.DealAdditionalCards(3);
-                    }
-                }
             }
             else
             {

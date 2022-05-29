@@ -12,7 +12,7 @@ namespace Dialogs
         [SerializeField] private Toast toastPrefab;
         [SerializeField] private Canvas toastParent;
         [SerializeField] private Transform toastEndPosition;
-        [SerializeField] private Transform toastStartPositon;
+        [SerializeField] private Transform toastStartPosition;
         
         private void Awake()
         {
@@ -31,9 +31,9 @@ namespace Dialogs
         {
             var toastInstance = Instantiate(toastPrefab, toastParent.transform, false);
             toastInstance.body.text = bodyText;
-            toastInstance.transform.position = toastStartPositon.position;
-            toastInstance.transform.DOMoveY(toastEndPosition.position.y, 1).SetEase(Ease.OutElastic, 0.4f);
-            toastInstance.GetComponent<CanvasGroup>().DOFade(0, duration).SetDelay(3f).onComplete += () =>
+            toastInstance.transform.position = toastStartPosition.position;
+            toastInstance.transform.DOMove(toastEndPosition.position, 0.7f).SetEase(Ease.OutExpo);
+            toastInstance.GetComponent<CanvasGroup>().DOFade(0, duration).SetDelay(5f).onComplete += () =>
             {
                 Destroy(toastInstance.gameObject);
             };

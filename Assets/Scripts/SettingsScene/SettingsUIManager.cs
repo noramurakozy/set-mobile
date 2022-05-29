@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 namespace SettingsScene
 {
-    public class SettingsManager : MonoBehaviour
+    public class SettingsUIManager : MonoBehaviour
     {
         [SerializeField] private Toggle showTimer;
         [SerializeField] private Toggle showNumOfSets;
@@ -20,23 +20,23 @@ namespace SettingsScene
             SetupToggles();
             showTimer.onValueChanged.AddListener(on =>
             {
-                PlayerPrefs.SetInt("showTimer", on ? 1 : 0);
+                Settings.Instance.SetShowTimer(on ? 1 : 0);
             });
             showNumOfSets.onValueChanged.AddListener(on =>
             {
-                PlayerPrefs.SetInt("showNumOfSets", on ? 1 : 0);
+                Settings.Instance.SetShowNumOfSets(on ? 1 : 0);
             });
             showHintsUsed.onValueChanged.AddListener(on =>
             {
-                PlayerPrefs.SetInt("showHintsUsed", on ? 1 : 0);
+                Settings.Instance.SetShowHintsUsed(on ? 1 : 0);
             });
             showShufflesUsed.onValueChanged.AddListener(on =>
             {
-                PlayerPrefs.SetInt("showShufflesUsed", on ? 1 : 0);
+                Settings.Instance.SetShowShufflesUsed(on ? 1 : 0);
             });
             autoDeal.onValueChanged.AddListener(on =>
             {
-                PlayerPrefs.SetInt("autoDeal", on ? 1 : 0);
+                Settings.Instance.SetAutoDeal(on ? 1 : 0);
             });
             
             btnResetGame.onClick.AddListener(ResetGame);
@@ -44,17 +44,17 @@ namespace SettingsScene
 
         private void SetupToggles()
         {
-            showTimer.isOn = PlayerPrefs.GetInt("showTimer", 1) == 1;
-            showNumOfSets.isOn = PlayerPrefs.GetInt("showNumOfSets",0) == 1;
-            showHintsUsed.isOn = PlayerPrefs.GetInt("showHintsUsed", 0) == 1;
-            showShufflesUsed.isOn = PlayerPrefs.GetInt("showShufflesUsed", 0) == 1;
-            autoDeal.isOn = PlayerPrefs.GetInt("autoDeal", 1) == 1;
+            showTimer.isOn = Settings.Instance.GetShowTimer();
+            showNumOfSets.isOn = Settings.Instance.GetShowNumOfSets();
+            showHintsUsed.isOn = Settings.Instance.GetShowHintsUsed();
+            showShufflesUsed.isOn = Settings.Instance.GetShowShufflesUsed();
+            autoDeal.isOn = Settings.Instance.GetAutoDeal();
         }
 
         private void ResetGame()
         {
             // TODO: confirmation popup
-            PlayerPrefs.DeleteAll();
+            Settings.Instance.ClearSettings();
             // Reload toggles
             SetupToggles();
             File.Delete(Application.persistentDataPath + "/achievements.json");
