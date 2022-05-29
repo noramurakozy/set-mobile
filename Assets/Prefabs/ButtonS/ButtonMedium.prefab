@@ -9,7 +9,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6906199293932080345, guid: b2f6ea9fe52d13248ab44a521981fb5d, type: 3}
       propertyPath: m_Name
-      value: BtnHint
+      value: ButtonMedium
       objectReference: {fileID: 0}
     - target: {fileID: 6906199293932080346, guid: b2f6ea9fe52d13248ab44a521981fb5d, type: 3}
       propertyPath: m_Pivot.x
@@ -41,11 +41,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6906199293932080346, guid: b2f6ea9fe52d13248ab44a521981fb5d, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 80
+      value: 96
       objectReference: {fileID: 0}
     - target: {fileID: 6906199293932080346, guid: b2f6ea9fe52d13248ab44a521981fb5d, type: 3}
       propertyPath: m_SizeDelta.y
-      value: 35
+      value: 48
       objectReference: {fileID: 0}
     - target: {fileID: 6906199293932080346, guid: b2f6ea9fe52d13248ab44a521981fb5d, type: 3}
       propertyPath: m_LocalPosition.x
@@ -98,6 +98,14 @@ PrefabInstance:
     - target: {fileID: 6906199294310397896, guid: b2f6ea9fe52d13248ab44a521981fb5d, type: 3}
       propertyPath: m_text
       value: HINT
+      objectReference: {fileID: 0}
+    - target: {fileID: 6906199294310397896, guid: b2f6ea9fe52d13248ab44a521981fb5d, type: 3}
+      propertyPath: m_fontSize
+      value: 24
+      objectReference: {fileID: 0}
+    - target: {fileID: 6906199294310397896, guid: b2f6ea9fe52d13248ab44a521981fb5d, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 24
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b2f6ea9fe52d13248ab44a521981fb5d, type: 3}
