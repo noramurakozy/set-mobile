@@ -146,6 +146,14 @@ namespace GameScene
         public void EnableHintBtn(bool hintBtnEnabled)
         {
             btnHint.enabled = hintBtnEnabled;
+            if (!hintBtnEnabled)
+            {
+                btnHint.GetComponentInChildren<TMP_Text>().color = new Color32(123, 123, 123,255);
+            }
+            else
+            {
+                btnHint.GetComponentInChildren<TMP_Text>().color = new Color32(0, 0, 0,255);
+            }
         }
     }
 }

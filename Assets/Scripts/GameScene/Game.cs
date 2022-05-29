@@ -103,6 +103,7 @@ namespace GameScene
 
         public bool IsSetClicked()
         {
+            GameManager.Instance.EnableHintBtn(true);
             if (Set.IsSet())
             {
                 var statistics = GameStatisticsManager.Instance.GameStatistics;
@@ -126,10 +127,8 @@ namespace GameScene
                         break;
                 }
                 GameManager.Instance.UpdateAchievementProgresses(statistics, UpdateType.DuringGame);
-                GameManager.Instance.EnableHintBtn(true);
                 return true;
             }
-
             return false;
         }
 
