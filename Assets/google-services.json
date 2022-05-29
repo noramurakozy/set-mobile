@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "423823202322",
+    "project_id": "set-mobile-2022",
+    "storage_bucket": "set-mobile-2022.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:423823202322:android:8effd7749de31dfe01e0cb",
+        "android_client_info": {
+          "package_name": "com.murak.setmobile"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "423823202322-3nau53hvgstfhfi9vbftkh7apk4le98a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD5mOC5agcsUd0dmg4ML-xeg3FL54TuiAA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "423823202322-3nau53hvgstfhfi9vbftkh7apk4le98a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
