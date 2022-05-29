@@ -1,4 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
+using Achievements;
+using Achievements.AchievementTypes;
+using Dialogs;
 using GameScene.Statistics;
 using TMPro;
 using UnityEngine;
@@ -38,6 +42,8 @@ namespace GameSummaryScene
             txtShufflesUsed.text = latestGameStatistics.ShufflesUsed.ToString();
             txtMistakes.text = latestGameStatistics.MistakesCount.ToString();
             btnPlayAgain.onClick.AddListener(() => SceneChanger.Instance.LoadScene("GameScene"));
+            
+            AchievementManager.Instance.UpdateProgressOfAchievements(latestGameStatistics, UpdateType.EndOfGame);
         }
     }
 }

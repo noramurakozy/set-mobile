@@ -156,7 +156,6 @@ namespace GameScene
             if (Game.IsGameEnded() && !_gameStatsSaved)
             {
                 Game.EndGame();
-                UpdateAchievementProgresses(gameStatistics, UpdateType.EndOfGame);
                 UserStatisticsManager.Instance.UpdateUserStatistics(gameStatistics);
                 _gameStatsSaved = true;
                 DOTween.CompleteAll();

@@ -63,6 +63,7 @@ namespace Achievements
 
         public void UpdateProgressOfAchievements(GameStatistics statistics, UpdateType updateType)
         {
+            var updatedAchievements = new List<Achievement>();
             foreach (var achievement in AllAchievements.Where(a => a.UpdateType == updateType))
             {
                 var preStatus = achievement.Status;
@@ -70,10 +71,14 @@ namespace Achievements
                 var afterStatus = achievement.Status;
                 if (preStatus == Status.InProgress && afterStatus == Status.Complete)
                 {
-                    ToastManager.Instance.ShowToast(achievement.Text, 2f);
+                    // ToastManager.Instance.ShowToast(achievement.Text, 2f);
+                    updatedAchievements.Add(achievement);
                     UserStatisticsManager.Instance.UpdateAchievementStatistics(achievement);
                 }
             }
+
+            ToastManager.Instance.ShowToastList(updatedAchievements.Select(a => a.Text).ToList(), 2f);   
+            
             SaveAchievements(AllAchievements);
         }
         
