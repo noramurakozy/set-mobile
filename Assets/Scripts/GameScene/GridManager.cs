@@ -42,8 +42,9 @@ public class GridManager : MonoBehaviour
                 cardTransform.parent = transform;
                 float posX = col * _tileWidth;
                 float posY = row * -_tileHeight;
-                cardTransform.position = _deckUI.transform.position;
-                card.transform.DOLocalMove(new Vector2(posX, posY), 1f);
+                // cardTransform.position = _deckUI.transform.position;
+                // card.transform.DOLocalMove(new Vector2(posX, posY), 1f);
+                cardTransform.position = new Vector2(posX, posY);
             }
         }
         PositionGrid(position);
