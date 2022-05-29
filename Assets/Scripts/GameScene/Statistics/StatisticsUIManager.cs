@@ -37,8 +37,9 @@ namespace GameScene.Statistics
 
         private void Start()
         {
-            SetupTxtFields();
+            UserStatisticsManager.Instance.UpdateAchievementStatistics();
             btnClearStats.onClick.AddListener(ShowConfirmationDialog);
+            SetupTxtFields();
         }
 
         private void ClearStatistics()
@@ -81,7 +82,7 @@ namespace GameScene.Statistics
                 .SetMessage(
                     "Are you sure you want clear your statistics? " +
                     "Please note, that this action won't delete the achievement statistics " +
-                    "as it represents the current state of your achievement progress.")
+                    "as it always represents the current state of your achievement progress.")
                 .SetNegativeButtonText("Yes, clear")
                 .SetPositiveButtonText("No, keep my data")
                 .SetButtonsColor(DialogButtonColor.Green)

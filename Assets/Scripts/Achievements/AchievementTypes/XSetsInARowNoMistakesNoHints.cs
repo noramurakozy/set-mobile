@@ -8,7 +8,7 @@ namespace Achievements.AchievementTypes
     public class XSetsInARowNoMistakesNoHints : Achievement
     {
         public int setsCountCondition;
-        public XSetsInARowNoMistakesNoHints(string text, int x) : base(text)
+        public XSetsInARowNoMistakesNoHints(CreationType creationType, string text, int x) : base(text, creationType)
         {
             setsCountCondition = x;
             UpdateType = UpdateType.DuringGame;

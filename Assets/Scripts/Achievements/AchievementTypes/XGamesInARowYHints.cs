@@ -12,7 +12,7 @@ namespace Achievements.AchievementTypes
         public int gamesInARowCondition;
         public int maximumHintsCondition;
         
-        public XGamesInARowYHints(string text, int x, int y) : base(text)
+        public XGamesInARowYHints(CreationType creationType, string text, int x, int y) : base(text, creationType)
         {
             gamesInARowCondition = x;
             maximumHintsCondition = y;

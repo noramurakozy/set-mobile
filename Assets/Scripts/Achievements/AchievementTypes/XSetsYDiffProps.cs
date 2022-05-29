@@ -12,7 +12,7 @@ namespace Achievements.AchievementTypes
         public int setsCountCondition;
         public int propsCountCondition;
         
-        public XSetsYDiffProps(string text, int x, int y) : base(text)
+        public XSetsYDiffProps(CreationType creationType, string text, int x, int y) : base(text, creationType)
         {
             setsCountCondition = x;
             propsCountCondition = y;

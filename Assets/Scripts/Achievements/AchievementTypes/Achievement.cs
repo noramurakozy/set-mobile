@@ -10,12 +10,14 @@ namespace Achievements.AchievementTypes
         public string Text { get; set; }
         public Status Status { get; set; }
         public UpdateType UpdateType { get; set; }
+        public CreationType CreationType { get; set; }
 
-        protected Achievement(string text)
+        protected Achievement(string text, CreationType creationType)
         {
             Text = text;
             Status = Status.InProgress;
             ID = Guid.NewGuid();
+            CreationType = creationType;
         }
 
         public abstract void UpdateProgress(GameStatistics statistics);

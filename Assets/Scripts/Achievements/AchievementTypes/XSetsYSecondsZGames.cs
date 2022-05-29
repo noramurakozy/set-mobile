@@ -13,7 +13,7 @@ namespace Achievements.AchievementTypes
         public int setsCountCondition;
         public int secondsCountCondition;
         public int gamesCountCondition;
-        public XSetsYSecondsZGames(string text, int x, int y, int z) : base(text)
+        public XSetsYSecondsZGames(CreationType creationType, string text, int x, int y, int z) : base(text, creationType)
         {
             setsCountCondition = x;
             secondsCountCondition = y;

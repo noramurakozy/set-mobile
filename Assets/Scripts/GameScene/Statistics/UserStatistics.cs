@@ -83,21 +83,14 @@ namespace GameScene.Statistics
             }
         }
 
-        public void UpdateAchievementStatistics(Achievement achievement)
+        public void UpdateAchievementStatistics()
         {
-            AchievementsUnlockedInTotal++;
-            switch (achievement.Difficulty)
-            {
-                case Difficulty.Easy:
-                    NumEasyAchievements++;
-                    break;
-                case Difficulty.Medium:
-                    NumMediumAchievements++;
-                    break;
-                case Difficulty.Hard:
-                    NumHardAchievements++;
-                    break;
-            }
+            var stats = AchievementManager.Instance.GetStatistics();
+            AchievementsUnlockedInTotal = stats.UnlockedInTotal;
+            CustomAchievementsCount = stats.CustomAchievementCount;
+            NumEasyAchievements = stats.NumEasyAchievements;
+            NumMediumAchievements = stats.NumMediumAchievements;
+            NumHardAchievements = stats.NumHardAchievements;
         }
     }
 }

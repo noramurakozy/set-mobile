@@ -36,9 +36,10 @@ namespace Achievements
             return allAchievements;
         }
 
-        public Achievement InitiateAchievement(AchievementTemplate template, string achievementText, List<object> conditions)
+        public Achievement InitiateAchievement(CreationType creationType, AchievementTemplate template,
+            string achievementText, List<object> conditions)
         {
-            var args = new List<object> {achievementText};
+            var args = new List<object> {creationType, achievementText};
 
             args.AddRange(conditions);
             var instance = (Achievement)Activator.CreateInstance(template.Type, args.ToArray());
@@ -73,18 +74,17 @@ namespace Achievements
                 {
                     // ToastManager.Instance.ShowToast(achievement.Text, 2f);
                     updatedAchievements.Add(achievement);
-                    UserStatisticsManager.Instance.UpdateAchievementStatistics(achievement);
                 }
             }
 
             ToastManager.Instance.ShowToastList(updatedAchievements.Select(a => a.Text).ToList(), 2f);   
             
             SaveAchievements(AllAchievements);
+            UserStatisticsManager.Instance.UpdateAchievementStatistics();
         }
         
         private void SaveAchievements(List<Achievement> allAchievements)
         {
-            UserStatisticsManager.Instance.UpdateCustomAchievementCount(allAchievements.Count);
             File.WriteAllText(Application.persistentDataPath + "/achievements.json",
                 JsonConvert.SerializeObject(allAchievements, JsonUtils.SerializerSettings));
         }
@@ -94,6 +94,21 @@ namespace Achievements
             var achievementToDelete = AllAchievements.Find(a => a.ID == achievementID);
             AllAchievements.Remove(achievementToDelete);
             SaveAchievements(AllAchievements);
+        }
+
+        public AchievementStatistics GetStatistics()
+        {
+            var aList = ReadAllAchievements();
+            var statistics = new AchievementStatistics
+            {
+                CustomAchievementCount = aList.Where(a => a.CreationType == CreationType.Custom).ToList().Count,
+                UnlockedInTotal = aList.Where(a => a.Status == Status.Complete).ToList().Count,
+                NumEasyAchievements = aList.Where(a => a.Status == Status.Complete && a.Difficulty == Difficulty.Easy).ToList().Count,
+                NumMediumAchievements = aList.Where(a => a.Status == Status.Complete && a.Difficulty == Difficulty.Medium).ToList().Count,
+                NumHardAchievements = aList.Where(a => a.Status == Status.Complete && a.Difficulty == Difficulty.Hard).ToList().Count
+            };
+
+            return statistics;
         }
     }
 }

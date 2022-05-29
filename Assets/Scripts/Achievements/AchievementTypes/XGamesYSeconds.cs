@@ -11,7 +11,7 @@ namespace Achievements.AchievementTypes
 
         public int gamesCountCondition;
         public int secondsCountCondition;
-        public XGamesYSeconds(string text, int x, int y) : base(text)
+        public XGamesYSeconds(CreationType creationType, string text, int x, int y) : base(text, creationType)
         {
             gamesCountCondition = x;
             secondsCountCondition = y;

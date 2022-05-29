@@ -10,7 +10,7 @@ namespace Achievements.AchievementTypes
         public int gamesCountCondition;
         public int gamesCount;
 
-        public XGamesNoShuffle(string text, int x) : base(text)
+        public XGamesNoShuffle(CreationType creationType, string text, int x) : base(text, creationType)
         {
             gamesCountCondition = x;
             UpdateType = UpdateType.EndOfGame;

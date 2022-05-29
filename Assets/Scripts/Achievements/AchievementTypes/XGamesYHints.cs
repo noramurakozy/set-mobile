@@ -11,7 +11,7 @@ namespace Achievements.AchievementTypes
 
         public int gamesCountCondition;
         public int hintsCountCondition;
-        public XGamesYHints(string text, int x, int y) : base(text)
+        public XGamesYHints(CreationType creationType, string text, int x, int y) : base(text, creationType)
         {
             gamesCountCondition = x;
             hintsCountCondition = y;

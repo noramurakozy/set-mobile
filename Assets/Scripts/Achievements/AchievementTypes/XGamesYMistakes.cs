@@ -12,7 +12,7 @@ namespace Achievements.AchievementTypes
         public int gamesCountCondition;
         public int mistakesCountCondition;
         
-        public XGamesYMistakes(string text, int x, int y) : base(text)
+        public XGamesYMistakes(CreationType creationType, string text, int x, int y) : base(text, creationType)
         {
             gamesCountCondition = x;
             mistakesCountCondition = y;

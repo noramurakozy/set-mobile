@@ -45,23 +45,17 @@ namespace GameScene.Statistics
             SaveUserStatistics();
         }
 
-        public void UpdateAchievementStatistics(Achievement achievement)
+        public void UpdateAchievementStatistics()
         {
             LoadUserStatistics();
-            UserStatistics.UpdateAchievementStatistics(achievement);
+            UserStatistics.UpdateAchievementStatistics();
             SaveUserStatistics();
         }
 
         public void ClearStats()
         {
             File.Delete(Application.persistentDataPath + "/userStatistics.json");
-            LoadUserStatistics();
-        }
-
-        public void UpdateCustomAchievementCount(int newCount)
-        {
-            UserStatistics.CustomAchievementsCount = newCount;
-            SaveUserStatistics();
+            UpdateAchievementStatistics();
         }
     }
 }

@@ -134,7 +134,7 @@ namespace Achievements.CreateAchievement
             }
 
             textField.text = _concatenatedText;
-            CreatedAchievement = AchievementManager.Instance.InitiateAchievement(_selectedTemplate, _concatenatedText,
+            CreatedAchievement = AchievementManager.Instance.InitiateAchievement(CreationType.Custom, _selectedTemplate, _concatenatedText,
                 _inputFields.Select(field => (object)int.Parse(field.text)).ToList());
             difficultyUI.SetDifficulty(CreatedAchievement.Difficulty);
         }
