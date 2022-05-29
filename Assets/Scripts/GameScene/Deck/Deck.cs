@@ -2,11 +2,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using DefaultNamespace;
+using Newtonsoft.Json;
 using UnityEngine;
 using Color = DefaultNamespace.Color;
 
 public class Deck
 {
+    [JsonProperty]
     private List<SetCard> _cards;
 
     public int Count => _cards.Count;

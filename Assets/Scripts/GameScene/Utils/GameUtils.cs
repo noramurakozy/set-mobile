@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using DefaultNamespace;
+using GameScene.CardView;
 using UnityEngine;
 
 public static class GameUtils

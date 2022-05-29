@@ -15,7 +15,6 @@ namespace GameSummaryScene
         [SerializeField] private TMP_Text txtShufflesUsed;
         [SerializeField] private TMP_Text txtMistakes;
         [SerializeField] private Button btnPlayAgain;
-        [SerializeField] private Button btnBackToMenu;
 
         private void Start()
         {
@@ -38,7 +37,6 @@ namespace GameSummaryScene
             txtHintsUsed.text = latestGameStatistics.HintsUsed.ToString();
             txtShufflesUsed.text = latestGameStatistics.ShufflesUsed.ToString();
             txtMistakes.text = latestGameStatistics.MistakesCount.ToString();
-            btnBackToMenu.onClick.AddListener(() => SceneChanger.Instance.LoadScene("MainMenu"));
             btnPlayAgain.onClick.AddListener(() => SceneChanger.Instance.LoadScene("GameScene"));
         }
     }

@@ -1,11 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using DefaultNamespace;
 using DG.Tweening;
 using GameScene.Statistics;
+using Newtonsoft.Json;
+using Statistics;
 using UnityEngine;
 using UnityEngine.Rendering;
+using Object = UnityEngine.Object;
 using UpdateType = Achievements.AchievementTypes.UpdateType;
 
 namespace GameScene
@@ -14,30 +19,25 @@ namespace GameScene
     {
         public Deck Deck { get; set; }
         public Set Set { get; set; }
-        private List<CardView> CardsOnTable { get; set; }
-        public List<CardView> ClickedCards { get; set; }
+        private List<CardView.CardView> CardsOnTable { get; set; }
+        public List<CardView.CardView> ClickedCards { get; set; }
         private GridManager CenterGrid { get; set; }
-        private CardView CardPrefab { get; set; }
+        private CardView.CardView CardPrefab { get; set; }
         private Sprite CardBack { get; set; }
 
         private Stopwatch _stopwatch;
 
         public bool IsGameRunning { get; set; }
 
-        // public GameStatistics Statistics { get; set; }
-        
-        public Game(CardView cardPrefab, Sprite cardBack, GridManager centerGrid)
+        public Game(CardView.CardView cardPrefab, Sprite cardBack, GridManager centerGrid)
         {
-            CardsOnTable = new List<CardView>();
+            CardsOnTable = new List<CardView.CardView>();
             Set = new Set();
-            ClickedCards = new List<CardView>();
+            ClickedCards = new List<CardView.CardView>();
             CardPrefab = cardPrefab;
             CenterGrid = centerGrid;
             CardBack = cardBack;
             _stopwatch = new Stopwatch();
-
-            // TODO: needed to save a game in progress
-            // prefs = PreferenceManager.getDefaultSharedPreferences(context);
         }
 
         public void StartNewGame()
@@ -50,10 +50,10 @@ namespace GameScene
             _stopwatch.Start();
             GameStatisticsManager.Instance.ResetStatistics();
 
-            // prefs.edit().putBoolean("gameInProgress", true).apply();
+            // PlayerPrefs.SetInt("gameInProgress", 1);
         }
 
-        private void AnimateCardsIntoGridFromDeck(List<CardView> cardsToAnimate)
+        private void AnimateCardsIntoGridFromDeck(List<CardView.CardView> cardsToAnimate)
         {
             CenterGrid.cols = cardsToAnimate.Count / 3;
             CenterGrid.GenerateGrid(cardsToAnimate, "center");
@@ -64,7 +64,7 @@ namespace GameScene
             Set.AddToSet(card);
         }
 
-        private (CardView, int) ReplaceCardOnIndex(int i)
+        private (CardView.CardView, int) ReplaceCardOnIndex(int i)
         {
             var cardView = GameUtils.InstantiateCardView(Deck.GetAt(0), CardPrefab);
             if (i >= CardsOnTable.Count)
@@ -84,7 +84,7 @@ namespace GameScene
         {
             if (CardsOnTable.Count < 21 && !Deck.IsEmpty())
             {
-                var newCards = new List<CardView>();
+                var newCards = new List<CardView.CardView>();
                 for (int i = 0; i < numberOfCards; i++)
                 {
                     var cardView = GameUtils.InstantiateCardView(Deck.GetAt(0), CardPrefab);
@@ -96,7 +96,7 @@ namespace GameScene
             }
         }
 
-        private void InsertCardViewsInGridColumn(List<CardView> cardViews, int colIndex)
+        private void InsertCardViewsInGridColumn(List<CardView.CardView> cardViews, int colIndex)
         {
             CenterGrid.InsertInColumn(cardViews, colIndex);
         }
@@ -132,7 +132,7 @@ namespace GameScene
             return false;
         }
 
-        private void DrawCardOnIndex(CardView newCard, int i)
+        private void DrawCardOnIndex(CardView.CardView newCard, int i)
         {
             CenterGrid.Insert(newCard, i);
         }
@@ -140,14 +140,15 @@ namespace GameScene
         public void SelectHint()
         {
             GameStatisticsManager.Instance.GameStatistics.HintsUsed++;
-            List<CardView> set = FindSetOnTable();
+            GameStatisticsManager.Instance.GameStatistics.MaxSetsFoundInARow = 0;
+            List<CardView.CardView> set = FindSetOnTable();
             if (set == null)
             {
                 DealAdditionalCards(3);
             }
             else
             {
-                foreach (CardView cv in set)
+                foreach (CardView.CardView cv in set)
                 {
                     cv.Select(SelectType.HINT);
                 }
@@ -158,7 +159,7 @@ namespace GameScene
 
         public void RemoveSelectionsOnCards()
         {
-            foreach (CardView cv in CardsOnTable)
+            foreach (CardView.CardView cv in CardsOnTable)
             {
                 cv.Select(SelectType.NONE);
             }
@@ -166,7 +167,7 @@ namespace GameScene
             ClickedCards.Clear();
         }
 
-        private List<CardView> FindSetOnTable()
+        private List<CardView.CardView> FindSetOnTable()
         {
             Set hintSet = new Set();
             for (int i = 0; i < CardsOnTable.Count; i++)
@@ -181,7 +182,7 @@ namespace GameScene
 
                         if (hintSet.IsSet())
                         {
-                            List<CardView> foundSet = new List<CardView>();
+                            List<CardView.CardView> foundSet = new List<CardView.CardView>();
                             foundSet.Add(CardsOnTable[i]);
                             foundSet.Add(CardsOnTable[j]);
                             foundSet.Add(CardsOnTable[k]);
@@ -245,13 +246,13 @@ namespace GameScene
             }
 
             IsGameRunning = false;
+            PlayerPrefs.SetInt("gameInProgress", 0);
             _stopwatch.Stop();
             GameStatisticsManager.Instance.GameStatistics.DurationInSeconds = (int)_stopwatch.Elapsed.TotalSeconds;
             _stopwatch.Reset();
-            // return Statistics;
         }
 
-        private void DestroyCards(List<CardView> toDestroy)
+        private void DestroyCards(List<CardView.CardView> toDestroy)
         {
             // Destroy their gameobjects in the scene
             foreach (var cardView in toDestroy)
@@ -283,10 +284,10 @@ namespace GameScene
         public void MoveSetToTargetAndDestroy()
         {
             var setCounterCards = Object.FindObjectsOfType<AnimationTarget>();
-            var cardsToDestroy = new List<CardView>(ClickedCards);
+            var cardsToDestroy = new List<CardView.CardView>(ClickedCards);
             for (var i = 0; i < cardsToDestroy.Count; i++)
             {
-                CardView c = cardsToDestroy[i];
+                CardView.CardView c = cardsToDestroy[i];
                 c.Select(SelectType.NONE);
                 c.GetComponent<SpriteRenderer>().sprite = CardBack;
                 c.GetComponent<SortingGroup>().sortingOrder +=
@@ -309,21 +310,21 @@ namespace GameScene
             statistics.MistakesCount++;
             statistics.MaxSetsFoundInARow = 0;
             // Shake if the selected three cards do not form a SET
-            foreach (CardView c in ClickedCards)
+            foreach (CardView.CardView c in ClickedCards)
             {
                 c.transform.DOComplete();
                 c.transform.DOPunchRotation(new Vector3(0, 0, 2), 1);
             }
         }
 
-        public List<int> GetIndexOfCards(List<CardView> setCards)
+        public List<int> GetIndexOfCards(List<CardView.CardView> setCards)
         {
             var indices = setCards.Select(card => CardsOnTable.IndexOf(card)).OrderBy(i => i).ToList();
 
             return indices;
         }
 
-        public void RemoveCardsFromTable(List<CardView> cardsToRemove)
+        public void RemoveCardsFromTable(List<CardView.CardView> cardsToRemove)
         {
             CardsOnTable = CardsOnTable.Except(cardsToRemove).ToList();
         }
@@ -342,5 +343,33 @@ namespace GameScene
         {
             return Utils.GetTimeSpanString(_stopwatch.Elapsed);
         }
+
+        // public void Save()
+        // {
+        //     PauseGame();
+        //     File.WriteAllText(Application.persistentDataPath + "/gameInProgress.json",
+        //         JsonConvert.SerializeObject(new GameData(Deck, CardsOnTable.Select(cv => cv.Card).ToList(), 
+        //             (int)_stopwatch.Elapsed.TotalSeconds, GameStatisticsManager.Instance.GameStatistics), JsonUtils.SerializerSettings));
+        // }
+
+        // public void Load()
+        // {
+        //     GameData data = null;
+        //     if (File.Exists(Application.persistentDataPath + "/gameInProgress.json"))
+        //     {
+        //         data =
+        //             JsonConvert.DeserializeObject<GameData>(
+        //                 File.ReadAllText(Application.persistentDataPath + "/gameInProgress.json"), JsonUtils.SerializerSettings);
+        //     }
+        //
+        //     if (data != null)
+        //     {
+        //         Deck = data.Deck;
+        //         CardsOnTable = GameUtils.InstantiateCardViews(data.CardsOnTable, CardPrefab);
+        //         _stopwatch. = TimeSpan.FromSeconds(data.ElapsedSeconds);
+        //         AnimateCardsIntoGridFromDeck(CardsOnTable);
+        //         GameStatisticsManager.Instance.GameStatistics = data.GameStatistics;
+        //     }
+        // }
     }
 }

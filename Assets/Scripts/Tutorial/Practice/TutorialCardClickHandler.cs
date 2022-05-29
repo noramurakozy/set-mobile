@@ -1,3 +1,4 @@
+using GameScene.CardView;
 using UnityEngine;
 using UnityEngine.EventSystems;
 

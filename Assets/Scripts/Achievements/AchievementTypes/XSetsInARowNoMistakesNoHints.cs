@@ -16,9 +16,7 @@ namespace Achievements.AchievementTypes
 
         public override void UpdateProgress(GameStatistics statistics)
         {
-            if (statistics.MaxSetsFoundInARow >= setsCountCondition 
-                && statistics.MistakesCount == 0 
-                && statistics.HintsUsed == 0)
+            if (statistics.MaxSetsFoundInARow >= setsCountCondition)
             {
                 Status = Status.Complete;
             }

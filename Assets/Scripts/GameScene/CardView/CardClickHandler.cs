@@ -3,6 +3,7 @@ using System.Linq;
 using DefaultNamespace;
 using DG.Tweening;
 using GameScene;
+using GameScene.CardView;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.Rendering;

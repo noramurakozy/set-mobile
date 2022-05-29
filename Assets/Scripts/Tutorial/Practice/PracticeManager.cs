@@ -1,4 +1,5 @@
 ﻿using DefaultNamespace;
+using GameScene.CardView;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
