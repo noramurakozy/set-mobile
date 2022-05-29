@@ -13,6 +13,7 @@ public class MainMenuManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        Application.targetFrameRate = 60;
         btnPlay.onClick.AddListener(() => SceneChanger.Instance.LoadScene("GameScene"));
         btnTutorial.onClick.AddListener(() => SceneChanger.Instance.LoadScene("TutorialScene"));
         btnAchievements.onClick.AddListener(() => SceneChanger.Instance.LoadScene("AchievementsScene"));
