@@ -17,7 +17,7 @@ namespace Achievements
         {
             difficultyUI.SetDifficulty(Achievement.Difficulty);
             textUI.text = Achievement.Text;
-            btnDelete.onClick.AddListener(() => AchievementUIManager.Instance.DeleteAchievement(this));
+            btnDelete.onClick.AddListener(() => AchievementUIManager.Instance.ShowConfirmationDialog(this));
         }
     }
 }

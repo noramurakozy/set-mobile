@@ -1,5 +1,6 @@
 ﻿using System;
 using System.IO;
+using EasyUI.Dialogs;
 using General;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,6 +15,7 @@ namespace SettingsScene
         [SerializeField] private Toggle showShufflesUsed;
         [SerializeField] private Toggle autoDeal;
         [SerializeField] private Button btnResetGame;
+        [SerializeField] private ConfirmDialogUI confirmDialogUI;
 
         private void Start()
         {
@@ -39,7 +41,7 @@ namespace SettingsScene
                 Settings.Instance.SetAutoDeal(on ? 1 : 0);
             });
             
-            btnResetGame.onClick.AddListener(ResetGame);
+            btnResetGame.onClick.AddListener(ShowConfirmationPopup);
         }
 
         private void SetupToggles()
@@ -53,12 +55,26 @@ namespace SettingsScene
 
         private void ResetGame()
         {
-            // TODO: confirmation popup
             Settings.Instance.ClearSettings();
             // Reload toggles
             SetupToggles();
             File.Delete(Application.persistentDataPath + "/achievements.json");
             File.Delete(Application.persistentDataPath + "/userStatistics.json");
+        }
+
+        private void ShowConfirmationPopup()
+        {
+            confirmDialogUI.gameObject.SetActive(true);
+            confirmDialogUI
+                .SetTitle("Reset game")
+                .SetMessage(
+                    "Are you sure you want reset all your game data? This action is non-reversible and will reset your settings, achievements and statistics back to default.")
+                .SetNegativeButtonText("Yes, clear everything")
+                .SetPositiveButtonText("No, keep my data")
+                .SetButtonsColor(DialogButtonColor.Green)
+                .SetFadeDuration(0.1f)
+                .OnNegativeButtonClicked(ResetGame)
+                .Show();
         }
     }
 }

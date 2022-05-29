@@ -1,4 +1,5 @@
 ﻿using System;
+using EasyUI.Dialogs;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -32,15 +33,18 @@ namespace GameScene.Statistics
         [SerializeField] private TMP_Text txtCustomAchievementsCount;
         
         [SerializeField] private Button btnClearStats;
+        [SerializeField] private ConfirmDialogUI confirmDialogUI;
 
         private void Start()
         {
             SetupTxtFields();
-            btnClearStats.onClick.AddListener(() =>
-            {
-                UserStatisticsManager.Instance.ClearStats();
-                SetupTxtFields();
-            });
+            btnClearStats.onClick.AddListener(ShowConfirmationDialog);
+        }
+
+        private void ClearStatistics()
+        {
+            UserStatisticsManager.Instance.ClearStats();
+            SetupTxtFields();
         }
 
         private void SetupTxtFields()
@@ -67,6 +71,23 @@ namespace GameScene.Statistics
             txtNumEasyAchievements.text = userStatistics.NumEasyAchievements.ToString();
             txtAchievementsInTotal.text = userStatistics.AchievementsUnlockedInTotal.ToString();
             txtCustomAchievementsCount.text = userStatistics.CustomAchievementsCount.ToString();
+        }
+
+        private void ShowConfirmationDialog()
+        {
+            confirmDialogUI.gameObject.SetActive(true);
+            confirmDialogUI
+                .SetTitle("Clear statistics")
+                .SetMessage(
+                    "Are you sure you want clear your statistics? " +
+                    "Please note, that this action won't delete the achievement statistics " +
+                    "as it represents the current state of your achievement progress.")
+                .SetNegativeButtonText("Yes, clear")
+                .SetPositiveButtonText("No, keep my data")
+                .SetButtonsColor(DialogButtonColor.Green)
+                .SetFadeDuration(0.1f)
+                .OnNegativeButtonClicked(ClearStatistics)
+                .Show();
         }
     }
 }

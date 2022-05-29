@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Achievements.AchievementTypes;
+using EasyUI.Dialogs;
 using Newtonsoft.Json;
 using Statistics;
 using TMPro;
@@ -24,6 +25,7 @@ namespace Achievements
         [SerializeField] private Button btnAddNew;
         [SerializeField] private TMP_Text inProgressPlaceholderText;
         [SerializeField] private TMP_Text completedPlaceholderText;
+        [SerializeField] private ConfirmDialogUI confirmDialogUI;
 
         private void Awake()
         {
@@ -96,6 +98,21 @@ namespace Achievements
         {
             AchievementManager.Instance.DeleteAchievement(achievementUI.Achievement.ID);
             Destroy(achievementUI.gameObject);
+        }
+
+        public void ShowConfirmationDialog(AchievementUI achievementUI)
+        {
+            confirmDialogUI.gameObject.SetActive(true);
+            confirmDialogUI
+                .SetTitle("Delete achievement")
+                .SetMessage(
+                    "Are you sure you want delete this achievement?")
+                .SetNegativeButtonText("Yes, delete")
+                .SetPositiveButtonText("No, I want to keep it")
+                .SetButtonsColor(DialogButtonColor.Green)
+                .SetFadeDuration(0.1f)
+                .OnNegativeButtonClicked(() => DeleteAchievement(achievementUI))
+                .Show();
         }
     }
 }
