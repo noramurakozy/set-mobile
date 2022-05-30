@@ -12,6 +12,7 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private Button btnSettings;
     [SerializeField] private Button btnStatistics;
     [SerializeField] private Button btnAbout;
+    [SerializeField] private Button btnExperimentInfo;
 
     [SerializeField] private ConfirmDialogUI confirmDialogUI;
     [SerializeField] private Fader fader;
@@ -43,6 +44,7 @@ public class MainMenuManager : MonoBehaviour
             fader.ExitSceneAnimation("StatisticsScene");
         });
         btnAbout.onClick.AddListener(ShowAboutPopup);
+        btnExperimentInfo.onClick.AddListener(ShowExperimentInfo);
     }
 
     private void ShowAboutPopup()
@@ -56,6 +58,24 @@ public class MainMenuManager : MonoBehaviour
                         "\n" +
                         "Have fun playing and don't forget to seek out for new challenges! :)")
             .SetButtonsVisibility(false)
+            .SetFadeDuration(0.1f)
+            .Show();
+    }
+    
+    private void ShowExperimentInfo()
+    {
+        confirmDialogUI.gameObject.SetActive(true);
+        confirmDialogUI
+            .SetTitle("Experiment info")
+            .SetMessage("If you're looking for the survey, you are at the good place! You can fill it out by clicking on the button below." +
+                        "\n" +
+                        "Thank you for your help again! I hope you had a great time playing :)")
+            .SetNegativeButtonText("I'll do it later")
+            .SetPositiveButtonText("Go to the survey")
+            .OnPositiveButtonClicked(() =>
+            {
+                Application.OpenURL("https://forms.gle/FtLA6NEU8gewLiCq5");
+            })
             .SetFadeDuration(0.1f)
             .Show();
     }
