@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Achievements;
 using Achievements.AchievementTypes;
 using Dialogs;
+using GameScene.GUtils;
 using GameScene.Statistics;
 using TMPro;
 using UnityEngine;

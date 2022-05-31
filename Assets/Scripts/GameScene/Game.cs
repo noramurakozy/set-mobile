@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using DefaultNamespace;
 using DG.Tweening;
+using GameScene.GUtils;
 using GameScene.Statistics;
 using Newtonsoft.Json;
 using Statistics;
@@ -25,11 +26,12 @@ namespace GameScene
         private CardView.CardView CardPrefab { get; set; }
         private Sprite CardBack { get; set; }
 
-        private Stopwatch _stopwatch;
+        // private Stopwatch _stopwatch;
+        private GameStopwatch _gameStopwatch;
 
-        public bool IsGameRunning { get; set; }
+        // public bool IsGameRunning { get; set; }
 
-        public Game(CardView.CardView cardPrefab, Sprite cardBack, GridManager centerGrid)
+        public Game(CardView.CardView cardPrefab, Sprite cardBack, GridManager centerGrid, GameStopwatch gameStopwatch)
         {
             CardsOnTable = new List<CardView.CardView>();
             Set = new Set();
@@ -37,20 +39,24 @@ namespace GameScene
             CardPrefab = cardPrefab;
             CenterGrid = centerGrid;
             CardBack = cardBack;
-            _stopwatch = new Stopwatch();
+            _gameStopwatch = gameStopwatch;
         }
 
         public void StartNewGame()
         {
-            IsGameRunning = true;
+            _gameStopwatch.ResetStopwatch();
+            // IsGameRunning = true;
             Deck = new Deck();
+            Deck.CreateDeck();
+            CenterGrid.cols = 4;
+            CenterGrid.rows = 3;
             var starterSetCards = Deck.CreateCardsToPlay(CenterGrid.cols * CenterGrid.rows);
+            DestroyCards(CardsOnTable);
             CardsOnTable = GameUtils.InstantiateCardViews(starterSetCards, CardPrefab);
             AnimateCardsIntoGridFromDeck(CardsOnTable);
-            _stopwatch.Start();
             GameStatisticsManager.Instance.ResetStatistics();
-
-            // PlayerPrefs.SetInt("gameInProgress", 1);
+            PlayerPrefs.SetInt("gameInProgress", 1);
+            _gameStopwatch.StartStopwatch();
         }
 
         private void AnimateCardsIntoGridFromDeck(List<CardView.CardView> cardsToAnimate)
@@ -110,7 +116,7 @@ namespace GameScene
                 statistics.SetsFound++;
                 statistics.MaxSetsFoundInARow++;
                 statistics.LastSetFound = Set;
-                statistics.CurrentElapsedSeconds = (int)_stopwatch.Elapsed.TotalSeconds;
+                statistics.CurrentElapsedSeconds = (int)_gameStopwatch.Value;
                 switch (Set.DiffPropsCount)
                 {
                     case 1:
@@ -223,33 +229,31 @@ namespace GameScene
 
         public void RearrangeActualCards()
         {
-            Utils.Shuffle(CardsOnTable);
+            GUtils.Utils.Shuffle(CardsOnTable);
             CenterGrid.ShuffleCards(CardsOnTable);
             GameStatisticsManager.Instance.GameStatistics.ShufflesUsed++;
         }
 
         public void ResumeGame()
         {
-            _stopwatch.Start();
+            _gameStopwatch.StartStopwatch();
         }
 
         public void PauseGame()
         {
-            _stopwatch.Stop();
+            _gameStopwatch.Stop();
         }
 
         public void EndGame()
         {
-            if (!IsGameRunning)
+            if (PlayerPrefs.GetInt("gameInProgress", 0) == 1)
             {
-                return;
+                // IsGameRunning = false;
+                PlayerPrefs.SetInt("gameInProgress", 0);
+                _gameStopwatch.Stop();
+                GameStatisticsManager.Instance.GameStatistics.DurationInSeconds = (int)_gameStopwatch.Value;
+                _gameStopwatch.ResetStopwatch();
             }
-
-            IsGameRunning = false;
-            PlayerPrefs.SetInt("gameInProgress", 0);
-            _stopwatch.Stop();
-            GameStatisticsManager.Instance.GameStatistics.DurationInSeconds = (int)_stopwatch.Elapsed.TotalSeconds;
-            _stopwatch.Reset();
         }
 
         private void DestroyCards(List<CardView.CardView> toDestroy)
@@ -341,35 +345,35 @@ namespace GameScene
 
         public string GetTimerString()
         {
-            return Utils.GetTimeSpanString(_stopwatch.Elapsed);
+            return Utils.GetTimeSpanString(TimeSpan.FromSeconds(_gameStopwatch.Value));
         }
 
-        // public void Save()
-        // {
-        //     PauseGame();
-        //     File.WriteAllText(Application.persistentDataPath + "/gameInProgress.json",
-        //         JsonConvert.SerializeObject(new GameData(Deck, CardsOnTable.Select(cv => cv.Card).ToList(), 
-        //             (int)_stopwatch.Elapsed.TotalSeconds, GameStatisticsManager.Instance.GameStatistics), JsonUtils.SerializerSettings));
-        // }
+        public void Save()
+        {
+            PauseGame();
+            File.WriteAllText(Application.persistentDataPath + "/gameInProgress.json",
+                JsonConvert.SerializeObject(new GameData(Deck, CardsOnTable.Select(cv => cv.Card).ToList(), 
+                    (int)_gameStopwatch.Value, GameStatisticsManager.Instance.GameStatistics), JsonUtils.SerializerSettings));
+        }
 
-        // public void Load()
-        // {
-        //     GameData data = null;
-        //     if (File.Exists(Application.persistentDataPath + "/gameInProgress.json"))
-        //     {
-        //         data =
-        //             JsonConvert.DeserializeObject<GameData>(
-        //                 File.ReadAllText(Application.persistentDataPath + "/gameInProgress.json"), JsonUtils.SerializerSettings);
-        //     }
-        //
-        //     if (data != null)
-        //     {
-        //         Deck = data.Deck;
-        //         CardsOnTable = GameUtils.InstantiateCardViews(data.CardsOnTable, CardPrefab);
-        //         _stopwatch. = TimeSpan.FromSeconds(data.ElapsedSeconds);
-        //         AnimateCardsIntoGridFromDeck(CardsOnTable);
-        //         GameStatisticsManager.Instance.GameStatistics = data.GameStatistics;
-        //     }
-        // }
+        public void Load()
+        {
+            GameData data = null;
+            if (File.Exists(Application.persistentDataPath + "/gameInProgress.json"))
+            {
+                data =
+                    JsonConvert.DeserializeObject<GameData>(
+                        File.ReadAllText(Application.persistentDataPath + "/gameInProgress.json"), JsonUtils.SerializerSettings);
+            }
+        
+            if (data != null)
+            {
+                Deck = data.Deck;
+                CardsOnTable = GameUtils.InstantiateCardViews(data.CardsOnTable, CardPrefab);
+                _gameStopwatch.Value = data.ElapsedSeconds;
+                AnimateCardsIntoGridFromDeck(CardsOnTable);
+                GameStatisticsManager.Instance.GameStatistics = data.GameStatistics;
+            }
+        }
     }
 }

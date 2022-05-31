@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using DefaultNamespace;
+using GameScene.GUtils;
 using Newtonsoft.Json;
 using UnityEngine;
 using Color = DefaultNamespace.Color;
@@ -13,13 +14,8 @@ public class Deck
 
     public int Count => _cards.Count;
 
-    public Deck()
-    {
-        CreateDeck();
-    }
-    
     // creates shuffled deck
-    private void CreateDeck()
+    public void CreateDeck()
     {
         _cards = new List<SetCard>();
         int i = 0;

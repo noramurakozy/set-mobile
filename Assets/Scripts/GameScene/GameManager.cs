@@ -6,6 +6,7 @@ using DG.Tweening;
 using EasyUI.Dialogs;
 using Firebase.Extensions;
 using Firebase.RemoteConfig;
+using GameScene.GUtils;
 using GameScene.Statistics;
 using SettingsScene;
 using Statistics;
@@ -41,6 +42,7 @@ namespace GameScene
         [SerializeField] private GameObject pausedOverlayGroup;
         [SerializeField] private ConfirmDialogUI confirmDialogUI;
         [SerializeField] private Fader fader;
+        [SerializeField] private GameStopwatch gameStopwatch;
         private TMP_Text _txtHintCount;
         private TMP_Text _txtShuffleCount;
 
@@ -115,38 +117,35 @@ namespace GameScene
 
             fader.EnterSceneAnimation();
             _gameStatsSaved = false;
-            Game = new Game(cardPrefab, cardBack, gridManager);
-            // if (PlayerPrefs.GetInt("gameInProgress", 0) == 1)
-            // {
-            //     Game.Load();
-            //     ShowContinuePopup();
-            // }
-            // else
-            // {
-            //     Game.StartNewGame();
-            // }
-            Game.StartNewGame();
+            Game = new Game(cardPrefab, cardBack, gridManager, gameStopwatch);
+            if (PlayerPrefs.GetInt("gameInProgress", 0) == 1)
+            {
+                Game.Load();
+                ShowContinuePopup();
+            }
+            else
+            {
+                Game.StartNewGame();
+            }
+            // Game.StartNewGame();
 
             btnHint.onClick.AddListener(Game.SelectHint);
             btnShuffle.onClick.AddListener(Game.RearrangeActualCards);
             btnDeal.onClick.AddListener(() => Game.DealAdditionalCards(3));
             btnHowTo.onClick.AddListener(() =>
             {
-                // SaveGameInProgress();
                 Game.PauseGame();
                 ShowConfirmationPopup("TutorialScene");
                 // SceneChanger.Instance.LoadScene("TutorialScene");
             });
             btnSettings.onClick.AddListener(() =>
             {
-                // SaveGameInProgress();
                 Game.PauseGame();
                 ShowConfirmationPopup("SettingsScene");
                 // SceneChanger.Instance.LoadScene("SettingsScene");
             });
             btnHome.onClick.AddListener(() =>
             {
-                // SaveGameInProgress();
                 Game.PauseGame();
                 ShowConfirmationPopup("MainMenu");
                 // SceneChanger.Instance.LoadScene("MainMenu");
@@ -159,33 +158,33 @@ namespace GameScene
             SetupUIPlayerPrefs();
         }
 
-        // private void SaveGameInProgress()
-        // {
-        //     if (PlayerPrefs.GetInt("gameInProgress", 0) == 1)
-        //     { 
-        //         Game.Save();
-        //     }
-        // }
+        private void SaveGameInProgress()
+        {
+            if (PlayerPrefs.GetInt("gameInProgress", 0) == 1)
+            { 
+                Game.Save();
+            }
+        }
 
-        // private void ShowContinuePopup()
-        // {
-        //     confirmDialogUI.gameObject.SetActive(true);
-        //     confirmDialogUI
-        //         .SetTitle("Continue game")
-        //         .SetMessage(
-        //             "Do you want to continue your game in progress?")
-        //         .SetNegativeButtonText("No, start a new game")
-        //         .SetPositiveButtonText("Yes, continue")
-        //         .SetButtonsColor(DialogButtonColor.Blue)
-        //         .SetFadeDuration(0.1f)
-        //         .OnNegativeButtonClicked(() =>
-        //         {
-        //             Game.EndGame();
-        //             Game.StartNewGame();
-        //         })
-        //         .OnPositiveButtonClicked(Game.ResumeGame)
-        //         .Show();
-        // }
+        private void ShowContinuePopup()
+        {
+            confirmDialogUI.gameObject.SetActive(true);
+            confirmDialogUI
+                .SetTitle("Continue game")
+                .SetMessage(
+                    "Do you want to continue your game in progress?")
+                .SetNegativeButtonText("No, start a new game")
+                .SetPositiveButtonText("Yes, continue")
+                .SetButtonsColor(DialogButtonColor.Blue)
+                .SetFadeDuration(0.1f)
+                .OnNegativeButtonClicked(() =>
+                {
+                    Game.EndGame();
+                    Game.StartNewGame();
+                })
+                .OnPositiveButtonClicked(Game.ResumeGame)
+                .Show();
+        }
 
         private void SetupUIPlayerPrefs()
         {
@@ -197,7 +196,7 @@ namespace GameScene
 
         private void Update()
         {
-            Debug.Log(FirebaseRemoteConfig.DefaultInstance.GetValue("testString").StringValue);
+            // Debug.Log(FirebaseRemoteConfig.DefaultInstance.GetValue("testString").StringValue);
             var gameStatistics = GameStatisticsManager.Instance.GameStatistics;
             txtCardsLeft.text = Game.Deck.Count.ToString();
             txtSetCount.text = gameStatistics.SetsFound.ToString();
@@ -205,14 +204,7 @@ namespace GameScene
             _txtHintCount.text = gameStatistics.HintsUsed.ToString();
             _txtShuffleCount.text = gameStatistics.ShufflesUsed.ToString();
             txtSetCountOnTable.text = Game.GetNumOfSetsOnTable() + " SET(s) available";
-            if (Settings.Instance.GetAutoDeal())
-            {
-                if (Game.GetNumOfSetsOnTable() == 0)
-                {
-                    Game.DealAdditionalCards(3);
-                }
-            }
-            
+
             if (Game.IsGameEnded() && !_gameStatsSaved)
             {
                 Game.EndGame();
@@ -220,6 +212,13 @@ namespace GameScene
                 _gameStatsSaved = true;
                 DOTween.CompleteAll();
                 fader.ExitSceneAnimation("GameSummaryScene");
+            }
+            if (Settings.Instance.GetAutoDeal() && !Game.IsGameEnded())
+            {
+                if (Game.GetNumOfSetsOnTable() == 0)
+                {
+                    Game.DealAdditionalCards(3);
+                }
             }
         }
 
@@ -230,8 +229,8 @@ namespace GameScene
 
         private void OnDestroy()
         {
-            // SaveGameInProgress();
-            Game.EndGame();
+            SaveGameInProgress();
+            // Game.EndGame();
         }
 
         public void PauseGame()
@@ -283,6 +282,7 @@ namespace GameScene
                 .OnNegativeButtonClicked(Game.ResumeGame)
                 .OnPositiveButtonClicked(() =>
                 {
+                    SaveGameInProgress();
                     fader.ExitSceneAnimation(scene);
                 })
                 .Show();

@@ -57,10 +57,10 @@ namespace GameScene.Statistics
             var userStatistics = UserStatisticsManager.Instance.UserStatistics;
             
             txtTotalGamesCount.text = userStatistics.TotalGameCount.ToString();
-            txtBestTime.text = Utils.GetTimeSpanString(userStatistics.BestTime);
-            txtTimeInTotal.text = Utils.GetTimeSpanString(userStatistics.TotalTime);
-            txtAvgTimePerSet.text = Utils.GetTimeSpanString(userStatistics.AvgTimePerSet);
-            txtAvgTimePerGame.text = Utils.GetTimeSpanString(userStatistics.AvgTimePerGame);
+            txtBestTime.text = GUtils.Utils.GetTimeSpanString(userStatistics.BestTime);
+            txtTimeInTotal.text = GUtils.Utils.GetTimeSpanString(userStatistics.TotalTime);
+            txtAvgTimePerSet.text = GUtils.Utils.GetTimeSpanString(userStatistics.AvgTimePerSet);
+            txtAvgTimePerGame.text = GUtils.Utils.GetTimeSpanString(userStatistics.AvgTimePerGame);
             txtAvgMistakesPerGame.text = userStatistics.AvgMistakesPerGame.ToString();
             txtAvgHintsPerGame.text = userStatistics.AvgHintsPerGame.ToString();
             txtShufflesPerGame.text = userStatistics.AvgShufflesPerGame.ToString();

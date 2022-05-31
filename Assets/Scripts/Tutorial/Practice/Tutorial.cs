@@ -3,6 +3,7 @@ using System.Linq;
 using DefaultNamespace;
 using DG.Tweening;
 using GameScene.CardView;
+using GameScene.GUtils;
 using UnityEngine;
 using Color = UnityEngine.Color;
 
@@ -37,6 +38,7 @@ namespace Tutorial.Practice
         {
             DestroyCardViews();
             _deck = new Deck();
+            _deck.CreateDeck();
             Set = new Set();
             CreateCardsForTutorial(out _cardOptions, out _cardsToComplete);
             DrawCardsInGrid(_cardsToComplete, "center-left");
