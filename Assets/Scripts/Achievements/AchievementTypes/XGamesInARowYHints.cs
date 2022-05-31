@@ -70,5 +70,15 @@ namespace Achievements.AchievementTypes
                     break;
             }
         }
+
+        public override float GetProgressValue()
+        {
+            return (float)gamesCount / gamesInARowCondition;
+        }
+
+        public override string GetProgressText()
+        {
+            return $"{gamesCount}/{gamesInARowCondition}";
+        }
     }
 }

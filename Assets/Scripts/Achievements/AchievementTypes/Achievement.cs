@@ -11,6 +11,7 @@ namespace Achievements.AchievementTypes
         public Status Status { get; set; }
         public UpdateType UpdateType { get; set; }
         public CreationType CreationType { get; set; }
+        public bool HasProgress { get; set; }
 
         protected Achievement(string text, CreationType creationType)
         {
@@ -18,9 +19,12 @@ namespace Achievements.AchievementTypes
             Status = Status.InProgress;
             ID = Guid.NewGuid();
             CreationType = creationType;
+            HasProgress = true;
         }
 
         public abstract void UpdateProgress(GameStatistics statistics);
         public abstract void CalculateDifficulty();
+        public abstract float GetProgressValue();
+        public abstract string GetProgressText();
     }
 }

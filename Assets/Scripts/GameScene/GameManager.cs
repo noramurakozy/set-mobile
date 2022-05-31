@@ -274,7 +274,9 @@ namespace GameScene
             confirmDialogUI
                 .SetTitle("Exit game")
                 .SetMessage(
-                    "Are you sure you want to exit the game? Your progress will be lost...")
+                    "Are you sure you want to exit the game?" +
+                    "\n" +
+                    "(Don't worry, your progress will be saved and you can continue the game later)")
                 .SetNegativeButtonText("No, continue playing")
                 .SetPositiveButtonText("Yes, exit")
                 .SetButtonsColor(DialogButtonColor.Blue)

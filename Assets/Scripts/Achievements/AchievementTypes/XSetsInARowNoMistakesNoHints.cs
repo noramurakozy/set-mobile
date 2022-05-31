@@ -12,6 +12,7 @@ namespace Achievements.AchievementTypes
         {
             setsCountCondition = x;
             UpdateType = UpdateType.DuringGame;
+            HasProgress = false;
         }
 
         public override void UpdateProgress(GameStatistics statistics)
@@ -40,6 +41,17 @@ namespace Achievements.AchievementTypes
                     Difficulty = Difficulty.Medium;
                     break;
             }
+        }
+
+        // Has no progress
+        public override float GetProgressValue()
+        {
+            return 0.0f;
+        }
+
+        public override string GetProgressText()
+        {
+            return "";
         }
     }
 }

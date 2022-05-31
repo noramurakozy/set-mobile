@@ -54,5 +54,15 @@ namespace Achievements.AchievementTypes
                     break;
             }
         }
+
+        public override float GetProgressValue()
+        {
+            return (float)setsCount / setsCountCondition;
+        }
+
+        public override string GetProgressText()
+        {
+            return $"{setsCount}/{setsCountCondition}";
+        }
     }
 }
