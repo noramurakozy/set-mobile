@@ -40,6 +40,7 @@ namespace Tutorial.Practice
 
         private void Start()
         {
+            fader.EnterSceneAnimation();
             Tutorial = new Tutorial(cardPrefab, placeholderCardPrefab, centerLeftGrid, centerVerticalGrid);
             Tutorial.StartNewTutorial();
             ResetExplanationText();

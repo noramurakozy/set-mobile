@@ -1,4 +1,5 @@
 using GameScene.CardView;
+using Sound;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
@@ -27,10 +28,12 @@ namespace Tutorial.Practice
             {
                 if (set.IsSet())
                 {
+                    SoundManager.Instance.PlaySound(Sound.Sound.TutorialCorrect);
                     PracticeManager.Instance.DisplaySuccessText(set);
                 }
                 else
                 {
+                    SoundManager.Instance.PlaySound(Sound.Sound.TutorialWrong);
                     PracticeManager.Instance.DisplayErrorText(set);
                 }
             }

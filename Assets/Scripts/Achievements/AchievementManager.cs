@@ -6,6 +6,7 @@ using Achievements.AchievementTypes;
 using Dialogs;
 using GameScene.Statistics;
 using Newtonsoft.Json;
+using Sound;
 using Statistics;
 using UnityEngine;
 
@@ -77,7 +78,11 @@ namespace Achievements
                 }
             }
 
-            ToastManager.Instance.ShowToastList(updatedAchievements.Select(a => a.Text).ToList(), 2f);   
+            if (updatedAchievements.Count > 0)
+            {
+                SoundManager.Instance.PlaySound(Sound.Sound.AchievementUnlocked);
+                ToastManager.Instance.ShowToastList(updatedAchievements.Select(a => a.Text).ToList(), 2f);
+            }
             
             SaveAchievements(AllAchievements);
             UserStatisticsManager.Instance.UpdateAchievementStatistics();

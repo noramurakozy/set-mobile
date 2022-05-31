@@ -105,7 +105,7 @@ public class GridManager : MonoBehaviour
 
                 if (new Vector2(card.transform.position.x, card.transform.position.y) != targetPosition)
                 {
-                    card.transform.DOLocalMove(targetPosition, 1);
+                    card.transform.DOLocalMove(targetPosition, 1).SetEase(Ease.InOutSine);
                 }
             }
         }
