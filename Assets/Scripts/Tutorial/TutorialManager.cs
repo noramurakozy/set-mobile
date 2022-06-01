@@ -26,6 +26,7 @@ namespace Tutorial
         
         private void Start()
         {
+            fader.EnterSceneAnimation();
             btnPractice.onClick.AddListener(() =>
             {
                 fader.ExitSceneAnimation("PracticeScene");
