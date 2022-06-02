@@ -1,9 +1,9 @@
 {
-    "m_SelectedDeviceId": "4b7b2b29",
+    "m_SelectedDeviceId": "UBV7N18523010752",
     "m_SelectedPackage": {
-        "deviceId": "",
-        "name": "",
-        "processId": 0,
+        "deviceId": "UBV7N18523010752",
+        "name": "com.murak.setmobile",
+        "processId": 4950,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -31,6 +31,24 @@
             "name": "com.DefaultCompany.com.unity.template.mobile2D",
             "processId": 20057,
             "exited": true
+        },
+        {
+            "deviceId": "UBV7N18523010752",
+            "name": "com.murak.setmobile",
+            "processId": 20594,
+            "exited": false
+        },
+        {
+            "deviceId": "UBV7N18523010752",
+            "name": "com.murak.setmobile",
+            "processId": 31288,
+            "exited": false
+        },
+        {
+            "deviceId": "UBV7N18523010752",
+            "name": "com.murak.setmobile",
+            "processId": 4950,
+            "exited": false
         }
     ],
     "m_Tags": {
