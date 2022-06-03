@@ -27,6 +27,7 @@ namespace Feedback
 
         private void Start()
         {
+            SelectedIndex = -1;
             _toggleGroup.SetAllTogglesOff();
             // Activate the ones needed, and clear selection
             for (var i = 0; i < LabelTexts.Count; i++)
@@ -40,12 +41,10 @@ namespace Feedback
                     {
                         SelectedIndex = _radioButtons.IndexOf(_radioButtons[i1]);
                         Debug.Log(SelectedIndex);
+                        _toggleGroup.allowSwitchOff = false;
                     }
                 });
             }
-
-            // Set default value
-            SelectedIndex = _radioButtons.IndexOf(_toggleGroup.GetFirstActiveToggle());
         }
     }
 }

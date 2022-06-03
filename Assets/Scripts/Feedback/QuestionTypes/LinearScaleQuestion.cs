@@ -25,12 +25,15 @@ namespace Feedback
 
         private void Start()
         {
-            _qLabel.text = question;
+            _qLabel.text = question + (_gFormQuestion.required ? " *" : string.Empty);
         }
 
         private void Update()
         {
-            _gFormQuestion.Answer = _toggleGroup.SelectedIndex;
+            if (_toggleGroup.SelectedIndex != -1)
+            {
+                _gFormQuestion.Answer = _toggleGroup.SelectedIndex;
+            }
         }
     }
 }

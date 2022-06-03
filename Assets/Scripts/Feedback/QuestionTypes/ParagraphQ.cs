@@ -19,7 +19,7 @@ namespace Feedback
         
         private void Start()
         {
-            _qLabel.text = question;
+            _qLabel.text = question + (_gFormQuestion.required ? " *" : string.Empty);
             _inputField.onValueChanged.AddListener(newValue => _gFormQuestion.Answer = newValue);
             
             // Set default value

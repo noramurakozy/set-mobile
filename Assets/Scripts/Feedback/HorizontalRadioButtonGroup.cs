@@ -35,9 +35,7 @@ namespace Feedback
 
         private void Start()
         {
-            Debug.Log("in radio btn gr");
-            Debug.Log(ScaleMin);
-            Debug.Log(ScaleMax);
+            SelectedIndex = -1;
             _toggleGroup.SetAllTogglesOff();
             // Activate the ones needed, and clear selection
             for (var i = 0; i < _radioButtons.Count; i++)
@@ -53,6 +51,7 @@ namespace Feedback
                         {
                             SelectedIndex = _radioButtons.IndexOf(_radioButtons[i1]);
                             Debug.Log(SelectedIndex);
+                            _toggleGroup.allowSwitchOff = false;
                         }
                     });
                 }
@@ -60,8 +59,6 @@ namespace Feedback
 
             leftLabelField.text = leftLabelText;
             rightLabelField.text = rightLabelText;
-            // Set default value
-            SelectedIndex = _radioButtons.IndexOf(_toggleGroup.GetFirstActiveToggle());
         }
     }
 }
