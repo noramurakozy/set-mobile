@@ -26,7 +26,7 @@ namespace Achievements.AchievementTypes
                 setsCount++;
             }
 
-            if (setsCount >= setsCountCondition)
+            if (setsCount == setsCountCondition)
             {
                 Status = Status.Complete;
             }

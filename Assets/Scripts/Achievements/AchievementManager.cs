@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Achievements.AchievementTypes;
 using Dialogs;
+using FirebaseHandlers;
 using GameScene.Statistics;
 using Newtonsoft.Json;
 using Sound;
@@ -26,12 +27,21 @@ namespace Achievements
 
         public List<Achievement> ReadAllAchievements()
         {
-            List<Achievement> allAchievements = new List<Achievement>();
+            List<Achievement> allAchievements;
             if (File.Exists(Application.persistentDataPath + "/achievements.json"))
             {
                 allAchievements =
                     JsonConvert.DeserializeObject<List<Achievement>>(
                         File.ReadAllText(Application.persistentDataPath + "/achievements.json"), JsonUtils.SerializerSettings);
+            }
+            else
+            {
+                allAchievements = JsonConvert.DeserializeObject<List<Achievement>>(
+                    File.ReadAllText(Application.streamingAssetsPath + 
+                                     (RemoteConfigValueManager.Instance.CustomAchievements 
+                                         ? "/defaultAchievementsCustom.json" 
+                                         : "/defaultAchievementsStatic.json")), JsonUtils.SerializerSettings);
+                SaveAchievements(allAchievements);
             }
 
             return allAchievements;
@@ -115,5 +125,10 @@ namespace Achievements
 
             return statistics;
         }
+
+        // public List<Achievement> InitiateDefaultAchievements()
+        // {
+        //     
+        // }
     }
 }

@@ -36,7 +36,15 @@ namespace Achievements
             {
                 progressArea.gameObject.SetActive(false);
             }
-            btnDelete.onClick.AddListener(() => AchievementUIManager.Instance.ShowConfirmationDialog(this));
+
+            if (Achievement.CreationType == CreationType.Default)
+            {
+                btnDelete.gameObject.SetActive(false);
+            }
+            else
+            {
+                btnDelete.onClick.AddListener(() => AchievementUIManager.Instance.ShowConfirmationDialog(this));
+            }
         }
     }
 }

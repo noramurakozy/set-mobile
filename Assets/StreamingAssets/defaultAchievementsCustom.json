@@ -1,0 +1,45 @@
+﻿{
+  "$type": "System.Collections.Generic.List`1[[Achievements.AchievementTypes.Achievement, Assembly-CSharp]], mscorlib",
+  "$values": [
+    {
+      "$type": "Achievements.AchievementTypes.XGamesInARowYHints, Assembly-CSharp",
+      "gamesCount": 0,
+      "gamesInARowCondition": 5,
+      "maximumHintsCondition": 10,
+      "ID": "2b36066e-22dc-4763-8cd0-84c590e8c7e6",
+      "Difficulty": 0,
+      "Text": "Complete 5 game(s) in a row using maximum 10 hint(s)",
+      "Status": 0,
+      "UpdateType": 1,
+      "CreationType": 1,
+      "HasProgress": true
+    },
+    {
+      "$type": "Achievements.AchievementTypes.XGamesYMistakes, Assembly-CSharp",
+      "gamesCount": 0,
+      "gamesCountCondition": 100,
+      "mistakesCountCondition": 1,
+      "ID": "da000e34-059a-4823-bc6e-c2330db8e68c",
+      "Difficulty": 2,
+      "Text": "Complete 100 game(s) with maximum 1 mistake(s)",
+      "Status": 0,
+      "UpdateType": 1,
+      "CreationType": 1,
+      "HasProgress": true
+    },
+    {
+      "$type": "Achievements.AchievementTypes.XSetsYSecondsZGames, Assembly-CSharp",
+      "gamesCount": 0,
+      "setsCountCondition": 10,
+      "secondsCountCondition": 60,
+      "gamesCountCondition": 25,
+      "ID": "7a817d47-ef6f-4b13-8393-c27ff9d892af",
+      "Difficulty": 1,
+      "Text": "Find 10 SET(s) within the first 60 second(s) in 25 game(s)",
+      "Status": 0,
+      "UpdateType": 0,
+      "CreationType": 1,
+      "HasProgress": true
+    }
+  ]
+}

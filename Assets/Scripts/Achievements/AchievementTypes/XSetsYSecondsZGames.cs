@@ -23,7 +23,7 @@ namespace Achievements.AchievementTypes
 
         public override void UpdateProgress(GameStatistics statistics)
         {
-            if (statistics.SetsFound >= setsCountCondition)
+            if (statistics.SetsFound == setsCountCondition)
             {
                 if (statistics.CurrentElapsedSeconds <= secondsCountCondition)
                 {

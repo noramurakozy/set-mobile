@@ -4,8 +4,6 @@ using System.Threading.Tasks;
 using Achievements;
 using DG.Tweening;
 using EasyUI.Dialogs;
-using Firebase.Extensions;
-using Firebase.RemoteConfig;
 using GameScene.GUtils;
 using GameScene.Statistics;
 using SettingsScene;
@@ -60,61 +58,9 @@ namespace GameScene
                 Instance = this;
             }
         }
-        
-        void FetchComplete(Task fetchTask) {
-            if (fetchTask.IsCanceled) {
-                Debug.Log("Fetch canceled.");
-            } else if (fetchTask.IsFaulted) {
-                Debug.Log("Fetch encountered an error.");
-            } else if (fetchTask.IsCompleted) {
-                Debug.Log("Fetch completed successfully!");
-            }
-
-            var info = Firebase.RemoteConfig.FirebaseRemoteConfig.DefaultInstance.Info;
-            switch (info.LastFetchStatus) {
-                case Firebase.RemoteConfig.LastFetchStatus.Success:
-                    Firebase.RemoteConfig.FirebaseRemoteConfig.DefaultInstance.ActivateAsync()
-                        .ContinueWithOnMainThread(task => {
-                            Debug.Log(String.Format("Remote data loaded and ready (last fetch time {0}).",
-                                info.FetchTime));
-                        });
-
-                    break;
-                case Firebase.RemoteConfig.LastFetchStatus.Failure:
-                    switch (info.LastFetchFailureReason) {
-                        case Firebase.RemoteConfig.FetchFailureReason.Error:
-                            Debug.Log("Fetch failed for unknown reason");
-                            break;
-                        case Firebase.RemoteConfig.FetchFailureReason.Throttled:
-                            Debug.Log("Fetch throttled until " + info.ThrottledEndTime);
-                            break;
-                    }
-                    break;
-                case Firebase.RemoteConfig.LastFetchStatus.Pending:
-                    Debug.Log("Latest Fetch call still pending.");
-                    break;
-            }
-        }
 
         private void Start()
         {
-            var defaults =  new Dictionary<string, object>
-            {
-                // yet, or if we ask for values that the server doesn't have:
-                // server
-                // These are the values that are used if we haven't fetched data from the
-                { "testString", "defaulttring" }
-            };
-
-            FirebaseRemoteConfig.DefaultInstance.SetDefaultsAsync(defaults)
-                .ContinueWithOnMainThread(task => { });
-            
-            Debug.Log("Fetching data...");
-            System.Threading.Tasks.Task fetchTask =
-                FirebaseRemoteConfig.DefaultInstance.FetchAsync(
-                    TimeSpan.Zero);
-            fetchTask.ContinueWithOnMainThread(FetchComplete);
-
             fader.EnterSceneAnimation();
             _gameStatsSaved = false;
             Game = new Game(cardPrefab, cardBack, gridManager, gameStopwatch);
@@ -196,7 +142,6 @@ namespace GameScene
 
         private void Update()
         {
-            // Debug.Log(FirebaseRemoteConfig.DefaultInstance.GetValue("testString").StringValue);
             var gameStatistics = GameStatisticsManager.Instance.GameStatistics;
             txtCardsLeft.text = Game.Deck.Count.ToString();
             txtSetCount.text = gameStatistics.SetsFound.ToString();

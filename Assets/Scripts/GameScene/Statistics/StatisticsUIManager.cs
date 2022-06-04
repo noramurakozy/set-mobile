@@ -1,5 +1,6 @@
 ﻿using System;
 using EasyUI.Dialogs;
+using FirebaseHandlers;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -75,7 +76,15 @@ namespace GameScene.Statistics
             txtNumMediumAchievements.text = userStatistics.NumMediumAchievements.ToString();
             txtNumEasyAchievements.text = userStatistics.NumEasyAchievements.ToString();
             txtAchievementsInTotal.text = userStatistics.AchievementsUnlockedInTotal.ToString();
-            txtCustomAchievementsCount.text = userStatistics.CustomAchievementsCount.ToString();
+
+            if (RemoteConfigValueManager.Instance.CustomAchievements)
+            {
+                txtCustomAchievementsCount.text = userStatistics.CustomAchievementsCount.ToString();
+            }
+            else
+            {
+                txtCustomAchievementsCount.transform.parent.gameObject.SetActive(false);
+            }
         }
 
         private void ShowConfirmationDialog()

@@ -72,7 +72,8 @@ namespace SettingsScene
             confirmDialogUI
                 .SetTitle("Reset game")
                 .SetMessage(
-                    "Are you sure you want reset all your game data? This action cannot be undone and will reset your settings, achievements and statistics back to default.")
+                    "Are you sure you want reset all your game data? " +
+                    "This action cannot be undone and will reset your settings, achievements and statistics back to default.")
                 .SetNegativeButtonText("Yes, clear everything")
                 .SetPositiveButtonText("No, keep my data")
                 .SetButtonsColor(DialogButtonColor.Green)

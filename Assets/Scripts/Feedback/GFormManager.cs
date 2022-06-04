@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using FirebaseHandlers;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -67,8 +68,10 @@ namespace Feedback
                     form.AddField(question.entryID, question.Answer.ToString());
                     Debug.Log($"{question.entryID}: {question.Answer}");
                 }
-                // TODO send A/B test version data
-                form.AddField("entry.1664004318", "Variant B (player defined achievements)");
+                form.AddField("entry.1664004318", 
+                    RemoteConfigValueManager.Instance.CustomAchievements 
+                        ? "Variant B (player defined achievements)"
+                        : "Variant A (static/fixed achievements)");
                 
                 string urlGFormResponse = GFormBaseURL + "formResponse";
                 using (UnityWebRequest www = UnityWebRequest.Post(urlGFormResponse, form))

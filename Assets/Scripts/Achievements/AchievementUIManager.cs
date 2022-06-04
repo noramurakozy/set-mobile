@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Achievements.AchievementTypes;
 using EasyUI.Dialogs;
+using FirebaseHandlers;
 using Newtonsoft.Json;
 using Statistics;
 using TMPro;
@@ -50,10 +51,18 @@ namespace Achievements
             inProgressPlaceholderText.gameObject.SetActive(true);
             completedPlaceholderText.gameObject.SetActive(true);
             InitAchievementUIs();
-            btnAddNew.onClick.AddListener(() =>
+            if (RemoteConfigValueManager.Instance.CustomAchievements)
             {
-                fader.ExitSceneAnimation("CreateAchievementScene");
-            });
+                btnAddNew.onClick.AddListener(() =>
+                {
+                    fader.ExitSceneAnimation("CreateAchievementScene");
+                });
+            }
+            else
+            {
+                btnAddNew.gameObject.SetActive(false);
+            }
+            
             btnHome.onClick.AddListener(() => fader.ExitSceneAnimation("MainMenu"));
         }
 
