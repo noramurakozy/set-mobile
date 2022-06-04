@@ -241,7 +241,7 @@ namespace GameScene
 
         private void ResumeGame()
         {
-            RemoveDisplayOverlay();
+            RemovePauseOverlay();
             Game.ResumeGame();
         }
 
@@ -250,7 +250,7 @@ namespace GameScene
             pausedOverlayGroup.SetActive(true);
         }
 
-        private void RemoveDisplayOverlay()
+        private void RemovePauseOverlay()
         {
             pausedOverlayGroup.SetActive(false);
         }
