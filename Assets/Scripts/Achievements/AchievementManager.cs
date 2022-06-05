@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using Achievements.AchievementTypes;
 using Dialogs;
 using FirebaseHandlers;
@@ -10,6 +11,7 @@ using Newtonsoft.Json;
 using Sound;
 using Statistics;
 using UnityEngine;
+using UnityEngine.Networking;
 
 namespace Achievements
 {
@@ -27,20 +29,48 @@ namespace Achievements
 
         public List<Achievement> ReadAllAchievements()
         {
-            List<Achievement> allAchievements;
+            List<Achievement> allAchievements = new List<Achievement>();
             if (File.Exists(Application.persistentDataPath + "/achievements.json"))
             {
                 allAchievements =
                     JsonConvert.DeserializeObject<List<Achievement>>(
-                        File.ReadAllText(Application.persistentDataPath + "/achievements.json"), JsonUtils.SerializerSettings);
+                        File.ReadAllText(Application.persistentDataPath + "/achievements.json"),
+                        JsonUtils.SerializerSettings);
             }
             else
             {
-                allAchievements = JsonConvert.DeserializeObject<List<Achievement>>(
-                    File.ReadAllText(Application.streamingAssetsPath + 
-                                     (RemoteConfigValueManager.Instance.CustomAchievements 
-                                         ? "/defaultAchievementsCustom.json" 
-                                         : "/defaultAchievementsStatic.json")), JsonUtils.SerializerSettings);
+                string filePathCustom = Path.Combine(Application.streamingAssetsPath, "defaultAchievementsCustom.json");
+                string filePathStatic = Path.Combine(Application.streamingAssetsPath, "defaultAchievementsStatic.json");
+#if (UNITY_EDITOR || UNITY_IOS || UNITY_STANDALONE_WIN)
+                allAchievements = RemoteConfigValueManager.Instance.CustomAchievements
+                    ? JsonConvert.DeserializeObject<List<Achievement>>(
+                        File.ReadAllText(filePathCustom), JsonUtils.SerializerSettings)
+                    : JsonConvert.DeserializeObject<List<Achievement>>(
+                        File.ReadAllText(filePathStatic), JsonUtils.SerializerSettings);
+#endif
+
+#if UNITY_ANDROID
+                var loadingRequest = RemoteConfigValueManager.Instance.CustomAchievements
+                    ? UnityWebRequest.Get(filePathCustom)
+                    : UnityWebRequest.Get(filePathStatic);
+                loadingRequest.SendWebRequest();
+                while (!loadingRequest.isDone)
+                {
+                }
+
+                if (loadingRequest.result != UnityWebRequest.Result.Success)
+                {
+                    Debug.LogError(
+                        "An error occured while requesting data from the streaming assets folder on Android");
+                }
+                else
+                {
+                    Debug.Log(loadingRequest.downloadHandler.text);
+                    using (var stream = new MemoryStream(loadingRequest.downloadHandler.data))
+                    using (var reader = new StreamReader(stream, Encoding.UTF8))
+                        allAchievements = JsonSerializer.Create(JsonUtils.SerializerSettings).Deserialize(reader, typeof(List<Achievement>)) as List<Achievement>;
+                }
+#endif
                 SaveAchievements(allAchievements);
             }
 
@@ -50,7 +80,7 @@ namespace Achievements
         public Achievement InitiateAchievement(CreationType creationType, AchievementTemplate template,
             string achievementText, List<object> conditions)
         {
-            var args = new List<object> {creationType, achievementText};
+            var args = new List<object> { creationType, achievementText };
 
             args.AddRange(conditions);
             var instance = (Achievement)Activator.CreateInstance(template.Type, args.ToArray());
@@ -65,7 +95,8 @@ namespace Achievements
             {
                 allAchievements =
                     JsonConvert.DeserializeObject<List<Achievement>>(
-                        File.ReadAllText(Application.persistentDataPath + "/achievements.json"), JsonUtils.SerializerSettings);
+                        File.ReadAllText(Application.persistentDataPath + "/achievements.json"),
+                        JsonUtils.SerializerSettings);
             }
 
             allAchievements?.Insert(0, newAchievement);
@@ -93,11 +124,11 @@ namespace Achievements
                 SoundManager.Instance.PlaySound(Sound.Sound.AchievementUnlocked);
                 ToastManager.Instance.ShowToastList(updatedAchievements.Select(a => a.Text).ToList(), 2f);
             }
-            
+
             SaveAchievements(AllAchievements);
             UserStatisticsManager.Instance.UpdateAchievementStatistics();
         }
-        
+
         private void SaveAchievements(List<Achievement> allAchievements)
         {
             File.WriteAllText(Application.persistentDataPath + "/achievements.json",
@@ -118,17 +149,15 @@ namespace Achievements
             {
                 CustomAchievementCount = aList.Where(a => a.CreationType == CreationType.Custom).ToList().Count,
                 UnlockedInTotal = aList.Where(a => a.Status == Status.Complete).ToList().Count,
-                NumEasyAchievements = aList.Where(a => a.Status == Status.Complete && a.Difficulty == Difficulty.Easy).ToList().Count,
-                NumMediumAchievements = aList.Where(a => a.Status == Status.Complete && a.Difficulty == Difficulty.Medium).ToList().Count,
-                NumHardAchievements = aList.Where(a => a.Status == Status.Complete && a.Difficulty == Difficulty.Hard).ToList().Count
+                NumEasyAchievements = aList.Where(a => a.Status == Status.Complete && a.Difficulty == Difficulty.Easy)
+                    .ToList().Count,
+                NumMediumAchievements =
+                    aList.Where(a => a.Status == Status.Complete && a.Difficulty == Difficulty.Medium).ToList().Count,
+                NumHardAchievements = aList.Where(a => a.Status == Status.Complete && a.Difficulty == Difficulty.Hard)
+                    .ToList().Count
             };
 
             return statistics;
         }
-
-        // public List<Achievement> InitiateDefaultAchievements()
-        // {
-        //     
-        // }
     }
 }
