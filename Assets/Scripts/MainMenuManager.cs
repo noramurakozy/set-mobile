@@ -1,5 +1,7 @@
 using DG.Tweening;
 using EasyUI.Dialogs;
+using Feedback;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
@@ -13,8 +15,9 @@ public class MainMenuManager : MonoBehaviour
     [SerializeField] private Button btnStatistics;
     [SerializeField] private Button btnAbout;
     [SerializeField] private Button btnExperimentInfo;
-
+    
     [SerializeField] private ConfirmDialogUI confirmDialogUI;
+    [SerializeField] private GFormFeedbackManager gFormFeedbackManager;
     [SerializeField] private Fader fader;
     
     // Start is called before the first frame update
@@ -57,11 +60,47 @@ public class MainMenuManager : MonoBehaviour
                         "If you found a bug, please report it through Google Play Store or App Store." +
                         "\n" +
                         "Have fun playing and don't forget to seek out for new challenges! :)")
-            .SetButtonsVisibility(false)
+            .SetNegativeButtonText("Give general feedback")
+            .SetPositiveButtonText("Report a bug")
+            // .OnNegativeButtonClicked(ShowFeedbackDialog)
+            .OnPositiveButtonClicked(ShowBugDialog)
+            .SetButtonsColor(DialogButtonColor.Red)
             .SetFadeDuration(0.1f)
             .Show();
     }
-    
+
+    private void ShowBugDialog()
+    {
+        confirmDialogUI.gameObject.SetActive(true);
+        var bugQuestion = confirmDialogUI.GetComponentInChildren<GFormQuestion>(true);
+        confirmDialogUI
+            .SetTitle("Report a bug")
+            .SetMessage("Please describe as many details as possible about the bug. The more I know about the circumstances, the faster the bug can be solved.")
+            .SetNegativeButtonText("Cancel")
+            .SetPositiveButtonText("Send")
+            .SetInputFieldVisibility()
+            .OnPositiveButtonClicked(() =>
+            {
+                bugQuestion.Answer = bugQuestion.GetComponent<TMP_InputField>().text;
+                gFormFeedbackManager.SendBugReport(bugQuestion);
+                ShowBugSuccessDialog();
+            })
+            .SetFadeDuration(0.1f)
+            .Show();
+    }
+
+    private void ShowBugSuccessDialog()
+    {
+        confirmDialogUI.gameObject.SetActive(true);
+        confirmDialogUI
+            .SetTitle("Report a bug")
+            .SetMessage("Thank you! The bug has been reported and will be fixed as soon as possible.")
+            .SetButtonsVisibility(false)
+            .SetInputFieldVisibility(false)
+            .SetFadeDuration(0.1f)
+            .Show();
+    }
+
     private void ShowExperimentInfo()
     {
         confirmDialogUI.gameObject.SetActive(true);

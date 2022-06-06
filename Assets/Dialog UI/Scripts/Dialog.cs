@@ -7,6 +7,7 @@ namespace EasyUI.Dialogs {
 		public string Title = null;
 		public string Message = null;
 		public bool HasButtons;
+		public bool HasInput;
 		public string NegativeButtonText = null;
 		public string PositiveButtonText = null;
 		public DialogButtonColor ButtonsColor;

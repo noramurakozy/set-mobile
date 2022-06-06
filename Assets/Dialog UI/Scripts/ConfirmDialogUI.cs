@@ -14,6 +14,7 @@ namespace EasyUI.Dialogs {
 		[SerializeField] Button uiCloseButton;
 		[SerializeField] TextMeshProUGUI uiTitleText;
 		[SerializeField] TextMeshProUGUI uiMessageText;
+		[SerializeField] TMP_InputField uiInputField;
 		[SerializeField] GameObject uiButtonsParent;
 		[SerializeField] Button uiNegativeButton;
 		[SerializeField] Button uiPositiveButton;
@@ -31,6 +32,7 @@ namespace EasyUI.Dialogs {
 		[Header ( "Dialog's defaults:" )]
 		[SerializeField] int maxMessageLetters = 300;
 		[SerializeField] bool _defaultHasButtons = true;
+		[SerializeField] bool _defaultHasInput = false;
 		[SerializeField] string _defaultNegativeButtonText = "no";
 		[SerializeField] string _defaultPositiveButtonText = "yes";
 		[SerializeField] DialogButtonColor _defaultButtonsColor = DialogButtonColor.Black;
@@ -117,6 +119,11 @@ namespace EasyUI.Dialogs {
 			dialog.PositiveButtonClickAction = action;
 			return Instance;
 		}
+		
+		public ConfirmDialogUI SetInputFieldVisibility (bool visibility = true) {
+			dialog.HasInput = visibility;
+			return Instance;
+		}
 
 
 		//---------------------------------------------------------------------------
@@ -148,6 +155,7 @@ namespace EasyUI.Dialogs {
 				uiMessageText.text = tempDialog.Message;
 
 			uiButtonsParent.SetActive ( tempDialog.HasButtons );
+			uiInputField.gameObject.SetActive ( tempDialog.HasInput );
 
 			uiNegativeButtonText.text = tempDialog.NegativeButtonText;
 			uiPositiveButtonText.text = tempDialog.PositiveButtonText;
@@ -177,6 +185,7 @@ namespace EasyUI.Dialogs {
 
 			dialog.FadeDuration = _defaultFadeDuration;
 			dialog.HasButtons = _defaultHasButtons;
+			dialog.HasInput = _defaultHasInput;
 			dialog.ButtonsColor = _defaultButtonsColor;
 			dialog.PositiveButtonText = _defaultPositiveButtonText;
 			dialog.NegativeButtonText = _defaultNegativeButtonText;
