@@ -62,9 +62,30 @@ public class MainMenuManager : MonoBehaviour
                         "Have fun playing and don't forget to seek out for new challenges! :)")
             .SetNegativeButtonText("Give general feedback")
             .SetPositiveButtonText("Report a bug")
-            // .OnNegativeButtonClicked(ShowFeedbackDialog)
+            .OnNegativeButtonClicked(ShowFeedbackDialog)
             .OnPositiveButtonClicked(ShowBugDialog)
             .SetButtonsColor(DialogButtonColor.Red)
+            .SetFadeDuration(0.1f)
+            .Show();
+    }
+
+    private void ShowFeedbackDialog()
+    {
+        confirmDialogUI.gameObject.SetActive(true);
+        var feedbackQuestion = confirmDialogUI.GetComponentInChildren<GFormQuestion>(true);
+        feedbackQuestion.entryID = "entry.1798791499";
+        confirmDialogUI
+            .SetTitle("Give feedback")
+            .SetMessage("Here you can send me feedback about the game in general, feature ideas/improvement points if you have any.")
+            .SetNegativeButtonText("Cancel")
+            .SetPositiveButtonText("Send")
+            .SetInputFieldVisibility()
+            .OnPositiveButtonClicked(() =>
+            {
+                feedbackQuestion.Answer = feedbackQuestion.GetComponent<TMP_InputField>().text;
+                gFormFeedbackManager.SendFeedback(feedbackQuestion);
+                ShowFeedbackSuccessDialog();
+            })
             .SetFadeDuration(0.1f)
             .Show();
     }
@@ -73,6 +94,7 @@ public class MainMenuManager : MonoBehaviour
     {
         confirmDialogUI.gameObject.SetActive(true);
         var bugQuestion = confirmDialogUI.GetComponentInChildren<GFormQuestion>(true);
+        bugQuestion.entryID = "entry.1798791499";
         confirmDialogUI
             .SetTitle("Report a bug")
             .SetMessage("Please describe as many details as possible about the bug. The more I know about the circumstances, the faster the bug can be solved.")
@@ -95,6 +117,18 @@ public class MainMenuManager : MonoBehaviour
         confirmDialogUI
             .SetTitle("Report a bug")
             .SetMessage("Thank you! The bug has been reported and will be fixed as soon as possible.")
+            .SetButtonsVisibility(false)
+            .SetInputFieldVisibility(false)
+            .SetFadeDuration(0.1f)
+            .Show();
+    }
+    
+    private void ShowFeedbackSuccessDialog()
+    {
+        confirmDialogUI.gameObject.SetActive(true);
+        confirmDialogUI
+            .SetTitle("Give feedback")
+            .SetMessage("Thank you! Your feedback has been sent.")
             .SetButtonsVisibility(false)
             .SetInputFieldVisibility(false)
             .SetFadeDuration(0.1f)

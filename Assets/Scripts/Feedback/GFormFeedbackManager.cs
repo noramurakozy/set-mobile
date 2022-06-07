@@ -8,12 +8,23 @@ namespace Feedback
 {
     public class GFormFeedbackManager : MonoBehaviour, IGFormManager
     {
-        private const string GFormBaseURL =
-            "https://docs.google.com/forms/d/e/1FAIpQLSeiW_vFQprCdkLhaCTX2yTPdl_CZn6NKE68sfETeOTlXfUUzA/";
+        private string _gFormBaseURL = "";
+        private string _appVersionEntryID = "";
         
         public void SendBugReport(GFormQuestion bugQuestion)
         {
+            _appVersionEntryID = "entry.156133122";
+            _gFormBaseURL =
+                "https://docs.google.com/forms/d/e/1FAIpQLSeiW_vFQprCdkLhaCTX2yTPdl_CZn6NKE68sfETeOTlXfUUzA/";
             StartCoroutine(SendGFormData(new List<GFormQuestion> {bugQuestion}));
+        }
+        
+        public void SendFeedback(GFormQuestion feedbackQuestion)
+        {
+            _appVersionEntryID = "entry.156133122";
+            _gFormBaseURL =
+                "https://docs.google.com/forms/d/e/1FAIpQLSeu-iuY0A4hy4bCbkHTLZsdy5hYRg6RgcZsxa2tjMNZzPm1NQ/";
+            StartCoroutine(SendGFormData(new List<GFormQuestion> {feedbackQuestion}));
         }
 
         public IEnumerator SendGFormData(List<GFormQuestion> questionList)
@@ -26,12 +37,12 @@ namespace Feedback
                 Debug.Log($"{question.entryID}: {question.Answer}");
             }
 
-            form.AddField("entry.156133122",
+            form.AddField(_appVersionEntryID,
                 RemoteConfigValueManager.Instance.CustomAchievements
                     ? "Variant B (player defined achievements)"
                     : "Variant A (static/fixed achievements)");
 
-            string urlGFormResponse = GFormBaseURL + "formResponse";
+            string urlGFormResponse = _gFormBaseURL + "formResponse";
             using (UnityWebRequest www = UnityWebRequest.Post(urlGFormResponse, form))
             {
                 yield return www.SendWebRequest();
