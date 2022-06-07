@@ -186,6 +186,7 @@ namespace EasyUI.Dialogs {
 			dialog.FadeDuration = _defaultFadeDuration;
 			dialog.HasButtons = _defaultHasButtons;
 			dialog.HasInput = _defaultHasInput;
+			uiInputField.text = "";
 			dialog.ButtonsColor = _defaultButtonsColor;
 			dialog.PositiveButtonText = _defaultPositiveButtonText;
 			dialog.NegativeButtonText = _defaultNegativeButtonText;

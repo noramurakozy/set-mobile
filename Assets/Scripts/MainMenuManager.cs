@@ -1,6 +1,8 @@
 using DG.Tweening;
 using EasyUI.Dialogs;
 using Feedback;
+using Firebase.Analytics;
+using FirebaseHandlers;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -23,28 +25,45 @@ public class MainMenuManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        FirebaseAnalytics.LogEvent("enter_main_menu", 
+            new Parameter("custom_achievements", RemoteConfigValueManager.Instance.CustomAchievements.ToString()));
         Application.targetFrameRate = 60;
         
         fader.EnterSceneAnimation();
         btnPlay.onClick.AddListener(() =>
         {
             fader.ExitSceneAnimation("GameScene");
+            FirebaseAnalytics.LogEvent("switch_scene", 
+                new Parameter("from", "MainScene"), 
+                new Parameter("to", "GameScene"));
         });
         btnTutorial.onClick.AddListener(() =>
         {
             fader.ExitSceneAnimation("TutorialScene");
+            FirebaseAnalytics.LogEvent("switch_scene", 
+                new Parameter("from", "MainScene"), 
+                new Parameter("to", "TutorialScene"));
         });
         btnAchievements.onClick.AddListener(() =>
         {
             fader.ExitSceneAnimation("AchievementsScene");
+            FirebaseAnalytics.LogEvent("switch_scene", 
+                new Parameter("from", "MainScene"), 
+                new Parameter("to", "AchievementsScene"));
         });
         btnSettings.onClick.AddListener(() =>
         {
             fader.ExitSceneAnimation("SettingsScene");
+            FirebaseAnalytics.LogEvent("switch_scene", 
+                new Parameter("from", "MainScene"), 
+                new Parameter("to", "SettingsScene"));
         });
         btnStatistics.onClick.AddListener(() =>
         {
             fader.ExitSceneAnimation("StatisticsScene");
+            FirebaseAnalytics.LogEvent("switch_scene", 
+                new Parameter("from", "MainScene"), 
+                new Parameter("to", "StatisticsScene"));
         });
         btnAbout.onClick.AddListener(ShowAboutPopup);
         btnExperimentInfo.onClick.AddListener(ShowExperimentInfo);
@@ -52,6 +71,7 @@ public class MainMenuManager : MonoBehaviour
 
     private void ShowAboutPopup()
     {
+        FirebaseAnalytics.LogEvent("open_about_dialog");
         confirmDialogUI.gameObject.SetActive(true);
         confirmDialogUI
             .SetTitle("About")
@@ -64,6 +84,10 @@ public class MainMenuManager : MonoBehaviour
             .SetPositiveButtonText("Report a bug")
             .OnNegativeButtonClicked(ShowFeedbackDialog)
             .OnPositiveButtonClicked(ShowBugDialog)
+            .OnCloseButtonClicked(() =>
+            {
+                FirebaseAnalytics.LogEvent("close_about_dialog");
+            })
             .SetButtonsColor(DialogButtonColor.Red)
             .SetFadeDuration(0.1f)
             .Show();
@@ -71,6 +95,7 @@ public class MainMenuManager : MonoBehaviour
 
     private void ShowFeedbackDialog()
     {
+        FirebaseAnalytics.LogEvent("open_feedback_dialog");
         confirmDialogUI.gameObject.SetActive(true);
         var feedbackQuestion = confirmDialogUI.GetComponentInChildren<GFormQuestion>(true);
         feedbackQuestion.entryID = "entry.1798791499";
@@ -80,10 +105,19 @@ public class MainMenuManager : MonoBehaviour
             .SetNegativeButtonText("Cancel")
             .SetPositiveButtonText("Send")
             .SetInputFieldVisibility()
+            .OnCloseButtonClicked(() =>
+            {
+                FirebaseAnalytics.LogEvent("close_feedback_dialog");
+            })
+            .OnNegativeButtonClicked(() =>
+            {
+                FirebaseAnalytics.LogEvent("cancel_feedback_dialog");
+            })
             .OnPositiveButtonClicked(() =>
             {
                 feedbackQuestion.Answer = feedbackQuestion.GetComponent<TMP_InputField>().text;
                 gFormFeedbackManager.SendFeedback(feedbackQuestion);
+                
                 ShowFeedbackSuccessDialog();
             })
             .SetFadeDuration(0.1f)
@@ -92,6 +126,7 @@ public class MainMenuManager : MonoBehaviour
 
     private void ShowBugDialog()
     {
+        FirebaseAnalytics.LogEvent("open_bug_report_dialog");
         confirmDialogUI.gameObject.SetActive(true);
         var bugQuestion = confirmDialogUI.GetComponentInChildren<GFormQuestion>(true);
         bugQuestion.entryID = "entry.1798791499";
@@ -101,6 +136,14 @@ public class MainMenuManager : MonoBehaviour
             .SetNegativeButtonText("Cancel")
             .SetPositiveButtonText("Send")
             .SetInputFieldVisibility()
+            .OnCloseButtonClicked(() =>
+            {
+                FirebaseAnalytics.LogEvent("close_bug_report_dialog");
+            })
+            .OnNegativeButtonClicked(() =>
+            {
+                FirebaseAnalytics.LogEvent("cancel_bug_report_dialog");
+            })
             .OnPositiveButtonClicked(() =>
             {
                 bugQuestion.Answer = bugQuestion.GetComponent<TMP_InputField>().text;
@@ -113,6 +156,7 @@ public class MainMenuManager : MonoBehaviour
 
     private void ShowBugSuccessDialog()
     {
+        FirebaseAnalytics.LogEvent("bug_report_sent_success");
         confirmDialogUI.gameObject.SetActive(true);
         confirmDialogUI
             .SetTitle("Report a bug")
@@ -125,6 +169,7 @@ public class MainMenuManager : MonoBehaviour
     
     private void ShowFeedbackSuccessDialog()
     {
+        FirebaseAnalytics.LogEvent("feedback_sent_success");
         confirmDialogUI.gameObject.SetActive(true);
         confirmDialogUI
             .SetTitle("Give feedback")
@@ -137,6 +182,7 @@ public class MainMenuManager : MonoBehaviour
 
     private void ShowExperimentInfo()
     {
+        FirebaseAnalytics.LogEvent("open_experiment_info_dialog");
         confirmDialogUI.gameObject.SetActive(true);
         confirmDialogUI
             .SetTitle("Experiment info")
@@ -148,9 +194,20 @@ public class MainMenuManager : MonoBehaviour
                         "Tip: It's enough to fill out the survey once! ;)") 
             .SetNegativeButtonText("I'll do it later")
             .SetPositiveButtonText("Go to the survey")
+            .OnCloseButtonClicked(() =>
+            {
+                FirebaseAnalytics.LogEvent("close_experiment_info_dialog");
+            })
+            .OnNegativeButtonClicked(() =>
+            {
+                FirebaseAnalytics.LogEvent("cancel_experiment_info_dialog");
+            })
             .OnPositiveButtonClicked(() =>
             {
                 fader.ExitSceneAnimation("SurveyScene");
+                FirebaseAnalytics.LogEvent("switch_scene", 
+                    new Parameter("from", "MainScene"), 
+                    new Parameter("to", "SurveyScene"));
             })
             .SetFadeDuration(0.1f)
             .Show();
