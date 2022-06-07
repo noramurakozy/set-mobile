@@ -140,7 +140,7 @@ public class MainMenuManager : MonoBehaviour
         confirmDialogUI.gameObject.SetActive(true);
         confirmDialogUI
             .SetTitle("Experiment info")
-            .SetMessage("If you're looking for the survey, you are at the good place! " +
+            .SetMessage("If you're looking for the survey, you are at the right place! " +
                         "You can fill it out by clicking on the button below. \n" +
                         "Please note, you can give the most valuable feedback if you have used this app for at least 10 minutes already! " +
                         "If that's not true, please continue playing for a bit more :)\n" +

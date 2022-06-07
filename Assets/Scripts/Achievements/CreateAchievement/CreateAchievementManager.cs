@@ -54,10 +54,10 @@ namespace Achievements.CreateAchievement
                     new [] {10000, 10000}
                 ),
                 new(
-                    "Complete {0} game(s) in {1} second(s)",
+                    "Complete {0} game(s) in {1} minute(s) and {2} second(s)",
                     typeof(XGamesYSeconds),
-                    new[] {1, 1},
-                    new [] {10000, 10000}
+                    new[] {1, 0, 0},
+                    new [] {10000, 10000, 10000}
                 ),
                 new(
                     "Find {0} SET(s) within the first {1} second(s) in {2} game(s)",

@@ -4,17 +4,18 @@ using Statistics;
 
 namespace Achievements.AchievementTypes
 {
-    // Complete X games in Y seconds 
+    // Complete X games in Y minutes and Z seconds 
     public class XGamesYSeconds : Achievement
     {
         public int gamesCount;
 
         public int gamesCountCondition;
+        // includes the converted minutes too
         public int secondsCountCondition;
-        public XGamesYSeconds(CreationType creationType, string text, int x, int y) : base(text, creationType)
+        public XGamesYSeconds(CreationType creationType, string text, int x, int y, int z) : base(text, creationType)
         {
             gamesCountCondition = x;
-            secondsCountCondition = y;
+            secondsCountCondition = y*60+z;
             UpdateType = UpdateType.EndOfGame;
         }
 
