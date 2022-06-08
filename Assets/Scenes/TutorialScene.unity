@@ -344,6 +344,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   btnPractice: {fileID: 779889729}
+  btnHome: {fileID: 1606152675}
   fader: {fileID: 1728995389}
 --- !u!4 &195675606
 Transform:
@@ -2285,13 +2286,25 @@ PrefabInstance:
       propertyPath: m_Name
       value: ButtonHomeCircle
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 3470108207062714618, guid: 8f6538360ad8e7a4a8a9a5653baf6c5b, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 8f6538360ad8e7a4a8a9a5653baf6c5b, type: 3}
 --- !u!224 &1606152674 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3252280724785605329, guid: 8f6538360ad8e7a4a8a9a5653baf6c5b, type: 3}
   m_PrefabInstance: {fileID: 1606152673}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1606152675 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3252280724785605342, guid: 8f6538360ad8e7a4a8a9a5653baf6c5b, type: 3}
+  m_PrefabInstance: {fileID: 1606152673}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1728995387
 PrefabInstance:
   m_ObjectHideFlags: 0

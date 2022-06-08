@@ -1,4 +1,5 @@
 ﻿using DefaultNamespace;
+using Firebase.Analytics;
 using GameScene.CardView;
 using TMPro;
 using UnityEngine;
@@ -42,20 +43,28 @@ namespace Tutorial.Practice
         {
             fader.EnterSceneAnimation();
             Tutorial = new Tutorial(cardPrefab, placeholderCardPrefab, centerLeftGrid, centerVerticalGrid);
+            FirebaseAnalytics.LogEvent("start_new_tutorial");
             Tutorial.StartNewTutorial();
             ResetExplanationText();
             
             btnNewTutorial.onClick.AddListener(() =>
             {
+                FirebaseAnalytics.LogEvent("get_another_tutorial");
                 ResetExplanationText();
                 Tutorial.StartNewTutorial();
             });
             btnPlay.onClick.AddListener(() =>
             {
+                FirebaseAnalytics.LogEvent("switch_scene", 
+                    new Parameter("from", "PracticeScene"), 
+                    new Parameter("to", "GameScene"));
                 fader.ExitSceneAnimation("GameScene");
             });
             btnBackToRules.onClick.AddListener(() =>
             {
+                FirebaseAnalytics.LogEvent("switch_scene", 
+                    new Parameter("from", "PracticeScene"), 
+                    new Parameter("to", "TutorialScene"));
                 fader.ExitSceneAnimation("TutorialScene");
             });
         }

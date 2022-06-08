@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using EasyUI.Dialogs;
+using Firebase.Analytics;
 using General;
 using UnityEngine;
 using UnityEngine.UI;
@@ -25,27 +26,38 @@ namespace SettingsScene
             SetupToggles();
             showTimer.onValueChanged.AddListener(on =>
             {
+                FirebaseAnalytics.LogEvent($"settings_show_timer_set_{(on ? "on" : "off")}");
                 Settings.Instance.SetShowTimer(on ? 1 : 0);
             });
             showNumOfSets.onValueChanged.AddListener(on =>
             {
+                FirebaseAnalytics.LogEvent($"settings_num_of_sets_set_{(on ? "on" : "off")}");
                 Settings.Instance.SetShowNumOfSets(on ? 1 : 0);
             });
             showHintsUsed.onValueChanged.AddListener(on =>
             {
+                FirebaseAnalytics.LogEvent($"settings_show_hints_used_set_{(on ? "on" : "off")}");
                 Settings.Instance.SetShowHintsUsed(on ? 1 : 0);
             });
             showShufflesUsed.onValueChanged.AddListener(on =>
             {
+                FirebaseAnalytics.LogEvent($"settings_shuffles_used_set_{(on ? "on" : "off")}");
                 Settings.Instance.SetShowShufflesUsed(on ? 1 : 0);
             });
             autoDeal.onValueChanged.AddListener(on =>
             {
+                FirebaseAnalytics.LogEvent($"settings_auto_deal_set_{(on ? "on" : "off")}");
                 Settings.Instance.SetAutoDeal(on ? 1 : 0);
             });
             
             btnResetGame.onClick.AddListener(ShowConfirmationPopup);
-            btnHome.onClick.AddListener(() => fader.ExitSceneAnimation("MainMenu"));
+            btnHome.onClick.AddListener(() =>
+            {
+                FirebaseAnalytics.LogEvent("switch_scene", 
+                    new Parameter("from", "SettingsScene"), 
+                    new Parameter("to", "MainMenu"));
+                fader.ExitSceneAnimation("MainMenu");
+            });
         }
 
         private void SetupToggles()
@@ -59,6 +71,7 @@ namespace SettingsScene
 
         private void ResetGame()
         {
+            FirebaseAnalytics.LogEvent("reset_game");
             Settings.Instance.ClearSettings();
             // Reload toggles
             SetupToggles();
@@ -68,6 +81,7 @@ namespace SettingsScene
 
         private void ShowConfirmationPopup()
         {
+            FirebaseAnalytics.LogEvent("open_reset_game_dialog");
             confirmDialogUI.gameObject.SetActive(true);
             confirmDialogUI
                 .SetTitle("Reset game")
@@ -78,7 +92,19 @@ namespace SettingsScene
                 .SetPositiveButtonText("No, keep my data")
                 .SetButtonsColor(DialogButtonColor.Green)
                 .SetFadeDuration(0.1f)
-                .OnNegativeButtonClicked(ResetGame)
+                .OnNegativeButtonClicked(() =>
+                {
+                    FirebaseAnalytics.LogEvent("reset_game_dialog_click_reset");
+                    ResetGame();
+                })
+                .OnPositiveButtonClicked(() =>
+                {
+                    FirebaseAnalytics.LogEvent("reset_game_dialog_click_cancel");
+                })
+                .OnCloseButtonClicked(() =>
+                {
+                    FirebaseAnalytics.LogEvent("close_reset_game_dialog");
+                })
                 .Show();
         }
     }

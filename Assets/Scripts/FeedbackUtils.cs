@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Firebase.Analytics;
 
 public static class FeedbackUtils
 {
@@ -52,18 +53,24 @@ public static class FeedbackUtils
     public static string GetRandomPositiveFeedback()
     {
         int k = Rng.Next(_positiveFeedbackList.Count-1);
+        FirebaseAnalytics.LogEvent("practice_random_positive_feedback",
+            new Parameter("type", _positiveFeedbackList[k]));
         return _positiveFeedbackList[k];
     }
     
     public static string GetRandomPositiveEndGameFeedback()
     {
         int k = Rng.Next(_positiveEndGameFeedbackList.Count-1);
+        FirebaseAnalytics.LogEvent("game_end_random_positive_feedback",
+            new Parameter("type", _positiveEndGameFeedbackList[k]));
         return _positiveEndGameFeedbackList[k];
     }
 
     public static string GetRandomNegativeFeedback()
     {
         int k = Rng.Next(_negativeFeedbackList.Count-1);
+        FirebaseAnalytics.LogEvent("practice_random_negative_feedback",
+            new Parameter("type", _negativeFeedbackList[k]));
         return _negativeFeedbackList[k];
     }
 }

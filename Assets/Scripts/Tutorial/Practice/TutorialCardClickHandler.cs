@@ -1,3 +1,4 @@
+using Firebase.Analytics;
 using GameScene.CardView;
 using Sound;
 using UnityEngine;
@@ -28,11 +29,17 @@ namespace Tutorial.Practice
             {
                 if (set.IsSet())
                 {
+                    FirebaseAnalytics.LogEvent("tutorial_card_clicked_correct",
+                        new Parameter("type", clickedCard.ToString()),
+                        new Parameter("index", clickedCard.Card.Index));
                     SoundManager.Instance.PlaySound(Sound.Sound.TutorialCorrect);
                     PracticeManager.Instance.DisplaySuccessText(set);
                 }
                 else
                 {
+                    FirebaseAnalytics.LogEvent("tutorial_card_clicked_wrong",
+                        new Parameter("type", clickedCard.ToString()),
+                        new Parameter("index", clickedCard.Card.Index));
                     SoundManager.Instance.PlaySound(Sound.Sound.TutorialWrong);
                     PracticeManager.Instance.DisplayErrorText(set);
                 }

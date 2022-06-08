@@ -2,6 +2,7 @@
 using System.Linq;
 using DefaultNamespace;
 using DG.Tweening;
+using Firebase.Analytics;
 using GameScene.CardView;
 using GameScene.GUtils;
 using UnityEngine;

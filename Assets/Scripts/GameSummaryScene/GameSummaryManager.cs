@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Achievements;
 using Achievements.AchievementTypes;
 using Dialogs;
+using Firebase.Analytics;
 using GameScene.GUtils;
 using GameScene.Statistics;
 using TMPro;
@@ -47,9 +48,18 @@ namespace GameSummaryScene
             txtMistakes.text = latestGameStatistics.MistakesCount.ToString();
             btnPlayAgain.onClick.AddListener(() =>
             {
+                FirebaseAnalytics.LogEvent("switch_scene", 
+                    new Parameter("from", "GameSummaryScene"), 
+                    new Parameter("to", "GameScene"));
                 fader.ExitSceneAnimation("GameScene");
             });
-            btnHome.onClick.AddListener(() => fader.ExitSceneAnimation("MainMenu"));
+            btnHome.onClick.AddListener(() =>
+            {
+                FirebaseAnalytics.LogEvent("switch_scene", 
+                    new Parameter("from", "GameSummaryScene"), 
+                    new Parameter("to", "MainMenu"));
+                fader.ExitSceneAnimation("MainMenu");
+            });
             AchievementManager.Instance.UpdateProgressOfAchievements(latestGameStatistics, UpdateType.EndOfGame);
         }
     }
