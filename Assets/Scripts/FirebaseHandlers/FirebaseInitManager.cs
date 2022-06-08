@@ -13,7 +13,8 @@ namespace FirebaseHandlers
         {
             var defaults =  new Dictionary<string, object>
             {
-                {"customAchievements", true}
+                {"customAchievements", true},
+                {"ab_test_running", true}
             };
 
             FirebaseRemoteConfig.DefaultInstance.SetDefaultsAsync(defaults)
@@ -67,6 +68,10 @@ namespace FirebaseHandlers
         {
             RemoteConfigValueManager.Instance.CustomAchievements = FirebaseRemoteConfig.DefaultInstance
                 .GetValue("customAchievements").BooleanValue;
+            Debug.Log($"Value is set: CustomAchievements - {RemoteConfigValueManager.Instance.CustomAchievements}");
+            RemoteConfigValueManager.Instance.IsABTestRunning = FirebaseRemoteConfig.DefaultInstance
+                .GetValue("ab_test_running").BooleanValue;
+            Debug.Log($"Value is set: IsABTestRunning - {RemoteConfigValueManager.Instance.IsABTestRunning}");
         }
     }
 }

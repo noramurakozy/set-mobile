@@ -66,7 +66,14 @@ public class MainMenuManager : MonoBehaviour
             fader.ExitSceneAnimation("StatisticsScene");
         });
         btnAbout.onClick.AddListener(ShowAboutPopup);
-        btnExperimentInfo.onClick.AddListener(ShowExperimentInfo);
+        if (RemoteConfigValueManager.Instance.IsABTestRunning)
+        {
+            btnExperimentInfo.onClick.AddListener(ShowExperimentInfo);
+        }
+        else
+        {
+            btnExperimentInfo.gameObject.SetActive(false);
+        }
     }
 
     private void ShowAboutPopup()
