@@ -103,7 +103,7 @@ namespace Achievements
                     new Parameter("template", template.Type.FullName),
                 new Parameter("achievement_text", achievementText),
                 new Parameter("conditions", string.Join(", ", conditions)),
-                    new Parameter("difficulty", instance.Difficulty.ToString()));
+                    new Parameter("achievement_difficulty", instance.Difficulty.ToString()));
             return instance;
         }
 

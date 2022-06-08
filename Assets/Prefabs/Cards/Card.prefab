@@ -181,7 +181,7 @@ GameObject:
   - component: {fileID: 7952517162085137100}
   - component: {fileID: 6627129277187323244}
   - component: {fileID: 371416589}
-  - component: {fileID: 5019234395245844922}
+  - component: {fileID: 3616342273436978660}
   m_Layer: 0
   m_Name: Card
   m_TagString: Untagged
@@ -310,7 +310,7 @@ MonoBehaviour:
   <SpriteAtlas>k__BackingField: {fileID: 4343727234628468602, guid: bc57a1d792c8c1b408e36854333f1fed, type: 2}
   glow: {fileID: 4074254193084682377}
   overlay: {fileID: 4804898681925293433}
---- !u!114 &5019234395245844922
+--- !u!114 &3616342273436978660
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

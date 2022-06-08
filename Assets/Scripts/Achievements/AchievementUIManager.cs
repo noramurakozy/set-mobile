@@ -131,8 +131,8 @@ namespace Achievements
         public void DeleteAchievement(AchievementUI achievementUI)
         {
             FirebaseAnalytics.LogEvent("achievement_deleted", 
-                new Parameter("text", achievementUI.Achievement.Text),
-                new Parameter("id", achievementUI.Achievement.ID.ToString()));
+                new Parameter("achievement_text", achievementUI.Achievement.Text),
+                new Parameter("achievement_id", achievementUI.Achievement.ID.ToString()));
             AchievementManager.Instance.DeleteAchievement(achievementUI.Achievement.ID);
             Destroy(achievementUI.gameObject);
         }
@@ -140,8 +140,8 @@ namespace Achievements
         public void ShowConfirmationDialog(AchievementUI achievementUI)
         {
             FirebaseAnalytics.LogEvent("open_confirm_delete_achievement", 
-                new Parameter("text", achievementUI.Achievement.Text),
-                new Parameter("id", achievementUI.Achievement.ID.ToString()));
+                new Parameter("achievement_text", achievementUI.Achievement.Text),
+                new Parameter("achievement_id", achievementUI.Achievement.ID.ToString()));
             confirmDialogUI.gameObject.SetActive(true);
             confirmDialogUI
                 .SetTitle("Delete achievement")

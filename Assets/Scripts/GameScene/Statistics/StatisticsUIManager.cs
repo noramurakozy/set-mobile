@@ -1,5 +1,6 @@
 ﻿using System;
 using EasyUI.Dialogs;
+using Firebase.Analytics;
 using FirebaseHandlers;
 using TMPro;
 using UnityEngine;
@@ -43,12 +44,19 @@ namespace GameScene.Statistics
             fader.EnterSceneAnimation();
             UserStatisticsManager.Instance.UpdateAchievementStatistics();
             btnClearStats.onClick.AddListener(ShowConfirmationDialog);
-            btnHome.onClick.AddListener(() => fader.ExitSceneAnimation("MainMenu"));
+            btnHome.onClick.AddListener(() =>
+            {
+                FirebaseAnalytics.LogEvent("switch_scene", 
+                    new Parameter("from", "StatisticsScene"), 
+                    new Parameter("to", "MainMenu"));
+                fader.ExitSceneAnimation("MainMenu");
+            });
             SetupTxtFields();
         }
 
         private void ClearStatistics()
         {
+            FirebaseAnalytics.LogEvent("user_statistics_cleared");
             UserStatisticsManager.Instance.ClearStats();
             SetupTxtFields();
         }
@@ -89,6 +97,7 @@ namespace GameScene.Statistics
 
         private void ShowConfirmationDialog()
         {
+            FirebaseAnalytics.LogEvent("open_clear_statistics_dialog");
             confirmDialogUI.gameObject.SetActive(true);
             confirmDialogUI
                 .SetTitle("Clear statistics")
@@ -100,7 +109,19 @@ namespace GameScene.Statistics
                 .SetPositiveButtonText("No, keep my data")
                 .SetButtonsColor(DialogButtonColor.Green)
                 .SetFadeDuration(0.1f)
-                .OnNegativeButtonClicked(ClearStatistics)
+                .OnNegativeButtonClicked(() =>
+                {
+                    FirebaseAnalytics.LogEvent("clear_statistics_dialog_clear");
+                    ClearStatistics();
+                })
+                .OnPositiveButtonClicked(() =>
+                {
+                    FirebaseAnalytics.LogEvent("clear_statistics_dialog_keep_data");
+                })
+                .OnCloseButtonClicked(() =>
+                {
+                    FirebaseAnalytics.LogEvent("close_statistics_dialog");
+                })
                 .Show();
         }
     }

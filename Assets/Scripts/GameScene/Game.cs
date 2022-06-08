@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using DefaultNamespace;
 using DG.Tweening;
+using Firebase.Analytics;
 using GameScene.GUtils;
 using GameScene.Statistics;
 using Newtonsoft.Json;
@@ -112,6 +113,14 @@ namespace GameScene
             GameManager.Instance.EnableHintBtn(true);
             if (Set.IsSet())
             {
+                FirebaseAnalytics.LogEvent("set_clicked",
+                    new Parameter("card1_type", Set.GetSet().ToList()[0].ToString()),
+                    new Parameter("card1_index", Set.GetSet().ToList()[0].Index),
+                    new Parameter("card2_type", Set.GetSet().ToList()[1].ToString()),
+                    new Parameter("card2_index", Set.GetSet().ToList()[1].Index),
+                    new Parameter("card3_type", Set.GetSet().ToList()[2].ToString()),
+                    new Parameter("card3_index", Set.GetSet().ToList()[2].Index)
+                    );
                 var statistics = GameStatisticsManager.Instance.GameStatistics;
                 statistics.SetsFound++;
                 statistics.MaxSetsFoundInARow++;
@@ -120,18 +129,29 @@ namespace GameScene
                 switch (Set.DiffPropsCount)
                 {
                     case 1:
+                        FirebaseAnalytics.LogEvent("set_clicked_diff_props",
+                            new Parameter("nr_of_diff_props", 1));
                         statistics.NumSets1DiffProp++;
                         break;
                     case 2:
+                        FirebaseAnalytics.LogEvent("set_clicked_diff_props",
+                            new Parameter("nr_of_diff_props", 2));
                         statistics.NumSets2DiffProp++;
                         break;
                     case 3:
+                        FirebaseAnalytics.LogEvent("set_clicked_diff_props",
+                            new Parameter("nr_of_diff_props", 3));
                         statistics.NumSets3DiffProp++;
                         break;
                     case 4:
+                        FirebaseAnalytics.LogEvent("set_clicked_diff_props",
+                            new Parameter("nr_of_diff_props", 4));
                         statistics.NumSets4DiffProp++;
                         break;
                 }
+
+                FirebaseAnalytics.LogEvent("update_achievement_progresses",
+                    new Parameter("type", "during_game"));
                 GameManager.Instance.UpdateAchievementProgresses(statistics, UpdateType.DuringGame);
                 return true;
             }
@@ -150,6 +170,8 @@ namespace GameScene
             List<CardView.CardView> set = FindSetOnTable();
             if (set == null)
             {
+                FirebaseAnalytics.LogEvent("deal_cards",
+                    new Parameter("reason", "hint"));
                 DealAdditionalCards(3);
             }
             else
@@ -158,6 +180,14 @@ namespace GameScene
                 {
                     cv.Select(SelectType.HINT);
                 }
+                FirebaseAnalytics.LogEvent("highlight_hint",
+                    new Parameter("card1_type", set[0].ToString()),
+                    new Parameter("card1_index", set[0].Card.Index),
+                    new Parameter("card2_type", set[1].ToString()),
+                    new Parameter("card2_index", set[1].Card.Index),
+                    new Parameter("card3_type", set[2].ToString()),
+                    new Parameter("card3_index", set[2].Card.Index)
+                );
 
                 GameManager.Instance.EnableHintBtn(false);
             }
@@ -310,6 +340,15 @@ namespace GameScene
 
         public void InvalidSetSelected()
         {
+            FirebaseAnalytics.LogEvent("invalid_set_clicked",
+                new Parameter("card1_type", ClickedCards[0].ToString()),
+                new Parameter("card1_index", ClickedCards[0].Card.Index),
+                new Parameter("card2_type", ClickedCards[1].ToString()),
+                new Parameter("card2_index", ClickedCards[1].Card.Index),
+                new Parameter("card3_type", ClickedCards[2].ToString()),
+                new Parameter("card3_index", ClickedCards[2].Card.Index)
+            );
+
             var statistics = GameStatisticsManager.Instance.GameStatistics;
             statistics.MistakesCount++;
             statistics.MaxSetsFoundInARow = 0;
@@ -350,7 +389,10 @@ namespace GameScene
 
         public void Save()
         {
+            FirebaseAnalytics.LogEvent("save_game");
             PauseGame();
+            FirebaseAnalytics.LogEvent("pause_game",
+                new Parameter("reason", "save_game"));
             File.WriteAllText(Application.persistentDataPath + "/gameInProgress.json",
                 JsonConvert.SerializeObject(new GameData(Deck, CardsOnTable.Select(cv => cv.Card).ToList(), 
                     (int)_gameStopwatch.Value, GameStatisticsManager.Instance.GameStatistics), JsonUtils.SerializerSettings));
@@ -358,6 +400,7 @@ namespace GameScene
 
         public void Load()
         {
+            FirebaseAnalytics.LogEvent("load_game");
             GameData data = null;
             if (File.Exists(Application.persistentDataPath + "/gameInProgress.json"))
             {

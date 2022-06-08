@@ -1,69 +1,80 @@
-using System.Collections.Generic;
-using System.Linq;
 using DefaultNamespace;
-using DG.Tweening;
-using GameScene;
-using GameScene.CardView;
+using Firebase.Analytics;
+using FirebaseHandlers;
 using UnityEngine;
 using UnityEngine.EventSystems;
-using UnityEngine.Rendering;
 
-public class CardClickHandler : MonoBehaviour, IPointerClickHandler
+namespace GameScene.CardView
 {
-    private Game CurrentGame { get; set; }
-    // [SerializeField] private Sprite cardBack;
-
-    private void Start()
+    public class CardClickHandler : MonoBehaviour, IPointerClickHandler
     {
-        CurrentGame = GameManager.Instance.Game;
-    }
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        // check if null
-        var clickedCard = eventData.pointerClick.GetComponent<CardView>();
-        if (clickedCard == null)
-        {
-            return;
-        }
+        private Game CurrentGame { get; set; }
+        // [SerializeField] private Sprite cardBack;
 
-        if (CurrentGame.ThreeClicked())
+        private void Start()
         {
-            CurrentGame.RemoveSelectionsOnCards();
+            CurrentGame = GameManager.Instance.Game;
         }
-
-        if (clickedCard.IsSelected) {
-            clickedCard.Select(SelectType.NONE);
-            CurrentGame.Set.RemoveFromSet(clickedCard.Card);
-            CurrentGame.ClickedCards.Remove(clickedCard);
-        } else {
-            clickedCard.Select(SelectType.CLICK);
-            CurrentGame.AddToSet(clickedCard.Card);
-            CurrentGame.ClickedCards.Add(clickedCard);
-        }
-
-        if (CurrentGame.Set.GetSize() == 3) 
+        public void OnPointerClick(PointerEventData eventData)
         {
-            if (CurrentGame.IsSetClicked())
+            // check if null
+            var clickedCard = eventData.pointerClick.GetComponent<CardView>();
+            FirebaseAnalytics.LogEvent("card_clicked", 
+                new Parameter("type", clickedCard.ToString()),
+                new Parameter("index", clickedCard.Card.Index)
+                );
+            if (clickedCard == null)
             {
-                var emptyCardSlots = CurrentGame.GetIndexOfCards(CurrentGame.ClickedCards);
-                CurrentGame.MoveSetToTargetAndDestroy();
-                CurrentGame.RemoveCardsFromTable(CurrentGame.ClickedCards);
-                
-                if (CurrentGame.AreNewCardsNeeded())
+                return;
+            }
+
+            if (CurrentGame.ThreeClicked())
+            {
+                CurrentGame.RemoveSelectionsOnCards();
+            }
+
+            if (clickedCard.IsSelected) {
+                FirebaseAnalytics.LogEvent("card_clicked_deselect", 
+                    new Parameter("type", clickedCard.ToString()),
+                    new Parameter("index", clickedCard.Card.Index)
+                    );
+                clickedCard.Select(SelectType.NONE);
+                CurrentGame.Set.RemoveFromSet(clickedCard.Card);
+                CurrentGame.ClickedCards.Remove(clickedCard);
+            } else {
+                FirebaseAnalytics.LogEvent("card_clicked_select", 
+                    new Parameter("type", clickedCard.ToString()),
+                    new Parameter("index", clickedCard.Card.Index)
+                    );
+                clickedCard.Select(SelectType.CLICK);
+                CurrentGame.AddToSet(clickedCard.Card);
+                CurrentGame.ClickedCards.Add(clickedCard);
+            }
+
+            if (CurrentGame.Set.GetSize() == 3) 
+            {
+                if (CurrentGame.IsSetClicked())
                 {
-                    CurrentGame.DealNewCardsAt(emptyCardSlots);
+                    var emptyCardSlots = CurrentGame.GetIndexOfCards(CurrentGame.ClickedCards);
+                    CurrentGame.MoveSetToTargetAndDestroy();
+                    CurrentGame.RemoveCardsFromTable(CurrentGame.ClickedCards);
+                
+                    if (CurrentGame.AreNewCardsNeeded())
+                    {
+                        CurrentGame.DealNewCardsAt(emptyCardSlots);
+                    }
+                    else
+                    {
+                        CurrentGame.RemoveCardsFromTable(CurrentGame.ClickedCards);
+                        CurrentGame.RearrangeRemainingCards();
+                    }
                 }
                 else
                 {
-                    CurrentGame.RemoveCardsFromTable(CurrentGame.ClickedCards);
-                    CurrentGame.RearrangeRemainingCards();
+                    CurrentGame.InvalidSetSelected();
                 }
+                CurrentGame.RemoveSelectionsOnCards();
             }
-            else
-            {
-                CurrentGame.InvalidSetSelected();
-            }
-            CurrentGame.RemoveSelectionsOnCards();
         }
     }
 }

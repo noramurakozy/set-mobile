@@ -150,9 +150,9 @@ namespace Achievements.CreateAchievement
             difficultyUI.SetDifficulty(CreatedAchievement.Difficulty);
             FirebaseAnalytics.LogEvent("create_achievement_setup_third_step",
                 new Parameter("selected_template", _selectedTemplate.Type.ToString()),
-                new Parameter("preview_achievement_text", CreatedAchievement.Text),
-                new Parameter("preview_achievement_id", CreatedAchievement.ID.ToString()),
-                new Parameter("preview_achievement_difficulty", CreatedAchievement.Difficulty.ToString())
+                new Parameter("achievement_text", CreatedAchievement.Text),
+                new Parameter("achievement_id", CreatedAchievement.ID.ToString()),
+                new Parameter("achievement_difficulty", CreatedAchievement.Difficulty.ToString())
                 );
         }
 

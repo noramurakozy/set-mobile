@@ -1,5 +1,6 @@
 ﻿using System.IO;
 using Achievements.AchievementTypes;
+using Firebase.Analytics;
 using Newtonsoft.Json;
 using Statistics;
 using UnityEngine;
@@ -22,18 +23,21 @@ namespace GameScene.Statistics
         {
             if (File.Exists(Application.persistentDataPath + "/userStatistics.json"))
             {
+                FirebaseAnalytics.LogEvent("load_user_statistics", new Parameter("from", Application.persistentDataPath + "/userStatistics.json"));
                 UserStatistics =
                     JsonConvert.DeserializeObject<UserStatistics>(
                         File.ReadAllText(Application.persistentDataPath + "/userStatistics.json"), JsonUtils.SerializerSettings);
             }
             else
             {
+                FirebaseAnalytics.LogEvent("load_user_statistics", new Parameter("from", "new_statistics"));
                 UserStatistics = new UserStatistics();
             }
         }
 
         private void SaveUserStatistics()
         {
+            FirebaseAnalytics.LogEvent("save_user_statistics");
             File.WriteAllText(Application.persistentDataPath + "/userStatistics.json",
                 JsonConvert.SerializeObject(UserStatistics, JsonUtils.SerializerSettings));
         }
@@ -42,12 +46,14 @@ namespace GameScene.Statistics
         {
             LoadUserStatistics();
             UserStatistics.UpdateStatistics(gameStatistics);
+            FirebaseAnalytics.LogEvent("update_user_statistics");
             SaveUserStatistics();
         }
 
         public void UpdateAchievementStatistics()
         {
             LoadUserStatistics();
+            FirebaseAnalytics.LogEvent("update_achievement_statistics");
             UserStatistics.UpdateAchievementStatistics();
             SaveUserStatistics();
         }

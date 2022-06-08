@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using Achievements;
 using Achievements.AchievementTypes;
+using Firebase.Analytics;
 using Newtonsoft.Json;
 using Statistics;
 using UnityEngine;
@@ -68,6 +69,10 @@ namespace GameScene.Statistics
             if (BestTime == TimeSpan.Zero)
             {
                 BestTime = TimeSpan.FromSeconds(gameStatistics.DurationInSeconds);
+                IsNewBestTime = true;
+                FirebaseAnalytics.LogEvent("new_best_time", 
+                    new Parameter("time", GUtils.Utils.GetTimeSpanString(BestTime)),
+                        new Parameter("reason", "first_time"));
             }
             else
             {
@@ -75,10 +80,19 @@ namespace GameScene.Statistics
                 {
                     BestTime = TimeSpan.FromSeconds(gameStatistics.DurationInSeconds);
                     IsNewBestTime = true;
+                    FirebaseAnalytics.LogEvent("new_best_time", 
+                        new Parameter("time", GUtils.Utils.GetTimeSpanString(BestTime)),
+                        new Parameter("reason", "user_progress")
+                        );
                 }
                 else
                 {
                     IsNewBestTime = false;
+                    FirebaseAnalytics.LogEvent("new_worse_time", 
+                        new Parameter("best_time", GUtils.Utils.GetTimeSpanString(BestTime)),
+                        new Parameter("worse_time", 
+                            GUtils.Utils.GetTimeSpanString(TimeSpan.FromSeconds(gameStatistics.DurationInSeconds)))
+                    );
                 }
             }
         }

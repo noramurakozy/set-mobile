@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Achievements;
+﻿using Achievements;
 using DG.Tweening;
 using EasyUI.Dialogs;
+using Firebase.Analytics;
 using GameScene.GUtils;
 using GameScene.Statistics;
 using SettingsScene;
-using Statistics;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using UpdateType = Achievements.AchievementTypes.UpdateType;
 
@@ -71,32 +67,58 @@ namespace GameScene
             }
             else
             {
+                FirebaseAnalytics.LogEvent("start_new_game",
+                    new Parameter("reason", "previous_game_finished"));
                 Game.StartNewGame();
             }
             // Game.StartNewGame();
 
-            btnHint.onClick.AddListener(Game.SelectHint);
-            btnShuffle.onClick.AddListener(Game.RearrangeActualCards);
-            btnDeal.onClick.AddListener(() => Game.DealAdditionalCards(3));
+            btnHint.onClick.AddListener(() =>
+            {
+                FirebaseAnalytics.LogEvent("hint_clicked");
+                Game.SelectHint();
+            });
+            btnShuffle.onClick.AddListener(() =>
+            {
+                FirebaseAnalytics.LogEvent("shuffle_clicked");
+                Game.RearrangeActualCards();
+            });
+            btnDeal.onClick.AddListener(() =>
+            {
+                FirebaseAnalytics.LogEvent("deal_cards",
+                    new Parameter("reason", "user_click"));
+                Game.DealAdditionalCards(3);
+            });
             btnHowTo.onClick.AddListener(() =>
             {
+                FirebaseAnalytics.LogEvent("pause_game",
+                    new Parameter("reason", "user_attempt_exit_to_tutorial"));
                 Game.PauseGame();
                 ShowConfirmationPopup("TutorialScene");
                 // SceneChanger.Instance.LoadScene("TutorialScene");
             });
             btnSettings.onClick.AddListener(() =>
             {
+                FirebaseAnalytics.LogEvent("pause_game",
+                    new Parameter("reason", "user_attempt_exit_to_settings"));
                 Game.PauseGame();
                 ShowConfirmationPopup("SettingsScene");
                 // SceneChanger.Instance.LoadScene("SettingsScene");
             });
             btnHome.onClick.AddListener(() =>
             {
+                FirebaseAnalytics.LogEvent("pause_game",
+                    new Parameter("reason", "user_attempt_exit_to_home"));
                 Game.PauseGame();
                 ShowConfirmationPopup("MainMenu");
                 // SceneChanger.Instance.LoadScene("MainMenu");
             });
-            pausedOverlayGroup.GetComponentInChildren<Button>().onClick.AddListener(ResumeGame);
+            pausedOverlayGroup.GetComponentInChildren<Button>().onClick.AddListener(() =>
+            {
+                FirebaseAnalytics.LogEvent("resume_game",
+                    new Parameter("reason", "user_resume_from_pause"));
+                ResumeGame();
+            });
 
             _txtHintCount = hintCountBg.GetComponentInChildren<TMP_Text>();
             _txtShuffleCount = shuffleCountBg.GetComponentInChildren<TMP_Text>();
@@ -107,13 +129,14 @@ namespace GameScene
         private void SaveGameInProgress()
         {
             if (PlayerPrefs.GetInt("gameInProgress", 0) == 1)
-            { 
+            {
                 Game.Save();
             }
         }
 
         private void ShowContinuePopup()
         {
+            FirebaseAnalytics.LogEvent("open_continue_game_dialog");
             confirmDialogUI.gameObject.SetActive(true);
             confirmDialogUI
                 .SetTitle("Continue game")
@@ -125,10 +148,20 @@ namespace GameScene
                 .SetFadeDuration(0.1f)
                 .OnNegativeButtonClicked(() =>
                 {
+                    FirebaseAnalytics.LogEvent("continue_game_dialog_new_game");
                     Game.EndGame();
                     Game.StartNewGame();
                 })
-                .OnPositiveButtonClicked(Game.ResumeGame)
+                .OnPositiveButtonClicked(() =>
+                {
+                    FirebaseAnalytics.LogEvent("continue_game_dialog_resume_game");
+                    Game.ResumeGame();
+                })
+                .OnCloseButtonClicked(() =>
+                {
+                    FirebaseAnalytics.LogEvent("close_continue_game_dialog_resume_game");
+                    Game.ResumeGame();
+                })
                 .Show();
         }
 
@@ -152,16 +185,24 @@ namespace GameScene
 
             if (Game.IsGameEnded() && !_gameStatsSaved)
             {
+                FirebaseAnalytics.LogEvent("end_game",
+                    new Parameter("reason", "game_ended"));
                 Game.EndGame();
+                FirebaseAnalytics.LogEvent("update_user_statistics");
                 UserStatisticsManager.Instance.UpdateUserStatistics(gameStatistics);
                 _gameStatsSaved = true;
                 DOTween.CompleteAll();
+                FirebaseAnalytics.LogEvent("switch_scene", 
+                    new Parameter("from", "GameScene"), 
+                    new Parameter("to", "GameSummaryScene"));
                 fader.ExitSceneAnimation("GameSummaryScene");
             }
             if (Settings.Instance.GetAutoDeal() && !Game.IsGameEnded())
             {
                 if (Game.GetNumOfSetsOnTable() == 0)
                 {
+                    FirebaseAnalytics.LogEvent("deal_cards",
+                        new Parameter("reason", "no_sets_on_table_auto_deal"));
                     Game.DealAdditionalCards(3);
                 }
             }
@@ -169,17 +210,23 @@ namespace GameScene
 
         public void UpdateAchievementProgresses(GameStatistics gameStatistics, UpdateType updateType)
         {
-            AchievementManager.Instance.UpdateProgressOfAchievements(gameStatistics, updateType);
+            AchievementManager.Instance.
+                UpdateProgressOfAchievements(gameStatistics, updateType);
         }
 
         private void OnDestroy()
         {
+            FirebaseAnalytics.LogEvent("save_game_in_progress", 
+                new Parameter("reason", "unexpected_exit"));
             SaveGameInProgress();
             // Game.EndGame();
         }
 
         public void PauseGame()
         {
+            FirebaseAnalytics.LogEvent("timer_pause_clicked");
+            FirebaseAnalytics.LogEvent("pause_game",
+                new Parameter("reason", "user_paused_game"));
             Game.PauseGame();
             DisplayPauseOverlay();
         }
@@ -215,6 +262,7 @@ namespace GameScene
         
         private void ShowConfirmationPopup(string scene)
         {
+            FirebaseAnalytics.LogEvent("open_exit_game_dialog");
             confirmDialogUI.gameObject.SetActive(true);
             confirmDialogUI
                 .SetTitle("Exit game")
@@ -226,11 +274,30 @@ namespace GameScene
                 .SetPositiveButtonText("Yes, exit")
                 .SetButtonsColor(DialogButtonColor.Blue)
                 .SetFadeDuration(0.1f)
-                .OnNegativeButtonClicked(Game.ResumeGame)
+                .OnNegativeButtonClicked(() =>
+                {
+                    FirebaseAnalytics.LogEvent("exit_game_dialog_continue");
+                    FirebaseAnalytics.LogEvent("resume_game",
+                        new Parameter("reason", "user_decided_to_stay_in_game"));
+                    Game.ResumeGame();
+                })
                 .OnPositiveButtonClicked(() =>
                 {
+                    FirebaseAnalytics.LogEvent("save_game_in_progress", 
+                        new Parameter("reason", "user_exit_to_other_screen"));
                     SaveGameInProgress();
+                    FirebaseAnalytics.LogEvent("switch_scene", 
+                        new Parameter("from", "GameScene"), 
+                        new Parameter("to", scene));
+                    FirebaseAnalytics.LogEvent("exit_game_dialog_exit");
                     fader.ExitSceneAnimation(scene);
+                })
+                .OnCloseButtonClicked(() =>
+                {
+                    FirebaseAnalytics.LogEvent("close_exit_game_dialog");
+                    FirebaseAnalytics.LogEvent("resume_game",
+                        new Parameter("reason", "user_closed_exit_dialog"));
+                    Game.ResumeGame();
                 })
                 .Show();
         }
