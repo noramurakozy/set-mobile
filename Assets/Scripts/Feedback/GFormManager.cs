@@ -5,6 +5,6 @@ namespace Feedback
 {
     public interface IGFormManager
     {
-        public IEnumerator SendGFormData(List<GFormQuestion> questionList);
+        public IEnumerator SendGFormData(List<GFormQuestion> questionList, string type);
     }
 }

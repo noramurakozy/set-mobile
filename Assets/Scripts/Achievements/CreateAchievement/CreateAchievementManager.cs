@@ -1,6 +1,8 @@
 using System.Collections.Generic;
 using System.IO;
 using Achievements.AchievementTypes;
+using Firebase.Analytics;
+using FirebaseHandlers;
 using Newtonsoft.Json;
 using Statistics;
 using TMPro;
@@ -32,6 +34,8 @@ namespace Achievements.CreateAchievement
         // Start is called before the first frame update
         void Start()
         {
+            FirebaseAnalytics.LogEvent("enter_create_achievement_scene", 
+                        new Parameter("custom_achievements", RemoteConfigValueManager.Instance.CustomAchievements.ToString()));
             fader.EnterSceneAnimation();
             stepperController.AchievementTemplates = CreateAchievementTemplates();
             stepperController.MoveToStep(1);

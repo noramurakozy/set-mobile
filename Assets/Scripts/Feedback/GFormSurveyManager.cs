@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Firebase.Analytics;
 using FirebaseHandlers;
 using TMPro;
 using UnityEngine;
@@ -49,10 +50,10 @@ namespace Feedback
 
         private void SubmitForm()
         {
-            StartCoroutine(SendGFormData(questions));
+            StartCoroutine(SendGFormData(questions, "experiment_survey"));
         }
 
-        public IEnumerator SendGFormData(List<GFormQuestion> questionList)
+        public IEnumerator SendGFormData(List<GFormQuestion> questionList, string type)
         {
             if (questions.Select(q => q.Answer).Any(answer => answer == null))
             {
@@ -79,17 +80,23 @@ namespace Feedback
                     yield return www.SendWebRequest();
                     if(www.result != UnityWebRequest.Result.Success) {
                         finishedOverlayError.gameObject.SetActive(true);
+                        FirebaseAnalytics.LogEvent("experiment_survey_error_overlay_on");
                         overlayErrorTxt.text = www.error;
                         Debug.Log(www.error);
+                        FirebaseAnalytics.LogEvent("experiment_survey_sent", 
+                            new Parameter("type", "error"));
                     }
                     else {
                         Debug.Log("Request sent");
                         finishedOverlaySuccess.gameObject.SetActive(true);
+                        FirebaseAnalytics.LogEvent("experiment_survey_success_overlay_on");
                         // Show results as text
                         Debug.Log(www.downloadHandler.text);
  
                         // Or retrieve results as binary data
                         byte[] results = www.downloadHandler.data;
+                        FirebaseAnalytics.LogEvent("experiment_survey_sent", 
+                            new Parameter("type", "success"));
                     }
                 }
 

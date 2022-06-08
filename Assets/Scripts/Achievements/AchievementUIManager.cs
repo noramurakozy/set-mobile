@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using Achievements.AchievementTypes;
 using EasyUI.Dialogs;
+using Firebase.Analytics;
 using FirebaseHandlers;
 using Newtonsoft.Json;
 using Statistics;
@@ -47,6 +48,8 @@ namespace Achievements
 
         private void Start()
         {
+            FirebaseAnalytics.LogEvent("enter_achievements_scene", 
+                new Parameter("custom_achievements", RemoteConfigValueManager.Instance.CustomAchievements.ToString()));
             fader.EnterSceneAnimation();
             inProgressPlaceholderText.gameObject.SetActive(true);
             completedPlaceholderText.gameObject.SetActive(true);
@@ -55,6 +58,9 @@ namespace Achievements
             {
                 btnAddNew.onClick.AddListener(() =>
                 {
+                    FirebaseAnalytics.LogEvent("switch_scene", 
+                        new Parameter("from", "AchievementsScene"), 
+                        new Parameter("to", "CreateAchievementScene"));
                     fader.ExitSceneAnimation("CreateAchievementScene");
                 });
             }
@@ -63,7 +69,13 @@ namespace Achievements
                 btnAddNew.gameObject.SetActive(false);
             }
             
-            btnHome.onClick.AddListener(() => fader.ExitSceneAnimation("MainMenu"));
+            btnHome.onClick.AddListener(() =>
+            {
+                FirebaseAnalytics.LogEvent("switch_scene", 
+                    new Parameter("from", "AchievementsScene"), 
+                    new Parameter("to", "MainMenu"));
+                fader.ExitSceneAnimation("MainMenu");
+            });
         }
 
         private void Update()
@@ -88,7 +100,7 @@ namespace Achievements
         private void InitAchievementUIs()
         {
             var allAchievements = AchievementManager.Instance.ReadAllAchievements();
-
+            FirebaseAnalytics.LogEvent("start_init_achievements");
             _achievementUIs = allAchievements?.Select(a =>
             {
                 AchievementUI achievementUI;
@@ -97,10 +109,16 @@ namespace Achievements
                     case Status.InProgress:
                         achievementUI = Instantiate(achievementUIPrefab, inProgressScrollViewContent.transform, false);
                         achievementUI.Achievement = a;
+                        FirebaseAnalytics.LogEvent("init_achievement_in_progress",
+                            new Parameter("achievement_text", a.Text),
+                            new Parameter("achievement_id", a.ID.ToString()));
                         break;
                     case Status.Complete:
                         achievementUI = Instantiate(completedAchievementUIPrefab, completedScrollViewContent.transform, false);
                         achievementUI.Achievement = a;
+                        FirebaseAnalytics.LogEvent("init_achievement_complete",
+                            new Parameter("achievement_text", a.Text),
+                            new Parameter("achievement_id", a.ID.ToString()));
                         break;
                     default:
                         throw new ArgumentOutOfRangeException();
@@ -112,12 +130,18 @@ namespace Achievements
 
         public void DeleteAchievement(AchievementUI achievementUI)
         {
+            FirebaseAnalytics.LogEvent("achievement_deleted", 
+                new Parameter("text", achievementUI.Achievement.Text),
+                new Parameter("id", achievementUI.Achievement.ID.ToString()));
             AchievementManager.Instance.DeleteAchievement(achievementUI.Achievement.ID);
             Destroy(achievementUI.gameObject);
         }
 
         public void ShowConfirmationDialog(AchievementUI achievementUI)
         {
+            FirebaseAnalytics.LogEvent("open_confirm_delete_achievement", 
+                new Parameter("text", achievementUI.Achievement.Text),
+                new Parameter("id", achievementUI.Achievement.ID.ToString()));
             confirmDialogUI.gameObject.SetActive(true);
             confirmDialogUI
                 .SetTitle("Delete achievement")
@@ -128,6 +152,14 @@ namespace Achievements
                 .SetButtonsColor(DialogButtonColor.Green)
                 .SetFadeDuration(0.1f)
                 .OnNegativeButtonClicked(() => DeleteAchievement(achievementUI))
+                .OnPositiveButtonClicked(() =>
+                {
+                    FirebaseAnalytics.LogEvent("cancel_delete_achievement");
+                })
+                .OnCloseButtonClicked(() =>
+                {
+                    FirebaseAnalytics.LogEvent("close_delete_achievement");
+                })
                 .Show();
         }
     }

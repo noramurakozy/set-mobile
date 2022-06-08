@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using Achievements.AchievementTypes;
+using Firebase.Analytics;
 using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -44,17 +45,28 @@ namespace Achievements.CreateAchievement
                 stepContents[i].SetActive(false);
             }
 
-            btnChangeTemplate.onClick.AddListener(() => { MoveToStep(1); });
-            btnChangeValues.onClick.AddListener(() => { MoveToStep(2); });
+            btnChangeTemplate.onClick.AddListener(() =>
+            {
+                FirebaseAnalytics.LogEvent("create_achievement_change_template");
+                MoveToStep(1);
+            });
+            btnChangeValues.onClick.AddListener(() =>
+            {
+                FirebaseAnalytics.LogEvent("create_achievement_change_values");
+                MoveToStep(2);
+            });
             btnNextStep.onClick.AddListener(MoveToNextStep);
             btnAcceptAndCreate.onClick.AddListener(() =>
             {
+                FirebaseAnalytics.LogEvent("accept_and_create_achievement");
                 CreateAchievementManager.Instance.CreateAchievement(CreatedAchievement);
             });
         }
 
         public void MoveToStep(int currentStep)
         {
+            FirebaseAnalytics.LogEvent("create_achievement_move_to_step",
+                new Parameter("step", currentStep));
             CurrentStep = currentStep;
             if (currentStep <= stepUIs.Count)
             {
@@ -136,10 +148,18 @@ namespace Achievements.CreateAchievement
             CreatedAchievement = AchievementManager.Instance.InitiateAchievement(CreationType.Custom, _selectedTemplate, _concatenatedText,
                 _inputFields.Select(field => (object)int.Parse(field.text)).ToList());
             difficultyUI.SetDifficulty(CreatedAchievement.Difficulty);
+            FirebaseAnalytics.LogEvent("create_achievement_setup_third_step",
+                new Parameter("selected_template", _selectedTemplate.Type.ToString()),
+                new Parameter("preview_achievement_text", CreatedAchievement.Text),
+                new Parameter("preview_achievement_id", CreatedAchievement.ID.ToString()),
+                new Parameter("preview_achievement_difficulty", CreatedAchievement.Difficulty.ToString())
+                );
         }
 
         private void SetupSecondStep(AchievementTemplate selectedTemplate)
         {
+            FirebaseAnalytics.LogEvent("create_achievement_setup_second_step",
+                new Parameter("selected_template", _selectedTemplate.Text));
             foreach (Transform child in textHolder.transform)
             {
                 Destroy(child.gameObject);
@@ -170,13 +190,27 @@ namespace Achievements.CreateAchievement
                     var i1 = i;
                     inputField.onEndEdit.AddListener(value =>
                     {
+                        FirebaseAnalytics.LogEvent("create_achievement_input_changed",
+                            new Parameter("selected_template", selectedTemplate.Text),
+                            new Parameter("input_index", i1),
+                            new Parameter("new_value", value));
                         if (int.Parse(value) < selectedTemplate.MinInputValues[i1])
                         {
+                            FirebaseAnalytics.LogEvent("create_achievement_force_min_input",
+                                new Parameter("selected_template", selectedTemplate.Text),
+                                new Parameter("input_index", i1),
+                                new Parameter("from", value),
+                                new Parameter("to", selectedTemplate.MinInputValues[i1]));
                             inputField.text = selectedTemplate.MinInputValues[i1].ToString();
                         }
 
                         if (int.Parse(value) > selectedTemplate.MaxInputValues[i1])
                         {
+                            FirebaseAnalytics.LogEvent("create_achievement_force_max_input",
+                                new Parameter("selected_template", selectedTemplate.Text),
+                                new Parameter("input_index", i1),
+                                new Parameter("from", value),
+                                new Parameter("to", selectedTemplate.MaxInputValues[i1]));
                             inputField.text = selectedTemplate.MaxInputValues[i1].ToString();
                         }
                     });
@@ -191,16 +225,20 @@ namespace Achievements.CreateAchievement
                 AchievementTemplates.Select(template =>
                     new TMP_Dropdown.OptionData(string.Format(template.Text, "X", "Y", "Z"))));
             _selectedTemplate ??= AchievementTemplates[0];
+            FirebaseAnalytics.LogEvent("create_achievement_setup_first_step",
+                new Parameter("default_template", _selectedTemplate.Text));
             achievementsDropdown.onValueChanged.AddListener(DropdownValueChanged);
         }
 
         private void DropdownValueChanged(int index)
         {
+            FirebaseAnalytics.LogEvent("create_achievement_dropdown_changed");
             _selectedTemplate = AchievementTemplates[index];
         }
 
         public void MoveToNextStep()
         {
+            FirebaseAnalytics.LogEvent("create_achievement_next_step");
             CurrentStep++;
             MoveToStep(CurrentStep);
         }

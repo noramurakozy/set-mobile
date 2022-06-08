@@ -32,38 +32,38 @@ public class MainMenuManager : MonoBehaviour
         fader.EnterSceneAnimation();
         btnPlay.onClick.AddListener(() =>
         {
-            fader.ExitSceneAnimation("GameScene");
             FirebaseAnalytics.LogEvent("switch_scene", 
                 new Parameter("from", "MainScene"), 
                 new Parameter("to", "GameScene"));
+            fader.ExitSceneAnimation("GameScene");
         });
         btnTutorial.onClick.AddListener(() =>
         {
-            fader.ExitSceneAnimation("TutorialScene");
             FirebaseAnalytics.LogEvent("switch_scene", 
                 new Parameter("from", "MainScene"), 
                 new Parameter("to", "TutorialScene"));
+            fader.ExitSceneAnimation("TutorialScene");
         });
         btnAchievements.onClick.AddListener(() =>
         {
-            fader.ExitSceneAnimation("AchievementsScene");
             FirebaseAnalytics.LogEvent("switch_scene", 
                 new Parameter("from", "MainScene"), 
                 new Parameter("to", "AchievementsScene"));
+            fader.ExitSceneAnimation("AchievementsScene");
         });
         btnSettings.onClick.AddListener(() =>
         {
-            fader.ExitSceneAnimation("SettingsScene");
             FirebaseAnalytics.LogEvent("switch_scene", 
                 new Parameter("from", "MainScene"), 
                 new Parameter("to", "SettingsScene"));
+            fader.ExitSceneAnimation("SettingsScene");
         });
         btnStatistics.onClick.AddListener(() =>
         {
-            fader.ExitSceneAnimation("StatisticsScene");
             FirebaseAnalytics.LogEvent("switch_scene", 
                 new Parameter("from", "MainScene"), 
                 new Parameter("to", "StatisticsScene"));
+            fader.ExitSceneAnimation("StatisticsScene");
         });
         btnAbout.onClick.AddListener(ShowAboutPopup);
         btnExperimentInfo.onClick.AddListener(ShowExperimentInfo);
