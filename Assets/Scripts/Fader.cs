@@ -1,10 +1,19 @@
 ﻿using System;
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 
 public class Fader : MonoBehaviour
 {
-
+    [SerializeField] private TMP_Text title;
+    [SerializeField] private TMP_Text subTitle;
+    [SerializeField] private Transform titleOutsidePositionRight;
+    [SerializeField] private Transform titleOutsidePositionLeft;
+    [SerializeField] private Transform titleInsidePosition;
+    [SerializeField] private Transform subTitleOutsidePositionRight;
+    [SerializeField] private Transform subTitleOutsidePositionLeft;
+    [SerializeField] private Transform subTitleInsidePosition;
+    
     private CanvasGroup _canvasGroup;
 
     private void Awake()
@@ -15,30 +24,35 @@ public class Fader : MonoBehaviour
     public void EnterSceneAnimation()
     {
         gameObject.SetActive(true);
-        // transform.DOScale(Vector3.one, 0);
-        // transform.DOScale(Vector3.zero, 0.5f).SetEase(Ease.InOutQuad).onComplete +=
-        //     () => gameObject.SetActive(false);
+        
+        // Setup starting position
         _canvasGroup.DOFade(1, 0);
+        title.transform.DOMove(titleInsidePosition.position, 0);
+        subTitle.transform.DOMove(subTitleInsidePosition.position, 0);
+        
+        // The actual enter transition
         _canvasGroup.DOFade(0, 1f).SetEase(Ease.InOutQuad).onComplete += 
             () => gameObject.SetActive(false);
+        title.transform.DOMove(titleOutsidePositionLeft.position, 0.5f).SetEase(Ease.InOutQuad);
+        subTitle.transform.DOMove(subTitleOutsidePositionRight.position, 0.5f).SetEase(Ease.InOutQuad);
     }
         
     public void ExitSceneAnimation(string sceneToLoad)
     {
         gameObject.SetActive(true);
-        // Sequence s = DOTween.Sequence();
-        // s.Append(transform.DOScale(Vector3.zero, 0)).SetEase(Ease.InOutQuad);
-        // s.Join(transform.DORotate(new Vector3(0, 0, -900), 0.5f));
-        // s.onComplete +=
-            // () => SceneChanger.Instance.LoadScene(sceneToLoad);
-        // transform.DOScale(Vector3.zero, 0);
-        // transform.DOScale(Vector3.one, 0.5f).SetEase(Ease.InOutQuad).onComplete +=
-            // () => SceneChanger.Instance.LoadScene(sceneToLoad);
+        
+        // Setup starting position
         _canvasGroup.DOFade(0, 0);
+        title.transform.DOMove(titleOutsidePositionRight.position, 0);
+        subTitle.transform.DOMove(subTitleOutsidePositionLeft.position, 0);
+        
+        // The actual exit transition
         _canvasGroup.DOFade(1, 1f).SetEase(Ease.InOutQuad).onComplete += 
             () =>
             {
                 SceneChanger.Instance.LoadScene(sceneToLoad);
             };
+        title.transform.DOMove(titleInsidePosition.position, 0.5f).SetEase(Ease.InOutQuad);
+        subTitle.transform.DOMove(subTitleInsidePosition.position, 0.5f).SetEase(Ease.InOutQuad);
     }
 }
