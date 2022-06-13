@@ -11,13 +11,6 @@ namespace FirebaseHandlers
     {
         private void Start()
         {
-            var defaults =  new Dictionary<string, object>
-            {
-                {"customAchievements", true},
-                {"ab_test_running", true}
-            };
-            
-            
             Firebase.FirebaseApp.CheckAndFixDependenciesAsync().ContinueWith(task => {
                 var dependencyStatus = task.Result;
                 if (dependencyStatus == Firebase.DependencyStatus.Available) {
@@ -27,6 +20,7 @@ namespace FirebaseHandlers
                     
                     // Messaging setup
                     InitializeFirebaseMessaging();
+                    InitializeFirebaseRemoteConfig();
 
                     // Set a flag here to indicate whether Firebase is ready to use by your app.
                 } else {
@@ -35,21 +29,6 @@ namespace FirebaseHandlers
                     // Firebase Unity SDK is not safe to use here.
                 }
             });
-
-            FirebaseRemoteConfig.DefaultInstance.SetDefaultsAsync(defaults)
-                .ContinueWithOnMainThread(task => { });
-            
-            Debug.Log("Fetching data...");
-            Task fetchTask =
-                FirebaseRemoteConfig.DefaultInstance.FetchAsync(
-                    TimeSpan.Zero);
-            fetchTask.ContinueWithOnMainThread(FetchComplete);
-        }
-        
-        // End our messaging session when the program exits.
-        public void OnDestroy() {
-            Firebase.Messaging.FirebaseMessaging.MessageReceived -= OnMessageReceived;
-            Firebase.Messaging.FirebaseMessaging.TokenReceived -= OnTokenReceived;
         }
 
         // Setup message event handlers.
@@ -71,6 +50,24 @@ namespace FirebaseHandlers
                 }
             );
             // isFirebaseInitialized = true;
+        }
+        
+        private void InitializeFirebaseRemoteConfig()
+        {
+            var defaults =  new Dictionary<string, object>
+            {
+                {"customAchievements", true},
+                {"ab_test_running", true}
+            };
+            
+            FirebaseRemoteConfig.DefaultInstance.SetDefaultsAsync(defaults)
+                .ContinueWithOnMainThread(task => { });
+            
+            Debug.Log("Fetching data...");
+            Task fetchTask =
+                FirebaseRemoteConfig.DefaultInstance.FetchAsync(
+                    TimeSpan.Zero);
+            fetchTask.ContinueWithOnMainThread(FetchComplete);
         }
 
         void FetchComplete(Task fetchTask) {
@@ -174,6 +171,12 @@ namespace FirebaseHandlers
                 complete = true;
             }
             return complete;
+        }
+        
+        // End our messaging session when the program exits.
+        public void OnDestroy() {
+            Firebase.Messaging.FirebaseMessaging.MessageReceived -= OnMessageReceived;
+            Firebase.Messaging.FirebaseMessaging.TokenReceived -= OnTokenReceived;
         }
     }
 }

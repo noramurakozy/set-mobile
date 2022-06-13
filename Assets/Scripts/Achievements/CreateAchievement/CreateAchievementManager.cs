@@ -16,6 +16,7 @@ namespace Achievements.CreateAchievement
     {
         public static CreateAchievementManager Instance { get; private set; }
         [SerializeField] private StepperController stepperController;
+        [SerializeField] private Button btnBack;
         [SerializeField] private Fader fader;
 
         private void Awake()
@@ -39,6 +40,13 @@ namespace Achievements.CreateAchievement
             fader.EnterSceneAnimation();
             stepperController.AchievementTemplates = CreateAchievementTemplates();
             stepperController.MoveToStep(1);
+            btnBack.onClick.AddListener(() =>
+            {
+                FirebaseAnalytics.LogEvent("switch_scene", 
+                    new Parameter("from", "CreateAchievementScene"), 
+                    new Parameter("to", "AchievementsScene"));
+                fader.ExitSceneAnimation("MainMenu");
+            });
         }
 
         public void CreateAchievement(Achievement createdAchievement)
