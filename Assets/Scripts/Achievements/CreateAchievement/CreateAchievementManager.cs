@@ -45,7 +45,7 @@ namespace Achievements.CreateAchievement
                 FirebaseAnalytics.LogEvent("switch_scene", 
                     new Parameter("from", "CreateAchievementScene"), 
                     new Parameter("to", "AchievementsScene"));
-                fader.ExitSceneAnimation("MainMenu");
+                fader.ExitSceneAnimation("AchievementsScene");
             });
         }
 

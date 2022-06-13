@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "UBV7N18523010752",
         "name": "com.murak.setmobile",
-        "processId": 21559,
+        "processId": 4214,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -96,6 +96,12 @@
             "deviceId": "UBV7N18523010752",
             "name": "com.murak.setmobile",
             "processId": 21559,
+            "exited": false
+        },
+        {
+            "deviceId": "UBV7N18523010752",
+            "name": "com.murak.setmobile",
+            "processId": 4214,
             "exited": false
         }
     ],
