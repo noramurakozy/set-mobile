@@ -142,5 +142,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   achievementUnlocked: {fileID: 8300000, guid: 31dc2e9feba6d7d418279a956bb1e74c, type: 3}
-  tutorialCorrect: {fileID: 8300000, guid: 4e5cd8beb0a43074faf21d155c661d12, type: 3}
-  tutorialWrong: {fileID: 8300000, guid: b0d5a5e5a71bc284aa4a3ddc00ceda97, type: 3}
+  tutorialCorrect: {fileID: 8300000, guid: 5c502f15525348f48872f2fab463edf5, type: 3}
+  tutorialWrong: {fileID: 8300000, guid: f605ff854bdcb0e48a02b227f71efbf5, type: 3}
