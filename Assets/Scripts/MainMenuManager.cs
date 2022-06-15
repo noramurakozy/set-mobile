@@ -84,7 +84,7 @@ public class MainMenuManager : MonoBehaviour
             .SetTitle("About")
             .SetMessage("This application was created based on the rules of the official card game SET® published by SET Enterprises." +
                         "\n" +
-                        "If you found a bug, please report it through Google Play Store or App Store." +
+                        "If you found a bug, please report it by clicking on the button below." +
                         "\n" +
                         "Have fun playing and don't forget to seek out for new challenges! :)")
             .SetNegativeButtonText("Give general feedback")
@@ -108,7 +108,7 @@ public class MainMenuManager : MonoBehaviour
         feedbackQuestion.entryID = "entry.1798791499";
         confirmDialogUI
             .SetTitle("Give feedback")
-            .SetMessage("Here you can send me feedback about the game in general, feature ideas/improvement points if you have any.")
+            .SetMessage("Here you can send me feedback about the game in general or feature ideas/improvement points if you have any.")
             .SetNegativeButtonText("Cancel")
             .SetPositiveButtonText("Send")
             .SetInputFieldVisibility()
@@ -139,7 +139,7 @@ public class MainMenuManager : MonoBehaviour
         bugQuestion.entryID = "entry.1798791499";
         confirmDialogUI
             .SetTitle("Report a bug")
-            .SetMessage("Please describe as many details as possible about the bug. The more I know about the circumstances, the faster the bug can be solved.")
+            .SetMessage("Please describe as many details as possible. The more I know about the circumstances, the faster the bug can be solved.")
             .SetNegativeButtonText("Cancel")
             .SetPositiveButtonText("Send")
             .SetInputFieldVisibility()
@@ -193,12 +193,11 @@ public class MainMenuManager : MonoBehaviour
         confirmDialogUI.gameObject.SetActive(true);
         confirmDialogUI
             .SetTitle("Experiment info")
-            .SetMessage("If you're looking for the survey, you are at the right place! " +
-                        "You can fill it out by clicking on the button below. \n" +
-                        "Please note, you can give the most valuable feedback if you have used this app for at least 10 minutes already! " +
+            .SetMessage("I would highly appreciate if you could fill out my survey by clicking the right button below. " +
+                        "You don't have to leave the app, so it's convenient and fast, it takes max 3 minutes, I timed it :) \n" +
+                        "Note: You can give the most valuable feedback if you have used this app for at least 10 minutes already! " +
                         "If that's not true, please continue playing for a bit more :)\n" +
-                        "Thank you for your help again! I hope you had a great time playing :)\n" +
-                        "Tip: It's enough to fill out the survey once! ;)") 
+                        "Thank you for your help again! I hope you had a great time playing :)\n") 
             .SetNegativeButtonText("I'll do it later")
             .SetPositiveButtonText("Go to the survey")
             .OnCloseButtonClicked(() =>
