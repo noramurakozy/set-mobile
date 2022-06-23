@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "UBV7N18523010752",
         "name": "com.murak.setmobile",
-        "processId": 17236,
+        "processId": 27398,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -46,24 +46,6 @@
         },
         {
             "deviceId": "UBV7N18523010752",
-            "name": "com.murak.setmobile",
-            "processId": 16587,
-            "exited": true
-        },
-        {
-            "deviceId": "UBV7N18523010752",
-            "name": "com.murak.setmobile",
-            "processId": 17576,
-            "exited": true
-        },
-        {
-            "deviceId": "UBV7N18523010752",
-            "name": "com.murak.setmobile",
-            "processId": 29890,
-            "exited": true
-        },
-        {
-            "deviceId": "UBV7N18523010752",
             "name": "com.huawei.android.launcher",
             "processId": 4930,
             "exited": false
@@ -71,61 +53,49 @@
         {
             "deviceId": "UBV7N18523010752",
             "name": "com.murak.setmobile",
-            "processId": 9311,
-            "exited": true
-        },
-        {
-            "deviceId": "UBV7N18523010752",
-            "name": "com.murak.setmobile",
-            "processId": 13156,
-            "exited": true
-        },
-        {
-            "deviceId": "UBV7N18523010752",
-            "name": "com.murak.setmobile",
-            "processId": 19177,
-            "exited": false
-        },
-        {
-            "deviceId": "UBV7N18523010752",
-            "name": "com.murak.setmobile",
-            "processId": 20539,
-            "exited": false
-        },
-        {
-            "deviceId": "UBV7N18523010752",
-            "name": "com.murak.setmobile",
-            "processId": 21559,
-            "exited": false
-        },
-        {
-            "deviceId": "UBV7N18523010752",
-            "name": "com.murak.setmobile",
-            "processId": 4214,
-            "exited": false
-        },
-        {
-            "deviceId": "UBV7N18523010752",
-            "name": "com.murak.setmobile",
             "processId": 20009,
-            "exited": false
+            "exited": true
         },
         {
             "deviceId": "UBV7N18523010752",
             "name": "com.murak.setmobile",
             "processId": 1786,
-            "exited": false
+            "exited": true
         },
         {
             "deviceId": "UBV7N18523010752",
             "name": "com.murak.setmobile",
             "processId": 4259,
-            "exited": false
+            "exited": true
         },
         {
             "deviceId": "UBV7N18523010752",
             "name": "com.murak.setmobile",
             "processId": 17236,
+            "exited": true
+        },
+        {
+            "deviceId": "UBV7N18523010752",
+            "name": "com.instagram.android",
+            "processId": 14797,
+            "exited": true
+        },
+        {
+            "deviceId": "UBV7N18523010752",
+            "name": "com.huawei.hidisk",
+            "processId": 21122,
+            "exited": false
+        },
+        {
+            "deviceId": "UBV7N18523010752",
+            "name": "com.murak.setmobile",
+            "processId": 24645,
+            "exited": false
+        },
+        {
+            "deviceId": "UBV7N18523010752",
+            "name": "com.murak.setmobile",
+            "processId": 27398,
             "exited": false
         }
     ],
