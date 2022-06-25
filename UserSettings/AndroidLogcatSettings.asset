@@ -3,7 +3,7 @@
     "m_SelectedPackage": {
         "deviceId": "UBV7N18523010752",
         "name": "com.murak.setmobile",
-        "processId": 27398,
+        "processId": 12499,
         "exited": false
     },
     "m_SelectedPriority": 0,
@@ -45,34 +45,10 @@
             "exited": false
         },
         {
-            "deviceId": "UBV7N18523010752",
-            "name": "com.huawei.android.launcher",
-            "processId": 4930,
+            "deviceId": "4b7b2b29",
+            "name": "com.murak.setmobile",
+            "processId": 9615,
             "exited": false
-        },
-        {
-            "deviceId": "UBV7N18523010752",
-            "name": "com.murak.setmobile",
-            "processId": 20009,
-            "exited": true
-        },
-        {
-            "deviceId": "UBV7N18523010752",
-            "name": "com.murak.setmobile",
-            "processId": 1786,
-            "exited": true
-        },
-        {
-            "deviceId": "UBV7N18523010752",
-            "name": "com.murak.setmobile",
-            "processId": 4259,
-            "exited": true
-        },
-        {
-            "deviceId": "UBV7N18523010752",
-            "name": "com.murak.setmobile",
-            "processId": 17236,
-            "exited": true
         },
         {
             "deviceId": "UBV7N18523010752",
@@ -84,18 +60,36 @@
             "deviceId": "UBV7N18523010752",
             "name": "com.huawei.hidisk",
             "processId": 21122,
-            "exited": false
+            "exited": true
         },
         {
             "deviceId": "UBV7N18523010752",
             "name": "com.murak.setmobile",
             "processId": 24645,
-            "exited": false
+            "exited": true
         },
         {
             "deviceId": "UBV7N18523010752",
             "name": "com.murak.setmobile",
             "processId": 27398,
+            "exited": true
+        },
+        {
+            "deviceId": "UBV7N18523010752",
+            "name": "com.murak.setmobile",
+            "processId": 31675,
+            "exited": true
+        },
+        {
+            "deviceId": "UBV7N18523010752",
+            "name": "com.google.android.gm",
+            "processId": 32658,
+            "exited": false
+        },
+        {
+            "deviceId": "UBV7N18523010752",
+            "name": "com.murak.setmobile",
+            "processId": 12499,
             "exited": false
         }
     ],

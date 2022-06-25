@@ -28,6 +28,7 @@ public class MainMenuManager : MonoBehaviour
         FirebaseAnalytics.LogEvent("enter_main_menu", 
             new Parameter("custom_achievements", RemoteConfigValueManager.Instance.CustomAchievements.ToString()));
         Application.targetFrameRate = 60;
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
         
         fader.EnterSceneAnimation();
         btnPlay.onClick.AddListener(() =>
