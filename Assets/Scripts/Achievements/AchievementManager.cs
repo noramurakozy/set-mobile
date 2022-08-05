@@ -122,7 +122,8 @@ namespace Achievements
             FirebaseAnalytics.LogEvent("achievement_created",
                 new Parameter("achievement_text", newAchievement.Text),
                 new Parameter("achievement_id", newAchievement.ID.ToString()),
-                new Parameter("achievement_difficulty", newAchievement.Difficulty.ToString())
+                new Parameter("achievement_difficulty", newAchievement.Difficulty.ToString()),
+                    new Parameter("type", newAchievement.CreationType == CreationType.Custom ? "custom" : "default")
             );
             AllAchievements = allAchievements;
             SaveAchievements(allAchievements);
@@ -138,9 +139,10 @@ namespace Achievements
                 var afterStatus = achievement.Status;
                 if (preStatus == Status.InProgress && afterStatus == Status.Complete)
                 {
-                    FirebaseAnalytics.LogEvent("update_achievement_status", 
+                    FirebaseAnalytics.LogEvent("achievement_completed", 
                         new Parameter("achievement_text", achievement.Text),
-                        new Parameter("achievement_id", achievement.ID.ToString()));
+                        new Parameter("achievement_id", achievement.ID.ToString()),
+                        new Parameter("type", achievement.CreationType == CreationType.Custom ? "custom" : "default"));
                     // ToastManager.Instance.ShowToast(achievement.Text, 2f);
                     updatedAchievements.Add(achievement);
                 }
